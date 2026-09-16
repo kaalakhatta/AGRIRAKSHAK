@@ -2,27 +2,29 @@
 
 ## Runtime design
 
-The browser owns the exhibition-critical path:
+The deployed system uses a hosted inference API and managed content database:
 
 ```text
-camera or upload
+phone camera or upload
       |
-image validation and preprocessing
+Vercel Next.js application
       |
-ONNX Runtime Web classifier
+protected prediction route
       |
-confidence policy and label map
+FastAPI + ONNX Runtime CPU service
       |
-reviewed local disease catalog
+calibrated prediction and uncertainty policy
+      |
+Supabase disease catalog and anonymous scan metadata
       |
 result, safety guidance, and quiz
 ```
 
-This design removes a paid model API, database, and authentication service from the MVP. Static assets can be cached by a service worker, so a previously loaded build remains usable during network problems.
+The application does not store leaf photographs by default. The database records only the model version, predicted class, confidence, uncertainty state, timestamp, and optional user feedback. A bundled browser model may be added later as an offline fallback.
 
 ## Model contract
 
-The web app will accept a versioned bundle under `apps/web/public/models/<version>/` containing:
+The inference service will accept a versioned bundle containing:
 
 - `model.onnx`
 - `labels.json`
@@ -44,4 +46,8 @@ A softmax score is not diagnostic certainty. Before release, the team will selec
 
 ## Deployment
 
-The primary target is Vercel’s free tier. A static-export-compatible app and a tagged local release provide backups. No secret is required for the core demo.
+- Vercel hosts the Next.js application and its server-side proxy route.
+- A free CPU web service hosts the Dockerized FastAPI inference API.
+- Supabase hosts PostgreSQL content and scan metadata with row-level security.
+- Secrets remain server-side in hosting environment variables.
+- Free services may sleep when inactive, so the exhibition checklist includes a health check before the live demonstration.

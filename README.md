@@ -2,12 +2,14 @@
 
 AgriRakshak is a college exhibition project that turns a crop-leaf photo into a preliminary disease screening, a confidence score, practical guidance, and a short learning activity.
 
+[Open the current web prototype](https://agrirakshak-gamma.vercel.app)
+
 > AgriRakshak is an educational screening aid. It does not replace advice from a qualified agricultural professional, and it must not recommend pesticide dosages.
 
 ## Exhibition MVP
 
 - Upload or capture one leaf image
-- Run a lightweight ONNX classifier in the browser
+- Send the photograph through a protected web route to a hosted ONNX inference API
 - Show the predicted crop and condition with calibrated confidence
 - Return an “uncertain” result below a documented threshold
 - Explain symptoms, prevention, and when to seek expert help
@@ -20,13 +22,13 @@ AgriRakshak is a college exhibition project that turns a crop-leaf photo into a 
 | Area | Choice | Cost |
 | --- | --- | --- |
 | Web app | Next.js, TypeScript, Tailwind CSS | Free and open source |
-| Inference | ONNX Runtime Web in the browser | No inference server bill |
-| Content | Versioned JSON in this repository | Free |
+| Inference | FastAPI + ONNX Runtime on a free CPU service | Free tier |
+| Content and scan metadata | Supabase PostgreSQL | Free tier |
 | Training | PyTorch in Google Colab or Kaggle notebooks | Free tier |
-| Hosting | Vercel or GitHub Pages-compatible static export | Free tier |
+| Hosting | Vercel | Free Hobby tier |
 | CI | GitHub Actions | Free for this public repository |
 
-The MVP deliberately avoids authentication and a database. Those features do not improve the exhibition demo enough to justify extra failure points.
+The current public build is an interface prototype. Its prediction is explicitly simulated until the trained and evaluated model API is deployed.
 
 ## Repository map
 

@@ -23,3 +23,4 @@ __pycache__/
 *.ckpt
 *.onnx
 !apps/web/public/models/README.md
+.vercel

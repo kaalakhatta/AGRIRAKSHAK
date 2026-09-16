@@ -1,0 +1,138 @@
+"use client";
+
+import Image from "next/image";
+import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
+import { runMockInference } from "@/lib/inference/mock";
+import type { ScreeningResult } from "@/lib/inference/types";
+
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+
+export function LeafAnalyzer() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [result, setResult] = useState<ScreeningResult | null>(null);
+
+  useEffect(() => () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+  }, [previewUrl]);
+
+  function validateAndSelect(nextFile?: File) {
+    setError(null);
+    setResult(null);
+    if (!nextFile) return;
+    if (!ACCEPTED_TYPES.includes(nextFile.type)) {
+      setError("Choose a JPG, PNG, or WebP image.");
+      return;
+    }
+    if (nextFile.size > MAX_FILE_BYTES) {
+      setError("Choose an image smaller than 10 MB.");
+      return;
+    }
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(nextFile);
+    setPreviewUrl(URL.createObjectURL(nextFile));
+  }
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    validateAndSelect(event.target.files?.[0]);
+    event.target.value = "";
+  }
+
+  function handleDrop(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    validateAndSelect(event.dataTransfer.files?.[0]);
+  }
+
+  function clearSelection() {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(null);
+    setPreviewUrl(null);
+    setResult(null);
+    setError(null);
+  }
+
+  async function analyze() {
+    if (!file) return;
+    setIsAnalyzing(true);
+    setResult(null);
+    setResult(await runMockInference(file));
+    setIsAnalyzing(false);
+  }
+
+  return (
+    <section className="analyzer" aria-labelledby="analyzer-title">
+      <div className="analyzer-intro">
+        <p className="eyebrow">Try the interaction</p>
+        <h2 id="analyzer-title">Check a leaf photograph</h2>
+        <p>Use one clear leaf, natural light, and a simple background. Your selected image stays in this browser during the prototype.</p>
+        <ul className="photo-tips">
+          <li>Keep the leaf in focus</li>
+          <li>Include healthy and affected tissue</li>
+          <li>Avoid screenshots and collages</li>
+        </ul>
+      </div>
+
+      <div className="analyzer-workspace">
+        {!previewUrl ? (
+          <div className="drop-zone" onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
+            <div className="leaf-mark" aria-hidden="true">+</div>
+            <h3>Add a leaf image</h3>
+            <p>Drag a file here or choose one from your device.</p>
+            <button className="button button-primary" type="button" onClick={() => inputRef.current?.click()}>
+              Choose or capture photo
+            </button>
+            <span>JPG, PNG or WebP · maximum 10 MB</span>
+          </div>
+        ) : (
+          <div className="selection">
+            <div className="image-frame">
+              <Image src={previewUrl} alt="Selected leaf preview" fill unoptimized sizes="(max-width: 720px) 100vw, 520px" />
+            </div>
+            <div className="file-row">
+              <div>
+                <strong>{file?.name}</strong>
+                <span>{file ? formatBytes(file.size) : ""}</span>
+              </div>
+              <button className="text-button" type="button" onClick={clearSelection}>Remove</button>
+            </div>
+            <button className="button button-primary button-wide" type="button" onClick={analyze} disabled={isAnalyzing}>
+              {isAnalyzing ? "Running interface simulation…" : "Run interface demo"}
+            </button>
+          </div>
+        )}
+
+        <input ref={inputRef} className="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onChange={handleChange} />
+        {error && <p className="form-error" role="alert">{error}</p>}
+        {result && <ResultPanel result={result} />}
+      </div>
+    </section>
+  );
+}
+
+function ResultPanel({ result }: { result: ScreeningResult }) {
+  const percentage = Math.round(result.confidence * 100);
+  const uncertain = result.confidence < result.uncertaintyThreshold;
+  return (
+    <section className="result-panel" aria-live="polite" aria-labelledby="result-heading">
+      <div className="simulation-label">Interface simulation · no model prediction</div>
+      <p className="result-kicker">{uncertain ? "More information needed" : result.crop}</p>
+      <h3 id="result-heading">{uncertain ? "The model is not confident enough" : result.condition}</h3>
+      <div className="confidence-row"><span>Simulated model confidence</span><strong>{percentage}%</strong></div>
+      <div className="confidence-track" aria-hidden="true"><span style={{ width: `${percentage}%` }} /></div>
+      <p className="result-summary">{uncertain ? result.uncertainMessage : result.summary}</p>
+      <div className="result-actions">
+        <button className="button button-secondary" type="button" disabled>Learn about this condition</button>
+        <span>Education content will unlock with the evaluated model and reviewed catalog.</span>
+      </div>
+    </section>
+  );
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}

@@ -40,7 +40,7 @@ docs/                Architecture, roadmap, and project decisions
 
 ## Local development
 
-Prerequisites: Node.js 20+ and npm 10+.
+Prerequisites: Node.js 24+ and npm 11+.
 
 ```bash
 npm install

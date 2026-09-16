@@ -19,3 +19,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+  ml-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Check Python syntax
+        run: python -m compileall -q ml/src ml/tests
+      - name: Run dependency-free ML unit tests
+        run: PYTHONPATH=ml/src python -m unittest discover -s ml/tests -v

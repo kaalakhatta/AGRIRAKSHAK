@@ -29,6 +29,16 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 .drop-zone p { color: var(--muted); margin: 0 0 24px; }
 .drop-zone > span { color: var(--muted); font-size: .82rem; margin-top: 14px; }
 .leaf-mark { align-items: center; background: var(--lime); border-radius: 55% 10% 55% 10%; display: flex; font-size: 2rem; height: 62px; justify-content: center; transform: rotate(-8deg); width: 62px; }
+.source-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.camera-scanner { display: grid; gap: 18px; }
+.camera-stage { aspect-ratio: 4 / 3; background: #071b13; min-height: 300px; overflow: hidden; position: relative; }
+.camera-stage video { height: 100%; object-fit: cover; width: 100%; }
+.scan-guide { align-items: end; border: 3px solid var(--lime); border-radius: 40% 12% 40% 12%; display: flex; inset: 10%; justify-content: center; pointer-events: none; position: absolute; }
+.scan-guide::before, .scan-guide::after { background: var(--lime); content: ""; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.scan-guide::before { height: 1px; width: 22px; }
+.scan-guide::after { height: 22px; width: 1px; }
+.scan-guide span { background: rgb(7 27 19 / 78%); color: white; font-size: .82rem; font-weight: 800; margin-bottom: 12px; padding: 8px 10px; }
+.camera-actions { display: grid; gap: 12px; grid-template-columns: 1fr 1.4fr; }
 .button { border: 0; cursor: pointer; font-weight: 800; min-height: 48px; padding: 12px 18px; }
 .button:focus-visible, .text-button:focus-visible, .header-link:focus-visible, .brand:focus-visible { outline: 3px solid #e0a319; outline-offset: 3px; }
 .button:disabled { cursor: not-allowed; opacity: .56; }

@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+coverage/
+.env*
+!.env.example
+.DS_Store
+*.log
+
+# ML data, outputs, and large artifacts
+ml/data/*
+!ml/data/.gitkeep
+ml/runs/
+ml/checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+!apps/web/public/models/README.md

@@ -6,10 +6,34 @@ Read this file before changing anything in the AgriRakshak repository.
 
 AgriRakshak is a college exhibition project for preliminary crop-disease screening and education. The core application will run a small ONNX image classifier in the browser and show reviewed educational content. It is not a professional diagnosis or pesticide-prescription system.
 
+## Identify the contributor
+
+Match the contributor's name to this roster. Name matching is case-insensitive.
+
+| Contributor | Assignment | Brief | Branch | Allowed path |
+| --- | --- | --- | --- | --- |
+| Kanika | Dataset audit utility | [Task 1](docs/team-tasks/TASK-1-DATASET-AUDIT.md) | `ml/dataset-audit` | `ml/dataset_audit/**` |
+| Yashi | Literature review | [Task 2](docs/team-tasks/TASK-2-LITERATURE-REVIEW.md) | `docs/literature-review` | `docs/research/**` |
+| Anushka | Disease-content framework | [Task 3](docs/team-tasks/TASK-3-CONTENT-FRAMEWORK.md) | `content/disease-framework` | `data/catalog/**` |
+| Aanya | Exhibition QA package | [Task 4](docs/team-tasks/TASK-4-EXHIBITION-QA.md) | `docs/exhibition-qa` | `docs/exhibition/**` |
+| Arindam | Repository owner, core application, integration, review, and deployment | [Project roadmap](docs/ROADMAP.md) | owner-directed | repository-wide |
+
+If a user says only `Hi, I'm <name>` or equivalent:
+
+1. Find the name in the roster.
+2. State the matched assignment and allowed path.
+3. Read the linked brief completely.
+4. Inspect the current repository state.
+5. Proceed with the assignment without asking what task to perform.
+
+Do not assign a teammate a different task unless Arindam explicitly changes the roster. If the name is not in the roster, ask the person to contact Arindam rather than guessing their identity or assignment.
+
+Arindam is the repository owner. When Arindam requests work, follow his explicit request and the project roadmap. The four teammate path restrictions do not apply to owner-directed integration work.
+
 ## Start here
 
-1. Ask the contributor for their assigned task number if they did not provide it.
-2. Read the matching brief in `docs/team-tasks/` completely.
+1. Identify the contributor from the roster. Ask for their name only if it is missing.
+2. Read the linked brief in `docs/team-tasks/` completely.
 3. Read every existing file in that task's allowed directory before editing.
 4. Create the branch specified in the brief from the latest `main`.
 5. Change only the paths explicitly allowed by the brief.
@@ -28,7 +52,7 @@ AgriRakshak is a college exhibition project for preliminary crop-disease screeni
 | 3 | [Disease-content framework](docs/team-tasks/TASK-3-CONTENT-FRAMEWORK.md) | `content/disease-framework` | `data/catalog/**` |
 | 4 | [Exhibition QA package](docs/team-tasks/TASK-4-EXHIBITION-QA.md) | `docs/exhibition-qa` | `docs/exhibition/**` |
 
-If two contributors select the same task, stop and ask them to confirm with the repository owner.
+The roster, not personal preference, determines the assignment.
 
 ## Repository-wide safety rules
 

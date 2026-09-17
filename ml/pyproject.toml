@@ -6,11 +6,12 @@ build-backend = "setuptools.build_meta"
 name = "agrirakshak-ml"
 version = "0.1.0"
 description = "Reproducible crop disease classification pipeline for AgriRakshak"
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.11,<3.14"
 dependencies = ["numpy>=2.1,<3", "Pillow>=11,<13", "torch>=2.7,<3", "torchvision>=0.22,<1", "onnx>=1.18,<2", "onnxruntime>=1.22,<2", "onnxscript>=0.4,<1"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.4,<10", "ruff>=0.12,<1"]
+cloud = ["datasets>=4.1,<5"]
 
 [project.scripts]
 agrirakshak-manifest = "agrirakshak_ml.manifest:main"
@@ -18,6 +19,7 @@ agrirakshak-split = "agrirakshak_ml.split:main"
 agrirakshak-train = "agrirakshak_ml.train:main"
 agrirakshak-evaluate = "agrirakshak_ml.evaluate:main"
 agrirakshak-export = "agrirakshak_ml.export:main"
+agrirakshak-prepare-plantvillage = "agrirakshak_ml.prepare_plantvillage:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

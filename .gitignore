@@ -18,9 +18,15 @@ ml/.venv/
 ml/**/*.egg-info/
 __pycache__/
 .pytest_cache/
+.ruff_cache/
+*.egg-info/
+:memory:.ses
 *.pt
 *.pth
 *.ckpt
 *.onnx
 !apps/web/public/models/README.md
 .vercel
+# Hosted inference model artifacts (installed during deployment, never committed)
+services/api/model/*
+!services/api/model/.gitkeep

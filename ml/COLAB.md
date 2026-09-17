@@ -4,7 +4,7 @@ Colab provides free compute but its availability and accelerator type can change
 
 ## Setup
 
-1. Create a new Colab notebook.
+1. Open [`notebooks/agrirakshak_colab_training.ipynb`](notebooks/agrirakshak_colab_training.ipynb) in Colab.
 2. Select a GPU runtime if one is available. CPU also works for smoke tests.
 3. Clone the repository and install the ML package.
 
@@ -26,4 +26,13 @@ agrirakshak-split --manifest artifacts/manifest.jsonl --output artifacts/split-m
 agrirakshak-train --manifest artifacts/split-manifest.jsonl --data-root /content/dataset --output runs/smoke --epochs 1 --batch-size 16
 ```
 
-Save `manifest.jsonl`, `split-manifest.jsonl`, the best checkpoint, history, evaluation report, exported bundle, notebook, and model card. Do not report results from a smoke test as final metrics.
+The project notebook downloads the leaf-grouped PlantVillage color release, selects bell pepper,
+potato, and tomato, and adds a sampled `Unsupported___other_plant` class from the other crops. It
+caps large classes and enables class-balanced sampling during training.
+
+Save `manifest.jsonl`, `split-manifest.jsonl`, the best checkpoint, history, evaluation report,
+exported bundle, notebook, and model card. Do not report results from a smoke test as final metrics.
+
+PlantVillage images use controlled backgrounds. Before deployment, test the exported model on
+separate phone photographs taken in realistic conditions. A strong PlantVillage test score alone
+does not establish field reliability.

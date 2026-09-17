@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
-import { runMockInference } from "@/lib/inference/mock";
+import { runApiInference } from "@/lib/inference/api";
 import type { ScreeningResult } from "@/lib/inference/types";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -119,8 +119,14 @@ export function LeafAnalyzer() {
     if (!file) return;
     setIsAnalyzing(true);
     setResult(null);
-    setResult(await runMockInference(file));
-    setIsAnalyzing(false);
+    setError(null);
+    try {
+      setResult(await runApiInference(file));
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : "The image could not be analyzed.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   }
 
   return (
@@ -128,7 +134,7 @@ export function LeafAnalyzer() {
       <div className="analyzer-intro">
         <p className="eyebrow">Try the interaction</p>
         <h2 id="analyzer-title">Check a leaf photograph</h2>
-        <p>Use one clear leaf, natural light, and a simple background. Your selected image stays in this browser during the prototype.</p>
+        <p>Use one clear leaf, natural light, and a simple background. The image is sent securely for analysis and is not stored.</p>
         <ul className="photo-tips">
           <li>Keep the leaf in focus</li>
           <li>Include healthy and affected tissue</li>
@@ -176,7 +182,7 @@ export function LeafAnalyzer() {
               <button className="text-button" type="button" onClick={clearSelection}>Remove</button>
             </div>
             <button className="button button-primary button-wide" type="button" onClick={analyze} disabled={isAnalyzing}>
-              {isAnalyzing ? "Running interface simulation…" : "Run interface demo"}
+              {isAnalyzing ? "Analyzing leaf…" : "Analyze leaf"}
             </button>
           </div>
         )}
@@ -194,10 +200,10 @@ function ResultPanel({ result }: { result: ScreeningResult }) {
   const uncertain = result.confidence < result.uncertaintyThreshold;
   return (
     <section className="result-panel" aria-live="polite" aria-labelledby="result-heading">
-      <div className="simulation-label">Interface simulation · no model prediction</div>
+      <div className="simulation-label">Preliminary AI screening · {result.modelVersion}</div>
       <p className="result-kicker">{uncertain ? "More information needed" : result.crop}</p>
       <h3 id="result-heading">{uncertain ? "The model is not confident enough" : result.condition}</h3>
-      <div className="confidence-row"><span>Simulated model confidence</span><strong>{percentage}%</strong></div>
+      <div className="confidence-row"><span>Model confidence</span><strong>{percentage}%</strong></div>
       <div className="confidence-track" aria-hidden="true"><span style={{ width: `${percentage}%` }} /></div>
       <p className="result-summary">{uncertain ? result.uncertainMessage : result.summary}</p>
       <div className="result-actions">

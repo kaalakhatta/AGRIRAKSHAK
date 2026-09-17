@@ -28,7 +28,8 @@ AgriRakshak is a college exhibition project that turns a crop-leaf photo into a 
 | Hosting | Vercel | Free Hobby tier |
 | CI | GitHub Actions | Free for this public repository |
 
-The current public build is an interface prototype. Its prediction is explicitly simulated until the trained and evaluated model API is deployed.
+The scanner never fabricates a disease result. Until the trained and evaluated model API is
+deployed, analysis reports that the model is unavailable.
 
 ## Repository map
 

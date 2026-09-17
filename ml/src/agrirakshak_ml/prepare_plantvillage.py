@@ -51,34 +51,38 @@ def main() -> None:
     except ImportError as exc:
         raise SystemExit("Install cloud dependencies with: pip install -e '.[cloud]'") from exc
 
-    dataset = load_dataset("mohanty/PlantVillage", "color")
+    dataset = load_dataset(
+        "geraldmc/plantvillage-full", revision="v0.1.0", split="train"
+    )
     include_unsupported = not args.no_unsupported
     selected: dict[str, list[dict]] = {"train": [], "test": []}
     counts: Counter[tuple[str, str]] = Counter()
-    for upstream_split in ("train", "test"):
-        for index, item in enumerate(dataset[upstream_split]):
-            source_label = str(item["label"])
-            label = target_label(source_label, include_unsupported)
-            if label is None:
-                continue
-            limit = (
-                args.unsupported_per_source_class
-                if label == UNSUPPORTED_LABEL
-                else args.max_per_class
-            )
-            key = (upstream_split, source_label)
-            if counts[key] >= limit:
-                continue
-            counts[key] += 1
-            selected[upstream_split].append(
-                {
-                    "image": item["image"],
-                    "source_label": source_label,
-                    "target_label": label,
-                    "leaf_id": str(item["leaf_id"]),
-                    "upstream_index": index,
-                }
-            )
+    for index, item in enumerate(dataset):
+        upstream_split = str(item["split"])
+        if upstream_split not in selected:
+            continue
+        source_label = str(item["class_label"])
+        label = target_label(source_label, include_unsupported)
+        if label is None:
+            continue
+        limit = (
+            args.unsupported_per_source_class
+            if label == UNSUPPORTED_LABEL
+            else args.max_per_class
+        )
+        key = (upstream_split, source_label)
+        if counts[key] >= limit:
+            continue
+        counts[key] += 1
+        selected[upstream_split].append(
+            {
+                "image": item["image"],
+                "source_label": source_label,
+                "target_label": label,
+                "leaf_id": str(item["leaf_id"]),
+                "upstream_index": index,
+            }
+        )
 
     validation_ids = validation_leaf_ids(selected["train"], args.seed, args.validation_ratio)
     args.output.mkdir(parents=True, exist_ok=True)
@@ -111,7 +115,7 @@ def main() -> None:
                     "width": image.width,
                     "height": image.height,
                     "format": "JPEG",
-                    "source": "mohanty/PlantVillage:color",
+                    "source": "geraldmc/plantvillage-full:v0.1.0",
                     "source_label": item["source_label"],
                     "leaf_id": item["leaf_id"],
                     "synthetic": False,
@@ -128,9 +132,9 @@ def main() -> None:
     write_json(
         args.output / "split-manifest.summary.json",
         {
-            "dataset": "mohanty/PlantVillage",
-            "configuration": "color",
-            "license": "CC BY-SA 3.0",
+            "dataset": "geraldmc/plantvillage-full",
+            "revision": "v0.1.0",
+            "license": "CC0 1.0",
             "supported_crops": list(SUPPORTED_CROPS),
             "includes_unsupported_other_plants": include_unsupported,
             "counts": summary,

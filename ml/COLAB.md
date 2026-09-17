@@ -26,7 +26,7 @@ agrirakshak-split --manifest artifacts/manifest.jsonl --output artifacts/split-m
 agrirakshak-train --manifest artifacts/split-manifest.jsonl --data-root /content/dataset --output runs/smoke --epochs 1 --batch-size 16
 ```
 
-The project notebook downloads the leaf-grouped PlantVillage color release, selects bell pepper,
+The project notebook downloads the pinned leaf-grouped PlantVillage color release, selects bell pepper,
 potato, and tomato, and adds a sampled `Unsupported___other_plant` class from the other crops. It
 caps large classes and enables class-balanced sampling during training.
 

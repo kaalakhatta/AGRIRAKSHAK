@@ -11,6 +11,8 @@ class PreparePlantVillageTests(unittest.TestCase):
     def test_supported_crop_keeps_original_label(self):
         label = "Tomato___Late_blight"
         self.assertEqual(target_label(label, include_unsupported=True), label)
+        pepper = "Pepper,_bell___Bacterial_spot"
+        self.assertEqual(target_label(pepper, include_unsupported=True), pepper)
 
     def test_other_crop_can_become_unsupported(self):
         self.assertEqual(

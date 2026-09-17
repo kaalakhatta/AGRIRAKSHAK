@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .io import write_json, write_jsonl
 
-SUPPORTED_CROPS = ("Pepper__bell", "Potato", "Tomato")
+SUPPORTED_CROPS = ("Pepper,_bell", "Potato", "Tomato")
 UNSUPPORTED_LABEL = "Unsupported___other_plant"
 
 

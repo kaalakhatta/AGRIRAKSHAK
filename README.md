@@ -34,6 +34,7 @@ The current public build is an interface prototype. Its prediction is explicitly
 
 ```text
 apps/web/            Next.js PWA and browser inference UI
+services/api/        FastAPI and ONNX Runtime inference service
 data/catalog/        Reviewed crop and disease education content
 ml/                  Training, evaluation, and model-export workspace
 docs/                Architecture, roadmap, and project decisions
@@ -42,7 +43,7 @@ docs/                Architecture, roadmap, and project decisions
 
 ## Local development
 
-Prerequisites: Node.js 24+ and npm 11+.
+Web prerequisites: Node.js 24+ and npm 11+.
 
 ```bash
 npm install
@@ -50,6 +51,10 @@ npm run dev
 ```
 
 Open `http://localhost:3000`. The current scaffold presents the product scope; image inference will be added when the first exported model and label map are ready.
+
+The inference service requires Python 3.11 or 3.12. See
+[`services/api/README.md`](services/api/README.md) for its model contract, environment variables,
+local commands, and deployment behavior.
 
 ## Definition of a successful exhibition demo
 

@@ -6,7 +6,7 @@ export type ScreeningResult = {
   uncertaintyThreshold: number;
   summary: string;
   uncertainMessage: string;
-  mode: "mock" | "onnx";
+  mode: "onnx";
 };
 
 export type InferenceProvider = (file: File) => Promise<ScreeningResult>;

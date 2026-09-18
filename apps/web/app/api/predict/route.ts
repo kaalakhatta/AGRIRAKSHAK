@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       method: "POST",
       body: upstreamBody,
       cache: "no-store",
-      signal: AbortSignal.timeout(45_000),
+      signal: AbortSignal.timeout(90_000),
     });
     const responseBody = await upstream.text();
     return new Response(responseBody, {
@@ -45,4 +45,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

@@ -7,6 +7,7 @@ Stateless FastAPI service that validates a versioned ONNX bundle and runs CPU in
 Set `MODEL_BUNDLE_DIR` to a private deployment directory containing:
 
 - `model.onnx`
+- `model.onnx.data` (external weights referenced by `model.onnx`)
 - `labels.json`
 - `metadata.json`
 - `metrics.json` (release evidence; not loaded at runtime)
@@ -44,4 +45,3 @@ Without a model bundle, `/health/live` returns 200 while `/health/ready` and `/v
 ## Deployment
 
 Build from `services/api/Dockerfile`. On a free CPU host, set the health-check path to `/health/live`, attach the model bundle outside Git, and set `ALLOWED_ORIGINS` to the Vercel production and preview URLs that may call the API.
-

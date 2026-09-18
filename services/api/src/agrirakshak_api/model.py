@@ -56,7 +56,12 @@ class ModelBundle:
         metadata_path = bundle_dir / "metadata.json"
         labels_path = bundle_dir / "labels.json"
         model_path = bundle_dir / "model.onnx"
-        missing = [path.name for path in (metadata_path, labels_path, model_path) if not path.is_file()]
+        external_data_path = bundle_dir / "model.onnx.data"
+        missing = [
+            path.name
+            for path in (metadata_path, labels_path, model_path, external_data_path)
+            if not path.is_file()
+        ]
         if missing:
             raise BundleError(f"model bundle is missing: {', '.join(missing)}")
 
@@ -132,4 +137,3 @@ class ModelBundle:
                 for index in ranked[:3]
             ],
         )
-

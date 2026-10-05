@@ -20,6 +20,10 @@ No guaranteed yield increases, professional diagnoses or pesticide/fertilizer pr
 
 Keep Next.js/TypeScript and the existing scanner work. Use local browser storage for farm records, versioned reviewed content, and a deterministic rule engine. No mandatory accounts, hosted database, paid AI, subscription APIs or card-required services. Optional weather enrichment uses eligible free access with cache/failure labels; a local runnable build is always required. Sensor hardware and external inference are not assumed available. Model unavailability never produces a fabricated result.
 
+## Current core milestone
+
+The new `/farm` screen implements local field/crop-cycle records, confirmed optional location, and backup/import/delete controls. Run locally and open `/farm`; weather and reviewed recommendations remain the next milestone. See [M1 validation](docs/farm-companion/M1_VALIDATION.md) and [core status](docs/farm-context/CORE_STATUS.md) for observed checks and pending device QA.
+
 ## Build plan and team
 
 Read [full build plan](docs/farm-companion/BUILD_PLAN.md), [architecture](docs/ARCHITECTURE.md), [data model](docs/farm-companion/DATA_MODEL.md), [engine plan](docs/farm-companion/RECOMMENDATION_ENGINE.md) and [repository/delivery protocol](docs/farm-companion/DELIVERY.md).

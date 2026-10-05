@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LeafAnalyzer } from "@/components/leaf-analyzer";
 
 const principles = [
@@ -11,7 +12,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="AgriRakshak home"><span aria-hidden="true">AR</span>AgriRakshak</a>
-        <a className="header-link" href="#how-it-works">How it works</a>
+        <nav className="farm-nav" aria-label="Main navigation"><a href="#analyzer-title">Leaf scanner</a><Link href="/farm">My Farm</Link></nav>
       </header>
 
       <section className="hero" id="top">
@@ -26,6 +27,8 @@ export default function Home() {
           <p>Image selection and safety states are functional. Predictions are clearly marked simulations until an evaluated model is integrated.</p>
         </div>
       </section>
+
+      <section className="device-note"><strong>Start your farm record.</strong> Add your fields and crop cycles, keep them on your device, and export a backup. <Link href="/farm">Open My Farm →</Link></section>
 
       <LeafAnalyzer />
 

@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "owner": "kaalakhatta",
+  "contributors": {
+    "Kanika": "KanikaSharma0721",
+    "Yashi": "yashitripathi2007",
+    "Arindam": "kaalakhatta"
+  },
+  "tasks": [
+    {
+      "task": 6,
+      "contributor": "Kanika",
+      "title": "Data validation and exhibition QA",
+      "brief": "docs/team-tasks/TASK-6-CONTEXT-AUDIT.md",
+      "branch": "codex/farm-task-6-kanika",
+      "issue": 9,
+      "paths": [
+        "ml/farm_context_audit/",
+        "docs/exhibition/farm-context/"
+      ]
+    },
+    {
+      "task": 7,
+      "contributor": "Yashi",
+      "title": "Evidence research and seed/action catalog",
+      "brief": "docs/team-tasks/TASK-7-FARM-EVIDENCE.md",
+      "branch": "codex/farm-task-7-yashi",
+      "issue": 10,
+      "paths": [
+        "docs/research/farm-context/",
+        "data/catalog/farm-context/"
+      ]
+    },
+    {
+      "task": 10,
+      "contributor": "Arindam",
+      "title": "Core location, adapters, recommendations and integration",
+      "brief": "docs/team-tasks/TASK-10-FARM-CORE.md",
+      "branch": "codex/farm-task-10-arindam",
+      "issue": 11,
+      "paths": [
+        "*"
+      ]
+    }
+  ]
+}

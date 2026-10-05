@@ -64,3 +64,7 @@ Read the [delivery roadmap](docs/ROADMAP.md), [architecture](docs/ARCHITECTURE.m
 ## License
 
 Source code is available under the [MIT License](LICENSE). Dataset images, trained weights, and third-party content keep their original licenses and must be documented separately before redistribution.
+
+## Location, soil and seed-planning extension
+
+The next phase is organized in [the farm-context plan](docs/farm-context/PLAN.md). Arindam owns the core implementation, Kanika owns validation/QA, and Yashi owns evidence/content. The [/claim contribution workflow](CONTRIBUTING.md) coordinates their separate branches. Location, telemetry, soil and seed recommendations are planned work, not capabilities delivered by this setup.

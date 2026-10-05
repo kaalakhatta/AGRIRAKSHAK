@@ -17,3 +17,13 @@ Disease descriptions and prevention guidance require a source. Treatment-related
 ## Model changes
 
 Every proposed model must record its dataset version, split seed, preprocessing, class list, per-class metrics, field-image results, model size, and browser latency.
+
+## Farm-context team: claim before editing
+
+The active roster and issue numbers are in `docs/farm-context/tasks.json`; read root `AGENTS.md` and your complete task brief. On your assigned issue, comment exactly `/claim`. Wait for the bot's “Claim confirmed” and your GitHub assignment before starting. Only the mapped collaborator account can claim. `/unclaim` is restricted to the assignee or Arindam; record remaining work and the existing branch/PR before release.
+
+Use the exact registered branch from latest main, or resume it if it exists. One active agent per contributor account and one writable checkout per task. Claims reserve issues; they do not create branches or prevent two sessions using the same account. GitHub can supersede pending concurrency runs: retry only if no confirmation arrives. Do not assume a posted command succeeded.
+
+The claim workflow activates only after the human owner merges this setup PR into main. Before then Arindam may manually assign the issue and explicitly authorize work. The scope workflow rejects teammate PRs outside their task paths, including renames, or from the wrong account/branch. Make `Team task scope / scope` a required branch-protection check after activation; enforcement through protection requires human owner configuration. It coordinates only registered phase tasks, not arbitrary repository work.
+
+Every PR includes task number, `Closes #<issue>`, scope confirmation, validation evidence, sources, and remaining TBDs. Request kaalakhatta review. Agents never merge or push main.

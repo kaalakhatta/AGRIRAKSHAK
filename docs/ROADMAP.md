@@ -64,3 +64,7 @@ Only after the MVP is stable: Hindi or regional-language content, Grad-CAM expla
 3. Device used for the live demo
 4. Named faculty or agriculture reviewer
 5. Whether Hindi support belongs in the MVP
+
+## Active extension: farm context and recommendations
+
+Owner direction adds optional scan location, weather, soil provenance, device telemetry when available, and reviewed seed/action candidates. The active team is Arindam, Kanika and Yashi. See [phase plan](farm-context/PLAN.md), [contract](farm-context/CONTRACT.md) and [task registry](farm-context/tasks.json). Arindam owns the heavy core work; teammates own isolated validation/QA and evidence/content packages. Initial scope is repository setup and implementation backlog; runtime capabilities are pending.

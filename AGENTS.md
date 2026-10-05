@@ -16,6 +16,10 @@ Links above are repository-root relative. Anushka and Aanya have no active assig
 
 The canonical roster, issue numbers and branches are in docs/farm-context/tasks.json. All agents (Codex, Claude, AntiGravity and others) follow these instructions. Tasks 1–4 remain historical backlog; do not discard their work or start them without owner direction.
 
+## Agent startup
+
+Read docs/team-tasks/AGENT_START.md for tool-neutral copy-paste prompts, GitHub account/claim checks and handoff steps. Root CLAUDE.md/GEMINI.md and opencode.json point back to this canonical protocol. Before edits, report contributor/task, both allowed paths, verified claim state, exact branch and next unfinished deliverable. Do not infer identity from machine username, overwrite instructions with agent init commands, or treat an uploaded ZIP as a GitHub-enabled checkout.
+
 ## Full product plan
 
 Read docs/farm-companion/BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md and DELIVERY.md before implementation. The app covers Plan, Monitor and Improve, with disease scanning as one module. Zero paid APIs/subscriptions, credit-card-required dependencies or paid AI calls. Core records and calendar run locally. Unknown target crops/region/reviewer remain TBD; do not guess advice.

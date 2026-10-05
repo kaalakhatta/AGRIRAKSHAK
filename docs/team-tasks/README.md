@@ -7,3 +7,5 @@ Read root AGENTS.md, docs/farm-context/PLAN.md, CONTRACT.md and tasks.json. A co
 Task briefs 1–4 are historical backlog, not the active phase. Preserve their existing work and issues.
 
 Whole-product scope is now defined in docs/farm-companion/BUILD_PLAN.md. The same three cumulative task issues cover milestones M0–M5; read the expanded briefs and keep STATUS.md current. Intermediate PRs reference the issue; only the completed task closes it. Farm profiles, calendars, records and review guidance are part of the app plan, while teammate paths remain unchanged.
+
+Start with [AGENT_START.md](AGENT_START.md) for Antigravity, Claude, OpenCode or a generic coding agent. It includes exact contributor prompts and a post-merge readiness checklist; no paid GitHub connector is required.

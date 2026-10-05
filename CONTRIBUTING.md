@@ -2,10 +2,10 @@
 
 ## Workflow
 
-1. Pick or create a GitHub issue with a clear acceptance check.
-2. Create a short branch such as `feat/upload-flow` or `ml/baseline-mobilenet`.
+1. For active team tasks, follow AGENTS.md and docs/team-tasks/AGENT_START.md and claim your registered issue. Other owner-directed work needs a clear acceptance check.
+2. Team tasks use their exact registered branch; inspect and resume existing work before creating it.
 3. Keep code, content, and model experiments in separate commits where practical.
-4. Run `npm run check` before opening a pull request.
+4. Run your brief's validation commands. Runtime app changes also require `npm run check`; teammate-only content/audit work uses its scoped checks.
 5. Link evidence such as screenshots or metrics in the pull request.
 
 Do not commit datasets, raw user photos, secrets, notebook outputs, or large model checkpoints. Add approved model releases through GitHub Releases when needed.
@@ -26,7 +26,7 @@ Use the exact registered branch from latest main, or resume it if it exists. One
 
 The claim workflow activates only after the human owner merges this setup PR into main. Before then Arindam may manually assign the issue and explicitly authorize work. The scope workflow rejects teammate PRs outside their task paths, including renames, or from the wrong account/branch. Make `Team task scope / scope` a required branch-protection check after activation; enforcement through protection requires human owner configuration. It coordinates only registered phase tasks, not arbitrary repository work.
 
-Every PR includes task number, `Closes #<issue>`, scope confirmation, validation evidence, sources, and remaining TBDs. Request kaalakhatta review. Agents never merge or push main.
+Every PR includes task number, milestone and `Refs #<issue>` (`Closes` for full completion), scope confirmation, validation evidence, sources, and remaining TBDs. Request kaalakhatta review. Agents never merge or push main.
 
 ## Whole-companion milestone delivery
 

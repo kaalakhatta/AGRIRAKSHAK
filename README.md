@@ -37,6 +37,10 @@ docs/exhibition/farm-context/     QA/demo/release evidence
 .github/                         CI, /claim and task scope checks
 ```
 
+## Teammates using Antigravity or other agents
+
+Clone/open the repository root and follow [the teammate startup guide](docs/team-tasks/AGENT_START.md). It includes copy-paste prompts for Kanika and Yashi, role/account checks, /claim instructions and free-agent handoff steps. Root GEMINI.md, CLAUDE.md and opencode.json are entry points to the same canonical AGENTS.md. Setup must be human-merged before claims work on main.
+
 ## Local development
 
 Prerequisites: Node.js 24+ and npm 11+.

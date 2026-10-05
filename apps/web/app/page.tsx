@@ -12,7 +12,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="AgriRakshak home"><span aria-hidden="true">AR</span>AgriRakshak</a>
-        <nav className="farm-nav" aria-label="Main navigation"><a href="#analyzer-title">Leaf scanner</a><Link href="/farm">My Farm</Link></nav>
+        <nav className="farm-nav" aria-label="Main navigation"><a href="#analyzer-title">Leaf scanner</a><Link href="/today">Today</Link><Link href="/farm">My Farm</Link></nav>
       </header>
 
       <section className="hero" id="top">

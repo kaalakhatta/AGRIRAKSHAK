@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { CYCLE_STATUSES, STAGES, WATER_OPTIONS, emptyData, makeBackup, newMeta, parseBackup, planImport, removeField, validateCoordinates, validateData, type Backup, type Coordinates, type CropCycle, type FarmData, type Field, type Snapshot } from "@/lib/domain/farm";
+import { TodayPanel } from "@/features/weather/today-panel";
 import { loadFarm, saveFarm } from "@/lib/storage/farm-store";
 
 const blankField = { farmName: "My farm", name: "", region: "", area: "", unit: "ha" as "ha" | "acre" | "m2", water: "unknown" as Field["water"] };
 const blankCycle = { crop: "", variety: "", sowing: "", stage: "" as "" | NonNullable<CropCycle["stage"]>, season: "", status: "planned" as CropCycle["status"] };
 
-export function FarmWorkspace() {
+export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [busy, setBusy] = useState(false), [error, setError] = useState(""), [message, setMessage] = useState("");
   const [editing, setEditing] = useState<string | null>(null), [selected, setSelected] = useState("");
@@ -137,14 +138,17 @@ export function FarmWorkspace() {
   return (
     <div className="farm-workspace">
       <section className="farm-heading">
-        <div><p className="eyebrow">Your farm, on your device</p><h1>Start with your field.</h1><p className="lede">Add a field and crop cycle. Keep a useful record of where your season begins—no account needed.</p></div>
+        <div><p className="eyebrow">Your farm, on your device</p><h1>{todayOnly ? "Your field, today." : "Start with your field."}</h1><p className="lede">Add a field and crop cycle. Keep a useful record of where your season begins—no account needed.</p></div>
         <div className="farm-summary"><strong>{snapshot?.fields.length ?? "—"}</strong><span>fields saved</span><strong>{snapshot?.cycles.length ?? "—"}</strong><span>crop cycles</span></div>
       </section>
-      <p className="device-note">Records stay in this browser. Clearing browser data can remove them, so export a backup. Weather and farming recommendations are coming in the next milestone.</p>
+      <p className="device-note">Records stay in this browser. Clearing browser data can remove them, so export a backup. Select a field to see weather and missing-information prompts. Agricultural guidance requires a reviewed catalog.</p>
       <div aria-live="polite">{message && <p className="success-note">{message}</p>}</div>
       {error && <div className="form-error" role="alert"><p>{error}</p><button type="button" className="text-button" onClick={() => window.location.reload()}>Reload saved records</button></div>}
       {!snapshot && <p role="status">{error ? "Device storage is not ready. Saving is disabled." : "Loading your device records…"}</p>}
-      <div className="farm-grid">
+      {todayOnly && <label>Field<select value={selected} onChange={e => setSelected(e.target.value)}><option value="">Choose a field</option>{snapshot?.fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label>}
+      {activeField && <TodayPanel key={`${activeField.id}:${activeField.updated_at}:${(sessionLocations[activeField.id] ?? activeField.location)?.confirmed_at ?? "none"}`} field={activeField} cycles={cycles} location={sessionLocations[activeField.id] ?? activeField.location} />}
+      {todayOnly && !activeField && <p className="device-note">Choose a saved field above. Add or edit fields and crop cycles in <a href="/farm">My Farm</a>. Session-only coordinates stay on the page where you entered them.</p>}
+      {!todayOnly && <><div className="farm-grid">
         <section className="farm-card" aria-labelledby="field-title">
           <div className="card-heading"><h2 id="field-title">{editing ? "Edit field" : "Add a field"}</h2>{editing && <button type="button" className="text-button" onClick={resetField}>Cancel edit</button>}</div>
           <form onSubmit={submitField}>
@@ -154,7 +158,7 @@ export function FarmWorkspace() {
               <label>Region / district <span>(optional)</span><input maxLength={120} placeholder="Enter the field’s region" value={draft.region} onChange={e => setDraft({ ...draft, region: e.target.value })} /></label>
               <div className="input-pair"><label>Field area <span>(optional)</span><input type="number" min="0.000001" step="any" value={draft.area} onChange={e => setDraft({ ...draft, area: e.target.value })} /></label><label>Unit<select value={draft.unit} onChange={e => setDraft({ ...draft, unit: e.target.value as typeof draft.unit })}><option value="ha">Hectares</option><option value="acre">Acres</option><option value="m2">Square metres</option></select></label></div>
               <label>Water access<select value={draft.water} onChange={e => setDraft({ ...draft, water: e.target.value as Field["water"] })}>{WATER_OPTIONS.map(v => <option key={v} value={v}>{v === "unknown" ? "I’m not sure yet" : v.charAt(0).toUpperCase() + v.slice(1)}</option>)}</select></label>
-              <div className="location-box"><h3>Field location <span>Optional</span></h3><p>Use GPS only if you are at the field. Coordinates stay in memory unless you choose to save them. This build does not send them to a weather service.</p>
+              <div className="location-box"><h3>Field location <span>Optional</span></h3><p>Use GPS only if you are at the field. Coordinates stay in memory unless you choose to save them. Fetching weather requires a separate consent click that sends them to Open-Meteo.</p>
                 <div className="button-row"><button type="button" className="button button-secondary" disabled={locating} onClick={requestLocation}>{locating ? "Finding your location…" : "Use my GPS location"}</button><button type="button" className="text-button" onClick={() => { locationRequest.current++; setLocating(false); setCandidate(null); setConfirmed(false); setRemember(false); setLatitude(""); setLongitude(""); }}>Skip location</button></div>
                 <details><summary>Enter coordinates manually</summary><div className="input-pair"><label>Latitude<input type="number" step="any" min="-90" max="90" value={latitude} onChange={e => { setLatitude(e.target.value); setConfirmed(false); setCandidate(null); }} /></label><label>Longitude<input type="number" step="any" min="-180" max="180" value={longitude} onChange={e => { setLongitude(e.target.value); setConfirmed(false); setCandidate(null); }} /></label></div><button type="button" className="button button-secondary" onClick={useManualLocation}>Use these coordinates</button></details>
                 {candidate && <div className="coordinate-preview"><p>{candidate.latitude.toFixed(5)}, {candidate.longitude.toFixed(5)}{candidate.accuracy_m !== null && ` · accuracy ±${Math.round(candidate.accuracy_m)} m`}</p><label className="check-label"><input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} />These coordinates represent my field.</label><label className="check-label"><input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />Remember this field location on this device.</label></div>}
@@ -167,7 +171,7 @@ export function FarmWorkspace() {
           {!snapshot?.fields.length && <div className="empty-state"><span aria-hidden="true">↗</span><h3>A place for your season.</h3><p>Add your first field. You can leave the area, location and unknown details blank.</p></div>}
           <div className="field-list">{snapshot?.fields.map(field => <article className={selected === field.id ? "field-item selected" : "field-item"} key={field.id}>
             <h3>{field.name}</h3><p>{snapshot.farms.find(f => f.id === field.farm_id)?.name} · {field.region ?? "Region not entered"}</p><p>{field.area ? `${field.area.value} ${field.area.unit}` : "Area not entered"} · {field.water === "unknown" ? "Water access unknown" : field.water}</p><p className="field-location-state">{field.location ? "Coordinates saved on this device" : sessionLocations[field.id] ? "Coordinates available for this session only" : "No coordinates saved"}</p>
-            <div className="button-row"><button type="button" className="button button-secondary" onClick={() => { setSelected(field.id); setCycleDraft(blankCycle); setEditingCycle(null); requestAnimationFrame(() => document.getElementById("cycles-title")?.focus()); }}>Crop cycles</button><button type="button" className="text-button" onClick={() => editField(field)}>Edit</button><button disabled={busy} type="button" className="text-button" onClick={() => setDeletion({ field: field.id })}>Delete</button></div>
+            <div className="button-row"><button type="button" className="button button-secondary" onClick={() => { setSelected(field.id); setCycleDraft(blankCycle); setEditingCycle(null); requestAnimationFrame(() => document.getElementById("cycles-title")?.focus()); }}>Open field overview</button><button type="button" className="text-button" onClick={() => editField(field)}>Edit</button><button disabled={busy} type="button" className="text-button" onClick={() => setDeletion({ field: field.id })}>Delete</button></div>
             {(field.location || sessionLocations[field.id]) && <button type="button" disabled={busy} className="text-button" onClick={() => void forgetLocation(field)}>Remove field coordinates</button>}
           </article>)}</div>
         </section>
@@ -192,6 +196,7 @@ export function FarmWorkspace() {
           <div className="button-row"><button type="button" className="button button-primary" disabled={busy || !preview || (!!preview.conflicts.length && !resolution)} onClick={() => void applyImport()}>Confirm import</button><button className="text-button" type="button" onClick={() => setIncoming(null)}>Cancel import</button></div>
         </div>}
       </section>
+      </>}
       {deletion && <section ref={deleteRef} tabIndex={-1} className="delete-confirm" role="alert" aria-labelledby="delete-title"><h2 id="delete-title">Confirm deletion</h2><p>{deletion === "all" ? `Delete all ${snapshot?.fields.length ?? 0} fields and ${snapshot?.cycles.length ?? 0} crop cycles from this device? Export a backup first if you want to keep them.` : "field" in deletion ? `Delete this field and its ${snapshot?.cycles.filter(c => c.field_id === deletion.field).length ?? 0} crop cycles?` : "Delete this crop cycle?"} This cannot be undone without a backup.</p><div className="button-row"><button type="button" disabled={busy} className="button button-danger" onClick={() => void confirmDelete()}>Delete selected records</button><button type="button" className="button button-secondary" onClick={() => setDeletion(null)}>Keep records</button></div></section>}
     </div>
   );

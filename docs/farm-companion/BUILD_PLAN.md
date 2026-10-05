@@ -60,7 +60,7 @@ Effort is estimated team working days, not calendar promises; exhibition date is
 
 | Milestone | Estimate | Arindam (heavy work) | Kanika (validation/QA) | Yashi (evidence/content) | Exit gate |
 | --- | --- | --- | --- | --- | --- |
-| M0: ready-to-build foundation | 1–2 days | Merge-ready plan, contracts, claim/scope workflow; choose region/crops/reviewer with owner | Contract fixture inventory and test traceability | Provider/source inventory; coverage gaps | Human merges setup; real claim test; required scope check configured |
+| M0: ready-to-build foundation | 1–2 days | Merge-ready plan, contracts, claim/scope workflow; choose region/crops/reviewer with owner | Contract fixture inventory and test traceability | Provider/source inventory; coverage gaps | Human merges setup; real claim test; required scope check verified |
 | M1: local farm foundation | 3–5 days | Profile/cycle screens, IndexedDB repositories, export/import/delete, location consent | Data audit and profile/privacy/import scenarios | Crop/region catalog schema and evidence records | Reload preserves local data; denial/skip works; corrupt import cannot damage records |
 | M2: weather + daily guidance | 3–5 days | Weather adapter/cache, Today, rule evaluator v1, stale/missing/error states | Fake-clock/provider fixtures, engine result checks, mobile plan | First reviewed action candidates and reviewer packet | Weather failure isolated; only reviewed applicable rules render; evidence visible |
 | M3: plan + monitor | 4–6 days | Seed comparison, calendar, action feedback, scanner-cycle integration | Candidate/stage/task conflicts and unsupported-region QA | Region/crop/seed evidence and stage calendar drafts | Complete plan→monitor journey; draft/missing-input cases abstain |

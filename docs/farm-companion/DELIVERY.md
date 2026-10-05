@@ -64,7 +64,7 @@ Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. T
 6. After human merge, fetch and reconcile with main without force-pushing over others. If a branch was deleted, recreate the same registered branch from main after confirming the milestone PR is merged. Never resurrect old commits by blindly pushing a stale branch.
 7. Record remaining work before /unclaim. Reclaimer resumes the documented branch/PR/checklist. Cross-task overlap goes to Arindam.
 
-The existing PR scope check validates registered branches/authors/claim and both old/new rename paths. It becomes enforced only when configured as required in branch protection. Existing old issues are historical backlog; this plan creates no competing duplicate issues.
+The existing PR scope check validates registered branches/authors/claim and both old/new rename paths. The scope context is now required by the live main ruleset (verified 2026-10-05); the task registry/workflow still needs the setup human-merge before teammate enforcement is active. Existing old issues are historical backlog; this plan creates no competing duplicate issues.
 
 ## Verification per milestone
 

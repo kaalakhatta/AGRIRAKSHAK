@@ -6,7 +6,7 @@ Use the same protocol in Codex, Antigravity, Claude, OpenCode or another coding 
 
 Arindam must human-review and merge setup PR #12. The active task registry and claim workflow must exist on main. Do not start from the old main instructions or from an uploaded ZIP that lacks Git metadata. A preview of this PR is not authorization to work before a claim succeeds.
 
-After merge, confirm Actions is enabled, configure the task scope check as required protection, and smoke-test /claim with each actual teammate account. Required-check identifiers use the check-run context `scope` (workflow name: Team task scope); inspect the branch-protection UI/check run before selecting it. If claims fail, show the Actions failure and contact Arindam rather than assigning yourself silently. The setup does not automatically configure protection or teammate tool permissions.
+After merge, confirm Actions is enabled, verify the task scope check remains required protection, and smoke-test /claim with each actual teammate account. Required-check identifiers use the check-run context `scope` (workflow name: Team task scope); inspect the branch-protection UI/check run before selecting it. If claims fail, show the Actions failure and contact Arindam rather than assigning yourself silently. The setup does not automatically configure protection or teammate tool permissions.
 
 ## Open the repository
 
@@ -95,13 +95,13 @@ Before changing tools/sessions, save STATUS.md and record the exact branch/PR, l
 ## Readiness checklist for the owner
 
 - [ ] PR #12 human-reviewed and merged; main contains this guide and tasks.json
-- [ ] Actions enabled; task scope is a required check alongside existing CI
+- [x] Actions enabled; active main ruleset requires web and scope (verified 2026-10-05)
 - [ ] Kanika can clone with her account and successfully claim #9
 - [ ] Yashi can clone with her account and successfully claim #10
 - [ ] Each agent reports the correct branch/two allowed directories before edits
 - [ ] Real out-of-scope PR is blocked by required scope protection (use a harmless temporary test PR; owner deletes/closes it)
 - [ ] No agent can merge under the agreed human-only workflow; no shared credentials
 
-These checks are not pre-marked passed. Repo entry files are prepared; actual teammate-agent sessions and post-merge claims still need verification.
+Only externally verified checks are marked passed. Repo entry files are prepared; actual teammate-agent sessions and post-merge claims still need verification.
 
 Instruction-format sources checked 2026-10-05: [Antigravity rules](https://www.antigravity.google/docs/rules/) and [OpenCode rules](https://opencode.ai/docs/rules/). Compatibility with other tools is provided by explicit prompts, not a claim that every agent auto-loads instructions.

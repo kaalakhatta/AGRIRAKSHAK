@@ -1,5 +1,7 @@
 # AgriRakshak
 
+**Teammate agents: read [START_HERE.md](START_HERE.md) before edits. The updated setup activates on main after human merge of [PR #12](https://github.com/kaalakhatta/AGRIRAKSHAK/pull/12).**
+
 AgriRakshak is a college exhibition farm companion planned to help farmers plan crops, monitor a growing season and review their records. Preliminary leaf-disease screening is one part of the product.
 
 [Open the existing web prototype](https://agrirakshak-gamma.vercel.app). The full companion described here is planned work, not a claim that all features are deployed.

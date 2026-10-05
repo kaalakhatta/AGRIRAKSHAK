@@ -1,9 +1,9 @@
-# Setup status
+# Setup and full-plan status
 
-Completed: three-member roster, briefs, exclusive teammate paths, shared v1 context contract, provider candidates, issue registry, /claim and /unclaim automation, PR scope check and claim unit tests.
+Completed: three-member roster, scoped agent instructions/briefs, exclusive paths, context v1, task registry/issues #9/#10/#11, claim/scope workflows and nine passing claim tests. Whole-companion product/data/engine/repository plan is documented across docs/farm-companion; roadmap/architecture now agree on local-first storage and a zero-paid-service budget.
 
-Pending: human merge of setup PR; enable Team task scope as a required check; implement Tasks 6, 7 and 10; choose target crops/district/season and expert reviewer; verify provider availability/licensing; supply actual sensors if live telemetry is wanted.
+Pending: human merge of setup PR #12; real /claim smoke test; required scope protection; M1–M5 implementation and review. Region/crops, date/devices, agronomic reviewer and language priorities remain TBD. Weather terms and SoilGrids limitations checked 2026-10-05; field soil data starts with manual measured entries, not maps.
 
-Validation: `node --test tests/task-claim.test.cjs` — 9 passing tests covering authorized/idempotent claims, wrong identity/access, foreign assignment, missing mapping, closed/unregistered issues, release permission and ignored commands. `git diff --check` and `npm run check` (lint, typecheck, production build) pass after moving stale generated Next.js cache aside. Local workflow behavior is mocked; deployed /claim requires merge into main and a real issue-comment test.
+Validation: claim tests passed; prior web lint/typecheck/build passed. Updated planning documents do not implement runtime features. Internal links across 13 planning/agent files and registry accounts/branches/issues/briefs/non-overlapping teammate paths pass; nine claim tests and git diff --check pass for the plan update; deployed workflow behavior is not proven by mocked tests.
 
-No runtime weather, soil or recommendation behavior was implemented in this setup. No old task issue is closed or repurposed.
+No old task is closed/repurposed; no model artifacts are committed. No field telemetry, approved seed catalog, new UI/storage/engine or yield result is claimed complete.

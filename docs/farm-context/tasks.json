@@ -34,7 +34,7 @@
     {
       "task": 10,
       "contributor": "Arindam",
-      "title": "Core location, adapters, recommendations and integration",
+      "title": "Farm companion core and integration",
       "brief": "docs/team-tasks/TASK-10-FARM-CORE.md",
       "branch": "codex/farm-task-10-arindam",
       "issue": 11,
@@ -42,5 +42,15 @@
         "*"
       ]
     }
-  ]
+  ],
+  "plan": "docs/farm-companion/BUILD_PLAN.md",
+  "milestones": [
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5"
+  ],
+  "budget": "zero paid APIs, subscriptions or card-required dependencies"
 }

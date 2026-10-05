@@ -1,70 +1,24 @@
 # AgriRakshak delivery roadmap
 
-This roadmap optimizes for a reliable college exhibition demo. Dates should be assigned after the team confirms the exhibition deadline.
+AgriRakshak now targets an educational farm companion: plan a crop, monitor the season and review recorded outcomes. Disease screening remains a module. Zero paid APIs/subscriptions or mandatory cloud services. Active team: Arindam, Kanika and Yashi.
 
-## Phase 0: scope and evidence
+The canonical detailed roadmap is [BUILD_PLAN.md](farm-companion/BUILD_PLAN.md). All runtime modules below remain planned until validated. Target district/crops, exhibition date/device and agronomic reviewer are TBD.
 
-**I will**
+| Milestone | Main outcome | Acceptance |
+| --- | --- | --- |
+| M0 | Team/repo/contracts and review workflow | Setup merged by human; real /claim works; scope protection configured |
+| M1 | Local field/profile/crop-cycle foundation | Location deny/manual/skip, persistence, validated export/import/delete |
+| M2 | Weather briefing and explainable action engine | Provider failure isolation, freshness/provenance, reviewed rules only |
+| M3 | Seed planning, calendar and scanner timeline | Plan→monitor flow, evidence/missing-input handling, model uncertainty preserved |
+| M4 | Soil, expenses, harvests and season review | Unit-safe recorded totals and complete backup round-trip |
+| M5 | Exhibition release | Accessibility/offline/device checks, versioned local backup, three rehearsals |
 
-- maintain the backlog, repository structure, CI, and technical decisions
-- define dataset manifests, evaluation scripts, and acceptance checks
-- review integrations and keep the demo reproducible
+Arindam owns the heavy app/domain/storage/adapters/engine/model/integration/deployment work. Kanika owns independent audit fixtures and QA. Yashi owns evidence, catalog schemas, calendar content and reviewer gaps. Paths and branches remain in [tasks.json](farm-context/tasks.json).
 
-**You and the team will**
+## Preserve the model research track
 
-- confirm the 3 target crops and 2 to 4 conditions per crop
-- confirm the exhibition date, team member names, and available devices
-- collect only legally usable images and record each source and license
-- arrange review of remedies and prevention content by a qualified faculty or agriculture expert
+Continue source/license manifests, reproducible splits, baseline training, calibration and per-class/field-image evaluation. Try conventional augmentation first. Synthetic augmentation only when a documented minority-class problem justifies a controlled experiment; keep synthetic images out of validation/test sets. Store datasets/checkpoints outside Git. No invented metrics or expert approvals.
 
-**Exit check:** target classes, data licenses, reviewer, and success metrics are documented.
+## Deferred research
 
-## Phase 1: clickable product shell
-
-**I will** build the mobile-first upload flow, sample-image mode, result view, encyclopedia, quiz shell, PWA caching, accessibility checks, and automated tests.
-
-**You and the team will** supply the project identity, crop names, bilingual priorities, and approved content. You will test the flow on the exact phone and laptop used at the exhibition.
-
-**Exit check:** the complete journey works with mocked predictions and no network after the first load.
-
-## Phase 2: baseline model
-
-**I will** prepare reproducible PyTorch notebooks and scripts for validation, splitting, training, evaluation, ONNX export, and browser integration.
-
-**You and the ML lead will** run training on Colab or Kaggle, preserve experiment outputs, inspect mislabeled images, and upload only approved small artifacts. Large datasets and checkpoints must stay outside Git.
-
-**Exit check:** baseline metrics include per-class precision, recall, F1, confusion matrix, calibration, and separate performance on field photos.
-
-## Phase 3: robustness experiment
-
-Start with conventional augmentation and class-balanced sampling. Add synthetic generation only if the baseline shows a measurable minority-class problem.
-
-**I will** implement the comparison protocol and result report. If synthetic data is justified, I will add a controlled experiment that keeps every synthetic image out of validation and test sets.
-
-**You and the team will** visually review generated images, document rejected artifacts, and help explain why improvement on real test images matters more than visual realism.
-
-**Exit check:** the team can defend the experiment without claiming that synthetic data always improves accuracy.
-
-## Phase 4: exhibition hardening
-
-**I will** optimize the model, add low-confidence and unsupported-image handling, prepare demo fixtures, run automated checks, and create a release checklist.
-
-**You and the team will** rehearse the presentation, test in airplane mode, prepare printed QR codes, and keep a local backup on the demo laptop.
-
-**Exit check:** a five-minute demo succeeds three times in a row on exhibition hardware.
-
-## Phase 5: optional extensions
-
-Only after the MVP is stable: Hindi or regional-language content, Grad-CAM explanations, progress tracking, expert referral links, and expanded crop coverage.
-
-## Immediate next decisions
-
-1. Exhibition date and judging rubric
-2. Three target crops and supported conditions
-3. Device used for the live demo
-4. Named faculty or agriculture reviewer
-5. Whether Hindi support belongs in the MVP
-
-## Active extension: farm context and recommendations
-
-Owner direction adds optional scan location, weather, soil provenance, device telemetry when available, and reviewed seed/action candidates. The active team is Arindam, Kanika and Yashi. See [phase plan](farm-context/PLAN.md), [contract](farm-context/CONTRACT.md) and [task registry](farm-context/tasks.json). Arindam owns the heavy core work; teammates own isolated validation/QA and evidence/content packages. Initial scope is repository setup and implementation backlog; runtime capabilities are pending.
+Existing-hardware sensors, reviewed translations, soil-report import and advanced offline inference follow a successful first release. Cloud sync, marketplace, market-price feeds and yield-prediction models need separately scoped reliable data and zero-cost feasibility. They do not block the farm companion.

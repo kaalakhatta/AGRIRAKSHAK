@@ -12,6 +12,10 @@ Read root AGENTS.md, docs/farm-context/PLAN.md, docs/farm-context/CONTRACT.md an
 
 Additional allowed path: `docs/exhibition/farm-context/**`. Keep a STATUS.md in each owned directory.
 
+## Full companion scope
+
+Read docs/farm-companion/BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md and DELIVERY.md. Work incrementally through M0–M5; keep these milestone IDs and remaining checklists in STATUS.md. No paid API, subscription, card-required service or paid AI tooling. Preserve the existing context v1; farm records need separate versioned contracts.
+
 ## Work
 
 Build a dependency-free Python validator for normalized farm-context JSON, using the contract in docs/farm-context/CONTRACT.md. Do not build provider adapters or modify the contract.
@@ -31,10 +35,19 @@ Use not-run/pass/fail/blocked with observed evidence; no fabricated test passes.
 Validation: trace every test to docs/farm-context/CONTRACT.md and acceptance criteria; list TBD values and unimplemented features.
 
 
+## Companion milestones: lightweight independent verification
+
+- M0–M1: audit context v1 and build traceability cases for local field/cycle persistence, permission denial, coordinate-free export, corrupt/duplicate import, deletion and storage failures. Arindam implements runtime validators; you own independent fixtures/checklists.
+- M2–M3: freshness/source/unit fixtures, rule abstention/conflicts, calendar stage/date changes, seed applicability, uncertainty and scanner timeline cases. Do not invent agricultural thresholds.
+- M4: expense/harvest unit and amount calculations, missing area, incomplete records, sales versus harvest, refunds, edits/deletes, backup round-trip and migration rollback cases.
+- M5: execute critical journeys on available mobile/laptop devices; document pass/fail/blocked/not-run, accessibility/offline/privacy failures and three rehearsals. Produce TRACEABILITY.md mapping feature IDs F01–F13 and milestones to evidence.
+
+Your coding scope remains the small audit utility and fixtures; do not build app screens, storage, API adapters or recommendation logic. As new domain contracts arrive, report gaps rather than silently extending context v1. Never claim automatic yield improvement or full profit from incomplete records.
+
 ## Cumulative work and handoff
 
 Inspect the issue checklist, linked PRs and current allowed directory to continue unfinished items. Previous task briefs 1–4 are preserved as historical backlog; this issue is the active assignment. Do not silently combine the old tasks with this one. Keep STATUS.md within your allowed directory (Arindam: docs/farm-context/CORE_STATUS.md) with completed items, remaining work, validation evidence and blockers. Close completion gaps before proposing new scope.
 
 ## Submission
 
-Show the diff, commit and push only the task branch, open a PR to main with `Closes #<issue>`, request kaalakhatta review, include Task 6, changed paths, commands/output, sources, limitations and confirmation of allowed scope. Never merge. If handing over unfinished work, document the branch/PR in the issue before `/unclaim`. A claim reserves one contributor task; it does not create a branch or permit two agents for one account to edit simultaneously.
+Show the diff, commit and push only the task branch, open a PR to main with milestone ID and `Refs #<issue>` for partial delivery; use `Closes #<issue>` only once the full cumulative assignment is complete, request kaalakhatta review, include Task 6, changed paths, commands/output, sources, limitations and confirmation of allowed scope. Never merge. If handing over unfinished work, document the branch/PR in the issue before `/unclaim`. A claim reserves one contributor task; it does not create a branch or permit two agents for one account to edit simultaneously.

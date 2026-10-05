@@ -26,6 +26,10 @@ Unavailable/error values must be null. Stale values may be displayed with a warn
 
 Initial metric IDs/normalized units: air_temperature/degC, relative_humidity/percent, precipitation/mm (explicit interval needed before rule use), wind_speed/m_s, soil_ph/pH, soil_sand/percent, soil_clay/percent, soil_organic_carbon/g_kg, soil_moisture/m3_m3. Units/IDs outside this list are flagged unsupported by v1. NPK availability requires actual measurements and an expanded reviewed contract.
 
+## Soil-map applicability boundary
+
+The v1 schema can represent a soil_map for regional educational context. It must never satisfy a rule requiring field soil measurements or support field-specific irrigation/nutrient recommendations. First-release field advice uses manually entered measured soil results; SoilGrids REST is not a runtime dependency.
+
 ## Recommendation output
 
 `schema_version`, `catalog_version`, `generated_at`, `status` (candidates/abstained), `seed_candidates`, `actions`, `missing_inputs`, `cautions`. Each candidate/action includes stable catalog ID, reasons, evidence URLs, input reading IDs, applicability region/season and reviewer reference. Catalog schema belongs to Yashi; executable engine belongs to Arindam.

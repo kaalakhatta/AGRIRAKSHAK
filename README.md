@@ -1,43 +1,40 @@
 # AgriRakshak
 
-AgriRakshak is a college exhibition project that turns a crop-leaf photo into a preliminary disease screening, a confidence score, practical guidance, and a short learning activity.
+AgriRakshak is a college exhibition farm companion planned to help farmers plan crops, monitor a growing season and review their records. Preliminary leaf-disease screening is one part of the product.
 
-[Open the current web prototype](https://agrirakshak-gamma.vercel.app)
+[Open the existing web prototype](https://agrirakshak-gamma.vercel.app). The full companion described here is planned work, not a claim that all features are deployed.
 
-> AgriRakshak is an educational screening aid. It does not replace advice from a qualified agricultural professional, and it must not recommend pesticide dosages.
+## Product direction
 
-## Exhibition MVP
+- My Farm: confirmed field location, crop cycle and water access
+- Today: free weather context, due tasks and explainable reviewed guidance
+- Plan: regional seed/crop candidates and stage-based crop calendar
+- Scan: preliminary disease screening, uncertainty and optional crop timeline
+- Records: measured soil entries, observations, expenses, harvests and season summaries
 
-- Upload or capture one leaf image
-- Send the photograph through a protected web route to a hosted ONNX inference API
-- Show the predicted crop and condition with calibrated confidence
-- Return an “uncertain” result below a documented threshold
-- Explain symptoms, prevention, and when to seek expert help
-- Offer a short quiz linked to each disease
-- Compare the baseline model with the final augmented model on a real-image test set
-- Work as an installable PWA after the first visit
+No guaranteed yield increases, professional diagnoses or pesticide/fertilizer prescriptions. Recommendations require applicable reviewed evidence; missing data stays missing. GPS does not measure soil nutrients. Weather estimates are not actual field sensors.
 
-## Free-first architecture
+## Zero-paid-service build
 
-| Area | Choice | Cost |
-| --- | --- | --- |
-| Web app | Next.js, TypeScript, Tailwind CSS | Free and open source |
-| Inference | FastAPI + ONNX Runtime on a free CPU service | Free tier |
-| Content and scan metadata | Supabase PostgreSQL | Free tier |
-| Training | PyTorch in Google Colab or Kaggle notebooks | Free tier |
-| Hosting | Vercel | Free Hobby tier |
-| CI | GitHub Actions | Free for this public repository |
+Keep Next.js/TypeScript and the existing scanner work. Use local browser storage for farm records, versioned reviewed content, and a deterministic rule engine. No mandatory accounts, hosted database, paid AI, subscription APIs or card-required services. Optional weather enrichment uses eligible free access with cache/failure labels; a local runnable build is always required. Sensor hardware and external inference are not assumed available. Model unavailability never produces a fabricated result.
 
-The current public build is an interface prototype. Its prediction is explicitly simulated until the trained and evaluated model API is deployed.
+## Build plan and team
 
-## Repository map
+Read [full build plan](docs/farm-companion/BUILD_PLAN.md), [architecture](docs/ARCHITECTURE.md), [data model](docs/farm-companion/DATA_MODEL.md), [engine plan](docs/farm-companion/RECOMMENDATION_ENGINE.md) and [repository/delivery protocol](docs/farm-companion/DELIVERY.md).
+
+Arindam owns the heavy implementation (Task 10/#11), Kanika owns independent data validation/QA (Task 6/#9), and Yashi owns evidence/content (Task 7/#10). Agents read [AGENTS.md](AGENTS.md), their complete brief and [task registry](docs/farm-context/tasks.json), then use the [/claim workflow](CONTRIBUTING.md). The bot activates after the setup PR is human-merged. Historical assignments are preserved.
+
+## Repository
 
 ```text
-apps/web/            Next.js PWA and browser inference UI
-data/catalog/        Reviewed crop and disease education content
-ml/                  Training, evaluation, and model-export workspace
-docs/                Architecture, roadmap, and project decisions
-.github/              CI, issue templates, and contribution workflow
+apps/web/                         Existing application; planned feature modules
+ml/                              Existing model work; independent context audit
+services/                        Local artifacts, not approved model Git storage
+data/catalog/farm-context/        Content schemas, evidence-backed catalog and drafts
+docs/farm-companion/              Full build, data, engine and delivery plans
+docs/research/farm-context/       Evidence/provider research
+docs/exhibition/farm-context/     QA/demo/release evidence
+.github/                         CI, /claim and task scope checks
 ```
 
 ## Local development
@@ -49,22 +46,8 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. The current scaffold presents the product scope; image inference will be added when the first exported model and label map are ready.
-
-## Definition of a successful exhibition demo
-
-1. A visitor can open the app and analyze a prepared leaf photo without signing in.
-2. The same model produces a reproducible metrics report on a held-out real-image test set.
-3. The result distinguishes model confidence from diagnostic certainty.
-4. The team can demonstrate low-confidence handling and explain the model’s limitations.
-5. The demo continues to work if the venue Wi-Fi becomes unreliable.
-
-Read the [delivery roadmap](docs/ROADMAP.md), [architecture](docs/ARCHITECTURE.md), and [contribution guide](CONTRIBUTING.md) before starting a task.
+Open http://localhost:3000. Validate with `npm run check`; workflow tests use `node --test tests/task-claim.test.cjs`. See [delivery gates](docs/ROADMAP.md) and [contribution rules](CONTRIBUTING.md).
 
 ## License
 
-Source code is available under the [MIT License](LICENSE). Dataset images, trained weights, and third-party content keep their original licenses and must be documented separately before redistribution.
-
-## Location, soil and seed-planning extension
-
-The next phase is organized in [the farm-context plan](docs/farm-context/PLAN.md). Arindam owns the core implementation, Kanika owns validation/QA, and Yashi owns evidence/content. The [/claim contribution workflow](CONTRIBUTING.md) coordinates their separate branches. Location, telemetry, soil and seed recommendations are planned work, not capabilities delivered by this setup.
+Source is MIT. Datasets, trained models and third-party content retain their own licenses; record licenses, attribution and review status before redistribution. Do not commit raw farmer photos, precise locations, secrets, datasets or weights.

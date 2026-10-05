@@ -27,3 +27,9 @@ Use the exact registered branch from latest main, or resume it if it exists. One
 The claim workflow activates only after the human owner merges this setup PR into main. Before then Arindam may manually assign the issue and explicitly authorize work. The scope workflow rejects teammate PRs outside their task paths, including renames, or from the wrong account/branch. Make `Team task scope / scope` a required branch-protection check after activation; enforcement through protection requires human owner configuration. It coordinates only registered phase tasks, not arbitrary repository work.
 
 Every PR includes task number, `Closes #<issue>`, scope confirmation, validation evidence, sources, and remaining TBDs. Request kaalakhatta review. Agents never merge or push main.
+
+## Whole-companion milestone delivery
+
+Read `docs/farm-companion/BUILD_PLAN.md`, `DATA_MODEL.md`, `RECOMMENDATION_ENGINE.md` and `DELIVERY.md`. Work through M0–M5 with small reviewable slices. Use `Refs #<task issue>` for intermediate PRs; reserve `Closes #<task issue>` for the entire completed cumulative assignment. This overrides any earlier requirement to close the issue for each partial PR.
+
+Zero paid APIs, subscriptions, paid AI endpoints or card-required dependencies. No mandatory hosted database/authentication. Core profiles/records/calendar work locally with export/import/delete; photos and precise coordinates are not retained by default. Region/crops/reviewer unknowns remain TBD and evidence-dependent advice abstains. Share reviewed catalog/contracts through PRs before integration; no simultaneous owner edits in teammate directories.

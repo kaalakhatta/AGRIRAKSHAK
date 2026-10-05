@@ -1,0 +1,29 @@
+name: Claim team task
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+  issues: write
+# Serialize comments on the same issue. Superseded pending requests can be canceled
+# by GitHub; contributors must wait for explicit confirmation and retry if needed.
+concurrency:
+  group: task-claim-${{ github.event.issue.number }}
+  cancel-in-progress: false
+jobs:
+  claim:
+    if: >-
+      !github.event.issue.pull_request &&
+      (github.event.comment.body == '/claim' || github.event.comment.body == '/unclaim')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const registry = require('./docs/farm-context/tasks.json');
+            const { claim } = require('./.github/scripts/claim.cjs');
+            await claim({ github, context, registry });

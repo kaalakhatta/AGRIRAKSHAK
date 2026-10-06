@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import type { Coordinates, CropCycle, Field } from "@/lib/domain/farm";
+import { todayInZone, type Coordinates, type CropCycle, type Field } from "@/lib/domain/farm";
 import { WeatherClient, WeatherError, weatherFresh, type Weather } from "@/lib/providers/weather";
 import { EMPTY_CATALOG, evaluateCatalog } from "@/lib/recommendations/engine";
 
+import { taskTiming, dueDate, type CalendarTask } from "@/lib/domain/calendar";
+
 let sessionClient: WeatherClient | null = null;
 
-export function TodayPanel({ field, cycles, location }: { field: Field; cycles: CropCycle[]; location: Coordinates | null }) {
+export function TodayPanel({ field, cycles, location, tasks, timezone }: { field: Field; cycles: CropCycle[]; location: Coordinates | null; tasks: CalendarTask[]; timezone: string }) {
   const client = useRef<WeatherClient | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null), [error,setError] = useState("");
   const [busy,setBusy] = useState(false), [consent,setConsent] = useState(false), [now,setNow] = useState(0);
@@ -44,6 +46,7 @@ export function TodayPanel({ field, cycles, location }: { field: Field; cycles: 
       </>}
       <p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Free non-commercial endpoint; session cache only. Reloading clears estimates.</p>
     </div><div><h3>Build a better field record</h3><p>These are information prompts. They do not prescribe farming actions.</p>{prompts.length ? <ul>{prompts.map((prompt,i) => <li key={i}>{prompt}</li>)}</ul> : <p>Your basic field and cycle details are recorded.</p>}
+      <h3>Your due reminders</h3>{!cycle ? <p>Select a cycle to see its reminders.</p> : tasks.filter(t=>t.cycle_id===cycle.id && t.status === "pending" && ["Due today","Overdue","Ready at your confirmed stage"].includes(taskTiming(t,cycle,todayInZone(timezone)))).length ? <ul>{tasks.filter(t=>t.cycle_id===cycle.id && t.status === "pending" && ["Due today","Overdue","Ready at your confirmed stage"].includes(taskTiming(t,cycle,todayInZone(timezone)))).map(t=><li key={t.id}>{t.title} · {taskTiming(t,cycle,todayInZone(timezone))} {dueDate(t) ?? ""}</li>)}</ul> : <p>No pending reminders are due for this cycle.</p>}<p><a href="/plan">Manage your personal reminders →</a></p>
       <div className="location-box"><h3>Reviewed guidance</h3><p>{decisions.length ? "Reviewed rules evaluated." : "No reviewed agricultural catalog is available yet. Seed, irrigation and soil actions are awaiting evidence and human review."}</p><p>Soil measurements: unavailable. Live sensors: unavailable. Coordinates cannot establish soil pH or nutrients.</p><p>Leaf screening remains available from the scanner. Its current predictions are labelled simulations.</p></div>
     </div></div>
   </section>;

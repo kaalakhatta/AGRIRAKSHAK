@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { CYCLE_STATUSES, STAGES, WATER_OPTIONS, emptyData, makeBackup, newMeta, parseBackup, planImport, removeField, validateCoordinates, validateData, type Backup, type Coordinates, type CropCycle, type FarmData, type Field, type Snapshot } from "@/lib/domain/farm";
+import { CYCLE_STATUSES, STAGES, WATER_OPTIONS, emptyData, makeBackup, newMeta, parseBackup, planImport, removeField, removeCycle, validateCoordinates, validateData, type Backup, type Coordinates, type CropCycle, type FarmData, type Field, type Snapshot } from "@/lib/domain/farm";
+import { CalendarPanel } from "@/features/calendar/calendar-panel";
+import { reschedulePreview, rescheduleTasks } from "@/lib/domain/calendar";
 import { TodayPanel } from "@/features/weather/today-panel";
 import { loadFarm, saveFarm } from "@/lib/storage/farm-store";
 
 const blankField = { farmName: "My farm", name: "", region: "", area: "", unit: "ha" as "ha" | "acre" | "m2", water: "unknown" as Field["water"] };
 const blankCycle = { crop: "", variety: "", sowing: "", stage: "" as "" | NonNullable<CropCycle["stage"]>, season: "", status: "planned" as CropCycle["status"] };
 
-export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
+export function FarmWorkspace({ todayOnly = false, planOnly = false }: { todayOnly?: boolean; planOnly?: boolean }) {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [busy, setBusy] = useState(false), [error, setError] = useState(""), [message, setMessage] = useState("");
   const [editing, setEditing] = useState<string | null>(null), [selected, setSelected] = useState("");
@@ -18,9 +20,14 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
   const [sessionLocations, setSessionLocations] = useState<Record<string, Coordinates>>({});
   const [includeCoordinates, setIncludeCoordinates] = useState(false), [incoming, setIncoming] = useState<Backup | null>(null);
   const [resolution, setResolution] = useState<"device" | "backup" | "">("");
+  const [planCycle,setPlanCycle] = useState("");
+  const [cycleChange,setCycleChange] = useState<CropCycle | null>(null);
+  const [dateChoice,setDateChoice] = useState<"shift" | "keep" | "">("");
+  const [stageConfirmed,setStageConfirmed] = useState(false);
   const [deletion, setDeletion] = useState<"all" | { field: string } | { cycle: string } | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
   const deleteRef = useRef<HTMLElement>(null);
+  const changeRef = useRef<HTMLElement>(null);
   const operation = useRef(false), locationRequest = useRef(0);
 
   useEffect(() => {
@@ -31,6 +38,8 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
   }, []);
 
   useEffect(() => { if (deletion) deleteRef.current?.focus(); }, [deletion]);
+
+  useEffect(() => { if (cycleChange) changeRef.current?.focus(); }, [cycleChange]);
 
   const activeField = snapshot?.fields.find(f => f.id === selected);
   const cycles = snapshot?.cycles.filter(c => c.field_id === selected) ?? [];
@@ -100,8 +109,14 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
       const now = new Date().toISOString(), previous = snapshot.cycles.find(c => c.id === editingCycle);
       const cycle: CropCycle = { ...(previous ?? newMeta(now)), updated_at: now, field_id: activeField.id, crop: cycleDraft.crop.trim(), variety: cycleDraft.variety.trim() || null, sowing_date: cycleDraft.sowing || null, stage: cycleDraft.stage || null, stage_recorded_at: cycleDraft.stage ? now : null, season: cycleDraft.season.trim() || null, status: cycleDraft.status };
       const data = validateData({ ...snapshot, cycles: [...snapshot.cycles.filter(c => c.id !== cycle.id), cycle] });
+      if (previous && (previous.sowing_date !== cycle.sowing_date || previous.stage !== cycle.stage) && snapshot.tasks.some(t => t.cycle_id === cycle.id)) { setCycleChange(cycle); setDateChoice(""); setStageConfirmed(false); return; }
       if (await persist(data, "Crop cycle saved.")) { setCycleDraft(blankCycle); setEditingCycle(null); }
     } catch (e) { setError(errorText(e)); }
+  }
+  async function applyCycleChange() {
+    if (!snapshot || !cycleChange || (reschedulePreview(snapshot.tasks,cycleChange).length && !dateChoice) || !stageConfirmed) return;
+    const tasks = rescheduleTasks(snapshot.tasks,cycleChange,dateChoice || "keep",new Date().toISOString());
+    if (await persist({...snapshot,tasks,cycles:snapshot.cycles.map(c=>c.id===cycleChange.id ? cycleChange : c)},"Cycle and confirmed reminder plan saved.")) { setCycleChange(null); setEditingCycle(null); setCycleDraft(blankCycle); }
   }
   async function forgetLocation(field: Field) {
     if (!snapshot) return;
@@ -112,7 +127,7 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
   }
   async function confirmDelete() {
     if (!snapshot || !deletion) return;
-    const data = deletion === "all" ? emptyData() : "field" in deletion ? removeField(snapshot, deletion.field) : { ...snapshot, cycles: snapshot.cycles.filter(c => c.id !== deletion.cycle) };
+    const data = deletion === "all" ? emptyData() : "field" in deletion ? removeField(snapshot, deletion.field) : removeCycle(snapshot, deletion.cycle);
     if (await persist(data, "Selected records deleted from this device.")) {
       if (deletion === "all") { setSessionLocations({}); setSelected(""); }
       else if ("field" in deletion) { const id = deletion.field; setSessionLocations(old => { const next = { ...old }; delete next[id]; return next; }); if (selected === id) setSelected(""); }
@@ -132,23 +147,24 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
   }
   async function applyImport() {
     if (!preview || (preview.conflicts.length && !resolution)) return;
-    if (await persist(preview.merged, "Backup imported. Existing unrelated records were kept.")) { setIncoming(null); setResolution(""); resetField(); setCycleDraft(blankCycle); setEditingCycle(null); setSelected(""); setSessionLocations({}); }
+    if (await persist(preview.merged, "Backup imported. Existing unrelated records were kept.")) { setIncoming(null); setResolution(""); resetField(); setCycleDraft(blankCycle); setEditingCycle(null); setSelected(""); setSessionLocations({}); setCycleChange(null); }
   }
 
   return (
     <div className="farm-workspace">
       <section className="farm-heading">
-        <div><p className="eyebrow">Your farm, on your device</p><h1>{todayOnly ? "Your field, today." : "Start with your field."}</h1><p className="lede">Add a field and crop cycle. Keep a useful record of where your season begins—no account needed.</p></div>
+        <div><p className="eyebrow">Your farm, on your device</p><h1>{planOnly ? "Plan your season." : todayOnly ? "Your field, today." : "Start with your field."}</h1><p className="lede">Add a field and crop cycle. Keep a useful record of where your season begins—no account needed.</p></div>
         <div className="farm-summary"><strong>{snapshot?.fields.length ?? "—"}</strong><span>fields saved</span><strong>{snapshot?.cycles.length ?? "—"}</strong><span>crop cycles</span></div>
       </section>
       <p className="device-note">Records stay in this browser. Clearing browser data can remove them, so export a backup. Select a field to see weather and missing-information prompts. Agricultural guidance requires a reviewed catalog.</p>
       <div aria-live="polite">{message && <p className="success-note">{message}</p>}</div>
       {error && <div className="form-error" role="alert"><p>{error}</p><button type="button" className="text-button" onClick={() => window.location.reload()}>Reload saved records</button></div>}
       {!snapshot && <p role="status">{error ? "Device storage is not ready. Saving is disabled." : "Loading your device records…"}</p>}
-      {todayOnly && <label>Field<select value={selected} onChange={e => setSelected(e.target.value)}><option value="">Choose a field</option>{snapshot?.fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label>}
-      {activeField && <TodayPanel key={`${activeField.id}:${activeField.updated_at}:${(sessionLocations[activeField.id] ?? activeField.location)?.confirmed_at ?? "none"}`} field={activeField} cycles={cycles} location={sessionLocations[activeField.id] ?? activeField.location} />}
-      {todayOnly && !activeField && <p className="device-note">Choose a saved field above. Add or edit fields and crop cycles in <a href="/farm">My Farm</a>. Session-only coordinates stay on the page where you entered them.</p>}
-      {!todayOnly && <><div className="farm-grid">
+      {(todayOnly || planOnly) && <label>Field<select value={selected} onChange={e => setSelected(e.target.value)}><option value="">Choose a field</option>{snapshot?.fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label>}
+      {activeField && !planOnly && <TodayPanel key={`${activeField.id}:${activeField.updated_at}:${(sessionLocations[activeField.id] ?? activeField.location)?.confirmed_at ?? "none"}`} field={activeField} cycles={cycles} tasks={snapshot!.tasks} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} location={sessionLocations[activeField.id] ?? activeField.location} />}
+      {(todayOnly || planOnly) && !activeField && <p className="device-note">Choose a saved field above. Add or edit fields and crop cycles in <a href="/farm">My Farm</a>. Session-only coordinates stay on the page where you entered them.</p>}
+      {planOnly && activeField && <><label>Planning crop cycle<select value={planCycle} onChange={e=>setPlanCycle(e.target.value)}><option value="">Choose a cycle</option>{cycles.map(c=><option key={c.id} value={c.id}>{c.crop} · {c.status}</option>)}</select></label><p className="device-note">Seed comparisons and reviewed crop schedules await a human-reviewed catalog. Your reminders run locally without weather or location.</p>{cycles.find(c=>c.id===planCycle) && <CalendarPanel key={planCycle} snapshot={snapshot!} cycle={cycles.find(c=>c.id===planCycle)!} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} busy={busy} save={persist} />}</>}
+      {!todayOnly && !planOnly && <><div className="farm-grid">
         <section className="farm-card" aria-labelledby="field-title">
           <div className="card-heading"><h2 id="field-title">{editing ? "Edit field" : "Add a field"}</h2>{editing && <button type="button" className="text-button" onClick={resetField}>Cancel edit</button>}</div>
           <form onSubmit={submitField}>
@@ -187,17 +203,19 @@ export function FarmWorkspace({ todayOnly = false }: { todayOnly?: boolean }) {
         </fieldset></form>
         <div>{!cycles.length && <p className="empty-state">No crop cycles yet. Start with the crop you plan to grow.</p>}{cycles.map(cycle => <article key={cycle.id} className="field-item"><span className="cycle-badge">{cycle.status}</span><h3>{cycle.crop}{cycle.variety ? ` · ${cycle.variety}` : ""}</h3><p>{cycle.sowing_date ? `Sowing: ${cycle.sowing_date}` : "Sowing date not entered"}</p><p>{cycle.stage ?? "Stage unknown"} · {cycle.season ?? "Season unknown"}</p><div className="button-row"><button type="button" className="text-button" onClick={() => { setEditingCycle(cycle.id); setCycleDraft({ crop: cycle.crop, variety: cycle.variety ?? "", sowing: cycle.sowing_date ?? "", stage: cycle.stage ?? "", season: cycle.season ?? "", status: cycle.status }); }}>Edit cycle</button><button disabled={busy} type="button" className="text-button" onClick={() => setDeletion({ cycle: cycle.id })}>Delete cycle</button></div></article>)}</div></div>
       </section>}
+      {activeField && cycles.map(cycle=><CalendarPanel key={cycle.id} snapshot={snapshot!} cycle={cycle} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} busy={busy} save={persist} />)}
       <section className="farm-card backup-section" aria-labelledby="backup-title"><h2 id="backup-title">Keep a copy of your records</h2><p>Export a JSON backup before clearing browser data or changing devices. Import is validated and previewed before anything is saved.</p>
         <label className="check-label"><input type="checkbox" checked={includeCoordinates} onChange={e => setIncludeCoordinates(e.target.checked)} />Include saved precise coordinates in my backup.</label>
         <div className="button-row"><button type="button" disabled={!snapshot || busy} className="button button-primary" onClick={downloadBackup}>Export backup</button><button type="button" disabled={!snapshot || busy} className="button button-secondary" onClick={() => importRef.current?.click()}>Import backup</button><button type="button" disabled={!snapshot || busy} className="text-button" onClick={() => setDeletion("all")}>Delete all farm records</button></div>
         <input ref={importRef} type="file" className="visually-hidden" accept="application/json,.json" onChange={e => { void readImport(e.target.files?.[0]); e.target.value = ""; }} />
-        {incoming && <div className="import-preview"><h3>Review this backup</h3><p>{incoming.data.fields.length} fields · {incoming.data.cycles.length} crop cycles · {preview?.additions ?? 0} new records</p>{incoming.includes_coordinates && <p>This backup includes saved precise field coordinates. Importing it will store them on this device.</p>}{previewError && <p role="alert">{previewError}</p>}
+        {incoming && <div className="import-preview"><h3>Review this backup</h3><p>{incoming.data.fields.length} fields · {incoming.data.cycles.length} crop cycles · {incoming.data.tasks.length} reminders · {preview?.additions ?? 0} new records</p>{incoming.includes_coordinates && <p>This backup includes saved precise field coordinates. Importing it will store them on this device.</p>}{previewError && <p role="alert">{previewError}</p>}
           {!!preview?.conflicts.length && <fieldset><legend>{preview.conflicts.length} changed records need a choice</legend><p>Conflicting records: {preview.conflicts.map(c => c.label).join(", ")}. Choose which version to keep for all conflicts; unrelated records remain.</p><label className="check-label"><input type="radio" name="conflict" checked={resolution === "device"} onChange={() => setResolution("device")} />Keep device versions</label><label className="check-label"><input type="radio" name="conflict" checked={resolution === "backup"} onChange={() => setResolution("backup")} />Use backup versions</label></fieldset>}
           <div className="button-row"><button type="button" className="button button-primary" disabled={busy || !preview || (!!preview.conflicts.length && !resolution)} onClick={() => void applyImport()}>Confirm import</button><button className="text-button" type="button" onClick={() => setIncoming(null)}>Cancel import</button></div>
         </div>}
       </section>
       </>}
-      {deletion && <section ref={deleteRef} tabIndex={-1} className="delete-confirm" role="alert" aria-labelledby="delete-title"><h2 id="delete-title">Confirm deletion</h2><p>{deletion === "all" ? `Delete all ${snapshot?.fields.length ?? 0} fields and ${snapshot?.cycles.length ?? 0} crop cycles from this device? Export a backup first if you want to keep them.` : "field" in deletion ? `Delete this field and its ${snapshot?.cycles.filter(c => c.field_id === deletion.field).length ?? 0} crop cycles?` : "Delete this crop cycle?"} This cannot be undone without a backup.</p><div className="button-row"><button type="button" disabled={busy} className="button button-danger" onClick={() => void confirmDelete()}>Delete selected records</button><button type="button" className="button button-secondary" onClick={() => setDeletion(null)}>Keep records</button></div></section>}
+      {cycleChange && snapshot && <section ref={changeRef} tabIndex={-1} className="import-preview farm-card" role="region" aria-label="Review cycle changes"><h2>Review cycle changes</h2><p>Sowing date: {snapshot.cycles.find(c=>c.id===cycleChange.id)?.sowing_date ?? "unknown"} → {cycleChange.sowing_date ?? "unknown"}. Stage: {snapshot.cycles.find(c=>c.id===cycleChange.id)?.stage ?? "unknown"} → {cycleChange.stage ?? "unknown"}. Completed reminders stay unchanged.</p>{reschedulePreview(snapshot.tasks,cycleChange).map(p=><p key={p.id}>{p.title}: {p.before ?? "unscheduled"} → {p.after ?? "unscheduled"}</p>)}{!!reschedulePreview(snapshot.tasks,cycleChange).length && <fieldset><legend>Pending sowing reminders</legend><label className="check-label"><input type="radio" name="reschedule" checked={dateChoice === "shift"} onChange={()=>setDateChoice("shift")} />Move them to the new sowing date</label><label className="check-label"><input type="radio" name="reschedule" checked={dateChoice === "keep"} onChange={()=>setDateChoice("keep")} />Keep their existing dates / anchors</label></fieldset>}<label className="check-label"><input type="checkbox" checked={stageConfirmed} onChange={e=>setStageConfirmed(e.target.checked)} />I confirm the cycle details and that stage reminders use my recorded stage.</label><div className="button-row"><button className="button button-primary" type="button" disabled={busy || !stageConfirmed || (!!reschedulePreview(snapshot.tasks,cycleChange).length && !dateChoice)} onClick={()=>void applyCycleChange()}>Confirm cycle and schedule</button><button className="text-button" type="button" onClick={()=>setCycleChange(null)}>Cancel cycle changes</button></div></section>}
+      {deletion && <section ref={deleteRef} tabIndex={-1} className="delete-confirm" role="alert" aria-labelledby="delete-title"><h2 id="delete-title">Confirm deletion</h2><p>{deletion === "all" ? `Delete all ${snapshot?.fields.length ?? 0} fields, ${snapshot?.cycles.length ?? 0} crop cycles and ${snapshot?.tasks.length ?? 0} reminders from this device? Export a backup first if you want to keep them.` : "field" in deletion ? `Delete this field and its ${snapshot?.cycles.filter(c => c.field_id === deletion.field).length ?? 0} crop cycles?` : "Delete this crop cycle?"} Associated reminders will also be deleted. This cannot be undone without a backup.</p><div className="button-row"><button type="button" disabled={busy} className="button button-danger" onClick={() => void confirmDelete()}>Delete selected records</button><button type="button" className="button button-secondary" onClick={() => setDeletion(null)}>Keep records</button></div></section>}
     </div>
   );
 }

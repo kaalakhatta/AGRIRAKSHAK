@@ -22,7 +22,7 @@ Keep Next.js/TypeScript and the existing scanner work. Use local browser storage
 
 ## Current core milestone
 
-The new `/farm` screen implements local field/crop-cycle records, confirmed optional location, and backup/import/delete controls. Open `/farm` to manage records and `/today` for a selected field’s overview. M2 adds opt-in Open-Meteo weather, session caching/failure handling, information prompts and a tested declarative recommendation evaluator. Runtime agricultural advice remains unavailable until reviewed catalogs arrive. See [M2 contracts and validation](docs/farm-companion/M2_CONTRACT.md). See [M1 validation](docs/farm-companion/M1_VALIDATION.md) and [core status](docs/farm-context/CORE_STATUS.md) for observed checks and pending device QA.
+The new `/farm` screen implements local field/crop-cycle records, confirmed optional location, and backup/import/delete controls. Open `/farm` to manage records and `/today` for a selected field’s overview. M2 adds opt-in Open-Meteo weather, session caching/failure handling, information prompts and a tested declarative recommendation evaluator. M3 adds `/plan` personal season reminders, completion tracking and confirmed sowing-date rescheduling. Old farm backups remain importable; new backups include reminders. Runtime agricultural advice remains unavailable until reviewed catalogs arrive. See [M3 calendar validation](docs/farm-companion/M3_CALENDAR.md). See [M2 contracts and validation](docs/farm-companion/M2_CONTRACT.md). See [M1 validation](docs/farm-companion/M1_VALIDATION.md) and [core status](docs/farm-context/CORE_STATUS.md) for observed checks and pending device QA.
 
 ## Build plan and team
 

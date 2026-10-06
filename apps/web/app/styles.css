@@ -126,3 +126,5 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 .forecast-scroll th, .forecast-scroll td { padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--line); }
 .forecast-scroll caption { text-align: left; font-weight: 700; padding: 12px 0; }
 @media (max-width: 520px) { .today-section .card-heading { flex-direction: column; } }
+.calendar-section { margin-top: 24px; }
+@media (max-width: 520px) { .site-header { gap: 18px; flex-wrap: wrap; padding: 14px 0; } .farm-nav { gap: 12px; } }

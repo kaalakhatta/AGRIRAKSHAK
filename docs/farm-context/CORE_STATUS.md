@@ -1,6 +1,6 @@
 # Arindam: Task 10 core build status
 
-Branch: codex/farm-task-10-arindam. Cumulative issue: #11. Current milestone: M3 partial personal-calendar delivery ready for review; reviewed catalog, scan timeline and on-device weather success remain pending.
+Branch: codex/farm-task-10-arindam. Cumulative issue: #11. Current milestone: M3 partial calendar + independent demonstration timeline ready for review; reviewed catalog, real model integration and on-device weather success remain pending.
 
 ## Completed
 
@@ -18,6 +18,8 @@ Branch: codex/farm-task-10-arindam. Cumulative issue: #11. Current milestone: M3
 - M3 partial: /plan personal date/sowing/stage reminders, create/edit/done/reopen/deletion preview, Today due reminders, cycle-change rescheduling preview/choice with completion preservation.
 - M3 partial: schema-2 snapshot/backup contract, tested non-destructive schema-1 migration, reminder import conflicts and deletion cascades. No new dependencies or catalog advice.
 
+- M3 partial: explicit cycle/unlinked demo-summary save, /records timeline and filters, no photo/filename/location/prediction/confidence retained, deletion preview, schema-3 backup/snapshot migration preserving schema-1/2 data.
+
 ## Evidence
 
 See ../farm-companion/M1_VALIDATION.md. npm run check passes lint/typecheck/12 tests/production build. Browser tests used synthetic records only: save/reload, crop persistence, manual-confirmation block, session-only versus retained location, invalid import rejection, valid preview/merge/reload and conflict-choice gate. Screenshots captured outside Git; no farmer photos/locations or model artifacts were committed.
@@ -26,15 +28,17 @@ M2: npm run check passes lint/typecheck/23 tests/production build. Live provider
 
 M3 partial: npm run check passes lint/typecheck/30 tests/build. Browser synthetic records verified reminder persistence/completion and cycle rescheduling gate: pending moved only after choice, completed unchanged. See ../farm-companion/M3_CALENDAR.md.
 
+M3 timeline: npm run check passes lint/typecheck/35 tests/build. Browser generated green-PNG demo verified explicit cycle/save gate, repeat-save disabling, labelled linked timeline and reload persistence. See ../farm-companion/M3_TIMELINE.md.
+
 ## Remaining
 
 - Human review/merge of M1 PR; independent GPS permission-denied/unavailable and physical-phone/accessibility/storage-failure QA.
 - Validate actual exported-file delivery on exhibition browsers; export transformation is unit-tested and browser dispatch/status was observed, but the in-app download event could not be captured.
 - M2: teammate catalog schema agreement and human-reviewed catalog integration; successful browser weather request/render on exhibition devices. Session cache is not offline installation. Engine uses exact normalized units; broader conversions/optional rules need reviewed contracts.
-- M3: reviewed seed/crop identifiers and matching, reviewed calendar templates, recommendation feedback/snooze/deduplication, scanner timeline/model integration. Personal reminder calendar is implemented. Existing main scanner remains a clearly labelled interface simulation; actual inference work on other branches is not silently replaced/integrated here.
+- M3: reviewed seed/crop identifiers and matching, reviewed calendar templates, recommendation feedback/snooze/deduplication, evaluated model integration and real uncertainty timeline contract. Personal reminder calendar and demonstration timeline are implemented. Existing main scanner remains a clearly labelled interface simulation; actual inference work on other branches is not silently replaced/integrated here.
 - M4/M5: soil/expense/harvest records, season summaries, offline caching and exhibition release.
 - Region/crops/reviewer/date/devices/language remain TBD. No seed advice, weather or yield gain is fabricated in M1.
 
 ## Handoff
 
-Read full Task 10 brief and current PR before continuing. M2 owner handoff is ../farm-companion/M2_CONTRACT.md; current cumulative PR is #13. M1 runtime contract is apps/web/lib/domain/farm.ts, separately versioned from context v1. Cycles currently store farmer-entered crop/variety text; matching to reviewed catalog IDs is an M3 migration/integration step. FarmData/backups now use schema 2; M1 schema-1 files migrate non-destructively with no reminders. See M3_CALENDAR.md before changing storage or downgrading. Unknown future versions fail closed. Do not edit teammate-owned directories or untracked services artifacts. Never close cumulative #11 for this milestone.
+Read full Task 10 brief and current PR before continuing. M2 owner handoff is ../farm-companion/M2_CONTRACT.md; current cumulative PR is #13. M1 runtime contract is apps/web/lib/domain/farm.ts, separately versioned from context v1. Cycles currently store farmer-entered crop/variety text; matching to reviewed catalog IDs is an M3 migration/integration step. FarmData/backups now use schema 3; schema-1/2 files migrate non-destructively with empty scans (and empty reminders for schema 1). See M3_CALENDAR.md and M3_TIMELINE.md before changing storage or downgrading. Unknown future versions fail closed. Do not edit teammate-owned directories or untracked services artifacts. Never close cumulative #11 for this milestone.

@@ -21,7 +21,7 @@ test('coordinates are excluded from backups by default without altering device d
 test('unknown versions, hidden coordinates, broken references and duplicates reject import', () => {
   const backup = makeBackup(fixture(), true);
   for (const corrupt of [
-    { ...backup, schema_version: 3 },
+    { ...backup, schema_version: 4 },
     { ...backup, includes_coordinates: false },
     { ...backup, data: { ...backup.data, farms: [] } },
     { ...backup, data: { ...backup.data, cycles: [...backup.data.cycles, ...backup.data.cycles] } }

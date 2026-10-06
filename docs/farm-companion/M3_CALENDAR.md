@@ -10,6 +10,8 @@ Create/edit, mark done/reopen and previewed deletion run through the existing re
 
 Cycle sowing/stage edits with reminders show a confirmation panel. Pending sowing reminders preview old/new dates; choose Shift or Keep and explicitly confirm cycle details. Completed reminders do not move. Keep preserves original anchors, including an intentionally unknown anchor. Clearing sowing can unschedule pending reminders only after the same confirmation. User-requested edits of an individual completed reminder can change its text/schedule; its completion remains recorded until reopened.
 
+Current runtime update: M3_TIMELINE.md adds schema 3 while preserving these schema-2 reminder records and accepting old backups. The schema-2 description below documents the calendar slice.
+
 ## Version and migration
 
 FarmData schema 2 adds `tasks: CalendarTask[]`. Individual farms/fields/cycles/reminders retain metadata version 1. Reminder fields: cycle_id, title, schedule, status pending/done and completed_at. Schedule is exactly date/date, sowing/offset_days/anchor_date, or stage/stage. Runtime validator strips unsupported extra fields, rejects invalid dates/schedules/completion timestamps/IDs/references and bounds record arrays. Tasks contain no executable catalog rules.

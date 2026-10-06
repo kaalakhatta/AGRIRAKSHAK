@@ -2,9 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { todayInZone, type Coordinates, type CropCycle, type Field } from "@/lib/domain/farm";
 import { WeatherClient, WeatherError, weatherFresh, type Weather } from "@/lib/providers/weather";
-import { EMPTY_CATALOG, evaluateCatalog } from "@/lib/recommendations/engine";
+import { recommendNextSteps } from "@/lib/recommendations/next-steps";
+import { NextStepsPanel } from "@/features/recommendations/next-steps-panel";
 
-import { taskTiming, dueDate, type CalendarTask } from "@/lib/domain/calendar";
+import { type CalendarTask } from "@/lib/domain/calendar";
 
 let sessionClient: WeatherClient | null = null;
 
@@ -31,8 +32,7 @@ export function TodayPanel({ field, cycles, location, tasks, timezone }: { field
   }
   function revoke() { generation.current++; client.current?.clear(); setConsent(false); setWeather(null); setError(""); setBusy(false); }
   const fresh = weather && weatherFresh(weather,now);
-  const decisions = evaluateCatalog(EMPTY_CATALOG,field.id,{},now);
-  const prompts = [!field.region && "Add your field’s region to check catalog coverage.", field.water === "unknown" && "Record water access when you know it.", !cycle && "Select or add a crop cycle.", cycle && !cycle.sowing_date && "Add a sowing date when known.", cycle && !cycle.stage && "Confirm the current crop stage when known.", cycle && !cycle.season && "Record the intended season.", !location && "Add confirmed field coordinates only if you want weather."] .filter(Boolean);
+  const steps = recommendNextSteps({field, cycle, tasks, weather, hasLocation: !!location, today: todayInZone(timezone), now});
   const value = (v: number | null, unit: string) => v === null ? "Unavailable" : `${v} ${unit}`;
   return <section className="farm-card today-section" id="today" aria-labelledby="today-title">
     <div className="card-heading"><div><p className="eyebrow">{field.name} · field overview</p><h2 id="today-title">Today on your farm</h2></div><span className="cycle-badge">{field.origin === "demo" ? "Synthetic demo field" : "Your field record"}</span></div>
@@ -45,9 +45,7 @@ export function TodayPanel({ field, cycles, location, tasks, timezone }: { field
         <div className="forecast-scroll"><table><caption>Seven-day forecast · UTC · estimates</caption><thead><tr><th scope="col">Date</th><th scope="col">Min / max °C</th><th scope="col">Precipitation mm/day</th></tr></thead><tbody>{weather.days.map(day => <tr key={day.date}><th scope="row">{day.date}</th><td>{day.minimum ?? "—"} / {day.maximum ?? "—"}</td><td>{day.precipitation ?? "Unavailable"}</td></tr>)}</tbody></table></div>
       </>}
       <p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Free non-commercial endpoint; session cache only. Reloading clears estimates.</p>
-    </div><div><h3>Build a better field record</h3><p>These are information prompts. They do not prescribe farming actions.</p>{prompts.length ? <ul>{prompts.map((prompt,i) => <li key={i}>{prompt}</li>)}</ul> : <p>Your basic field and cycle details are recorded.</p>}
-      <h3>Your due reminders</h3>{!cycle ? <p>Select a cycle to see its reminders.</p> : tasks.filter(t=>t.cycle_id===cycle.id && t.status === "pending" && ["Due today","Overdue","Ready at your confirmed stage"].includes(taskTiming(t,cycle,todayInZone(timezone)))).length ? <ul>{tasks.filter(t=>t.cycle_id===cycle.id && t.status === "pending" && ["Due today","Overdue","Ready at your confirmed stage"].includes(taskTiming(t,cycle,todayInZone(timezone)))).map(t=><li key={t.id}>{t.title} · {taskTiming(t,cycle,todayInZone(timezone))} {dueDate(t) ?? ""}</li>)}</ul> : <p>No pending reminders are due for this cycle.</p>}<p><a href="/plan">Manage your personal reminders →</a></p>
-      <div className="location-box"><h3>Reviewed guidance</h3><p>{decisions.length ? "Reviewed rules evaluated." : "No reviewed agricultural catalog is available yet. Seed, irrigation and soil actions are awaiting evidence and human review."}</p><p>Soil measurements: unavailable. Live sensors: unavailable. Coordinates cannot establish soil pH or nutrients.</p><p>Leaf screening remains available from the scanner. Its current predictions are labelled simulations.</p></div>
+    </div><div><NextStepsPanel steps={steps} demo={field.origin === "demo" || cycle?.origin === "demo"} />
     </div></div>
   </section>;
 }

@@ -1,3 +1,4 @@
+import { observationHistory } from './observations.ts';
 import { validateDate, type Meta, type Field, type FarmData } from './farm.ts';
 
 export const EXPENSE_CATEGORIES = ['Seeds', 'Water', 'Labour', 'Equipment', 'Transport', 'Other inputs', 'Other'] as const;
@@ -94,6 +95,7 @@ export function seasonReview(data: FarmData, cycleId: string, demo = false) {
   const select=<T extends Meta & {cycle_id:string}>(rows:T[])=>rows.filter(r=>r.cycle_id === cycleId && (parentDemo || r.origin === 'demo') === demo);
   const expenses=select(data.expenses), harvests=select(data.harvests), sales=select(data.sales);
   const outlay=expenseTotals(expenses,cycleId), harvest=harvestTotals(harvests,cycleId), sold=saleTotals(sales,cycleId);
+  const observations=observationHistory(data,cycleId,demo);
   const hasCosts=expenses.some(e=>e.kind === 'cost');
   let weightDifference:number|null=null;
   if (harvest.mass_kg !== null && sold.mass_kg !== null) {
@@ -109,7 +111,7 @@ export function seasonReview(data: FarmData, cycleId: string, demo = false) {
   if (harvests.some(h=>h.harvested_area === null)) gaps.push('Some harvest areas are missing. Per-picking weight per area is available only where both inputs were recorded.');
   if ((harvest.count && harvest.mass_kg === null && harvests.some(h=>h.unit !== 'piece')) || (sold.count && sold.mass_kg === null && sales.some(s=>s.unit !== 'piece'))) gaps.push('A weight total exceeds the supported numeric range; that comparison is unavailable.');
   if ((weightDifference !== null && weightDifference < 0) || (pieceDifference !== null && pieceDifference < BigInt(0))) gaps.push('Recorded sales exceed recorded harvests for a matching unit type. Check for missing pickings, duplicate sales or entry mistakes.');
-  return {outlay,harvest,sold,hasCosts,balance:hasCosts && sales.length ? sold.received-outlay.net : null,weightDifference,pieceDifference,gaps,entryCount:expenses.length+harvests.length+sales.length};
+  return {outlay,harvest,sold,observationCount:observations.length,lastObservationDate:observations[0]?.date ?? null,hasCosts,balance:hasCosts && sales.length ? sold.received-outlay.net : null,weightDifference,pieceDifference,gaps,entryCount:expenses.length+harvests.length+sales.length+observations.length};
 }
 export function harvestYield(h: Harvest): number | null {
   const mass=massKg(h), area=areaHa(h.harvested_area);

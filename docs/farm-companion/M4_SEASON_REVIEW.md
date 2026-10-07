@@ -1,6 +1,6 @@
 # M4: sales diary and season review
 
-Task 10 · Arindam · Refs #11 · branch codex/farm-task-10-arindam · cumulative PR #13. Partial M4 delivery; observation entries and device QA remain unfinished.
+Task 10 · Arindam · Refs #11 · branch codex/farm-task-10-arindam · cumulative PR #13. Partial M4 delivery; device QA remains unfinished. Observation entries are implemented in the schema-7 follow-up, M4_OBSERVATIONS.md.
 
 ## Farmer flow
 
@@ -31,3 +31,5 @@ npm run check: lint, typecheck, 67 tests and production build passed. Ten season
 Local browser QA used synthetic entries only. Sale 60 kg at ₹1,500.10 edited to ₹1,500.35; an edit to ₹1,500.105 rejected and preserved saved values. Added two sold pieces at ₹50.10. Review first showed an unavailable balance with no costs. Then same-cycle cost ₹200.50 and refund ₹25.30 produced receipts ₹1,550.45, net outlay ₹175.20 and recorded balance ₹1,375.25. Harvested totals 100.5 kg and four pieces compared with sold 60 kg and two pieces: differences 40.5 kg and two pieces. Values survived reload. Sale deletion preview was opened and cancelled. No permanent deletion or real financial transaction executed. Screenshot stored outside Git.
 
 Physical-device accessibility/responsiveness, full Task 6 QA, browser storage failures and actual exported-file delivery remain pending. No dependencies, paid services or reviewed agricultural content were added.
+
+Follow-up: current code exports schema 7 and includes observation coverage. Matching v1–v6 files migrate; the checks above document the original sales/review delivery. See [M4_OBSERVATIONS.md](M4_OBSERVATIONS.md).

@@ -1,3 +1,4 @@
+import { validateObservation, type Observation } from "./observations.ts";
 import { validateExpense, validateHarvest, validateSale, type Expense, type Harvest, type Sale } from "./season-records.ts";
 import { validateSoilTest, type SoilTest } from "./soil.ts";
 import { validateScan, type ScanSummary } from "./scans.ts";
@@ -10,11 +11,11 @@ export type Coordinates = { latitude: number; longitude: number; accuracy_m: num
 export type Farm = Meta & { name: string; language: "en"; timezone: string };
 export type Field = Meta & { farm_id: string; name: string; region: string | null; area: { value: number; unit: "ha" | "acre" | "m2" } | null; water: typeof WATER_OPTIONS[number]; location: Coordinates | null };
 export type CropCycle = Meta & { field_id: string; crop: string; variety: string | null; status: typeof CYCLE_STATUSES[number]; sowing_date: string | null; stage: typeof STAGES[number] | null; stage_recorded_at: string | null; season: string | null };
-export type FarmData = { schema_version: 6; farms: Farm[]; fields: Field[]; cycles: CropCycle[]; tasks: CalendarTask[]; scans: ScanSummary[]; soil_tests: SoilTest[]; expenses: Expense[]; harvests: Harvest[]; sales: Sale[] };
+export type FarmData = { schema_version: 7; farms: Farm[]; fields: Field[]; cycles: CropCycle[]; tasks: CalendarTask[]; scans: ScanSummary[]; soil_tests: SoilTest[]; expenses: Expense[]; harvests: Harvest[]; sales: Sale[]; observations: Observation[] };
 export type Snapshot = FarmData & { revision: number };
-export type Backup = { schema_version: 6; application_version: "farm-m4-v6"; exported_at: string; includes_coordinates: boolean; data: FarmData };
+export type Backup = { schema_version: 7; application_version: "farm-m4-v7"; exported_at: string; includes_coordinates: boolean; data: FarmData };
 export type ImportPlan = { merged: FarmData; conflicts: { id: string; label: string }[]; additions: number };
-export const emptyData = (): FarmData => ({ schema_version: 6, farms: [], fields: [], cycles: [], tasks: [], scans: [], soil_tests: [], expenses: [], harvests: [], sales: [] });
+export const emptyData = (): FarmData => ({ schema_version: 7, farms: [], fields: [], cycles: [], tasks: [], scans: [], soil_tests: [], expenses: [], harvests: [], sales: [], observations: [] });
 export const newMeta = (now = new Date().toISOString()): Meta => ({ id: crypto.randomUUID(), schema_version: 1, created_at: now, updated_at: now, origin: "user" });
 
 function fail(message: string): never { throw new Error(message); }
@@ -62,7 +63,7 @@ export function todayInZone(timezone: string, now = new Date()): string {
 }
 export function validateData(value: unknown): FarmData {
   const v = object(value, "Farm records");
-  if (v.schema_version !== 1 && v.schema_version !== 2 && v.schema_version !== 3 && v.schema_version !== 4 && v.schema_version !== 5 && v.schema_version !== 6) fail("This record version is not supported. Your saved data has not been changed.");
+  if (v.schema_version !== 1 && v.schema_version !== 2 && v.schema_version !== 3 && v.schema_version !== 4 && v.schema_version !== 5 && v.schema_version !== 6 && v.schema_version !== 7) fail("This record version is not supported. Your saved data has not been changed.");
   for (const key of ["farms", "fields", "cycles"]) if (!Array.isArray(v[key]) || (v[key] as unknown[]).length > 1000) fail(`${key} must be an array with no more than 1,000 records.`);
   if (v.schema_version === 1 && v.tasks !== undefined) fail("Version 1 records cannot contain calendar reminders.");
   if (v.schema_version !== 1 && (!Array.isArray(v.tasks) || v.tasks.length > 1000)) fail("Calendar must contain no more than 1,000 reminders.");
@@ -80,8 +81,11 @@ export function validateData(value: unknown): FarmData {
   const expenses = Number(v.schema_version) >= 5 ? (v.expenses as unknown[]).map(validateExpense) : [];
   const harvests = Number(v.schema_version) >= 5 ? (v.harvests as unknown[]).map(validateHarvest) : [];
   if (Number(v.schema_version) < 6 && v.sales !== undefined) fail("Earlier versions cannot contain sales.");
-  if (v.schema_version === 6 && (!Array.isArray(v.sales) || v.sales.length > 1000)) fail("Sales must contain no more than 1,000 entries.");
-  const sales = v.schema_version === 6 ? (v.sales as unknown[]).map(validateSale) : [];
+  if (Number(v.schema_version) >= 6 && (!Array.isArray(v.sales) || v.sales.length > 1000)) fail("Sales must contain no more than 1,000 entries.");
+  const sales = Number(v.schema_version) >= 6 ? (v.sales as unknown[]).map(validateSale) : [];
+  if (Number(v.schema_version) < 7 && v.observations !== undefined) fail("Earlier versions cannot contain observations.");
+  if (v.schema_version === 7 && (!Array.isArray(v.observations) || v.observations.length > 1000)) fail("Observations must contain no more than 1,000 entries.");
+  const observations = v.schema_version === 7 ? (v.observations as unknown[]).map(validateObservation) : [];
   const farms = (v.farms as unknown[]).map(item => {
     const f = object(item, "Farm");
     const timezone = text(f.timezone, "Timezone");
@@ -101,17 +105,23 @@ export function validateData(value: unknown): FarmData {
     return { ...meta(c), field_id: text(c.field_id, "Field reference"), crop: text(c.crop, "Crop"), variety: optionalText(c.variety, "Variety"), status: choice(c.status, CYCLE_STATUSES, "Cycle status"), sowing_date: validateDate(c.sowing_date), stage, stage_recorded_at, season: optionalText(c.season, "Season") };
   });
   const ids = new Set<string>();
-  for (const record of [...farms, ...fields, ...cycles, ...tasks, ...scans, ...soil_tests, ...expenses, ...harvests, ...sales]) { if (ids.has(record.id)) fail("Duplicate record IDs in this file."); ids.add(record.id); }
+  for (const record of [...farms, ...fields, ...cycles, ...tasks, ...scans, ...soil_tests, ...expenses, ...harvests, ...sales, ...observations]) { if (ids.has(record.id)) fail("Duplicate record IDs in this file."); ids.add(record.id); }
   const farmIds = new Set(farms.map(f => f.id)), fieldIds = new Set(fields.map(f => f.id));
   if (fields.some(f => !farmIds.has(f.farm_id)) || cycles.some(c => !fieldIds.has(c.field_id))) fail("A record references a missing farm or field.");
   if (tasks.some(t => !cycles.some(c => c.id === t.cycle_id))) fail("A reminder references a missing crop cycle.");
   if (scans.some(s => s.cycle_id !== null && !cycles.some(c => c.id === s.cycle_id))) fail("A screening summary references a missing crop cycle.");
-  for (const record of [...expenses,...harvests,...sales]) {
+  for (const record of [...expenses,...harvests,...sales,...observations]) {
     const cycle = cycles.find(c => c.id === record.cycle_id);
     if (!cycle) fail("A season record references a missing crop cycle.");
     const field = fields.find(f => f.id === cycle.field_id)!;
     const farm = farms.find(f => f.id === field.farm_id)!;
     if (record.date > todayInZone(farm.timezone) || record.date > todayInZone(farm.timezone,new Date(record.created_at))) fail("Season record date cannot be in the future or after entry creation.");
+  }
+  for (const observation of observations) {
+    if (observation.scan_summary_id !== null) {
+      const scan = scans.find(s => s.id === observation.scan_summary_id);
+      if (!scan || scan.cycle_id !== observation.cycle_id) fail("An observation screening reference must belong to the same crop cycle.");
+    }
   }
   for (const harvest of [...harvests,...sales]) {
     const cycle = cycles.find(c => c.id === harvest.cycle_id)!;
@@ -129,23 +139,23 @@ export function validateData(value: unknown): FarmData {
     if (cycle.sowing_date && cycle.sowing_date > todayInZone(farm.timezone) && (cycle.status !== "planned" || cycle.stage !== null)) fail("A future sowing date requires a planned cycle without a current stage.");
     if (cycle.status === "planned" && cycle.stage !== null) fail("A current growth stage requires a planted cycle. Choose Active or clear the stage.");
   }
-  return { schema_version: 6, farms, fields, cycles, tasks, scans, soil_tests, expenses, harvests, sales };
+  return { schema_version: 7, farms, fields, cycles, tasks, scans, soil_tests, expenses, harvests, sales, observations };
 }
 export function makeBackup(data: FarmData, includeCoordinates = false, now = new Date().toISOString()): Backup {
   const clean = validateData(data);
-  return { schema_version: 6, application_version: "farm-m4-v6", exported_at: now, includes_coordinates: includeCoordinates, data: { ...clean, fields: clean.fields.map(f => ({ ...f, location: includeCoordinates ? f.location : null })) } };
+  return { schema_version: 7, application_version: "farm-m4-v7", exported_at: now, includes_coordinates: includeCoordinates, data: { ...clean, fields: clean.fields.map(f => ({ ...f, location: includeCoordinates ? f.location : null })) } };
 }
 export function parseBackup(raw: string): Backup {
   if (new TextEncoder().encode(raw).length > 2 * 1024 * 1024) fail("Backup must be smaller than 2 MB.");
   let decoded: unknown;
   try { decoded = JSON.parse(raw); } catch { fail("This file is not valid JSON. No records were changed."); }
   const v = object(decoded, "Backup");
-  if (!((v.schema_version === 1 && v.application_version === "farm-m1-v1") || (v.schema_version === 2 && v.application_version === "farm-m3-v2") || (v.schema_version === 3 && v.application_version === "farm-m3-v3") || (v.schema_version === 4 && v.application_version === "farm-m4-v4") || (v.schema_version === 5 && v.application_version === "farm-m4-v5") || (v.schema_version === 6 && v.application_version === "farm-m4-v6"))) fail("Unsupported backup version. No records were changed.");
+  if (!((v.schema_version === 1 && v.application_version === "farm-m1-v1") || (v.schema_version === 2 && v.application_version === "farm-m3-v2") || (v.schema_version === 3 && v.application_version === "farm-m3-v3") || (v.schema_version === 4 && v.application_version === "farm-m4-v4") || (v.schema_version === 5 && v.application_version === "farm-m4-v5") || (v.schema_version === 6 && v.application_version === "farm-m4-v6") || (v.schema_version === 7 && v.application_version === "farm-m4-v7"))) fail("Unsupported backup version. No records were changed.");
   if (typeof v.includes_coordinates !== "boolean") fail("Backup privacy flags are missing.");
   if (!v.data || typeof v.data !== "object" || (v.data as { schema_version?: unknown }).schema_version !== v.schema_version) fail("Backup and record versions disagree.");
   const data = validateData(v.data);
   if (!v.includes_coordinates && data.fields.some(f => f.location !== null)) fail("Backup contains coordinates without declaring them.");
-  return { schema_version: 6, application_version: "farm-m4-v6", exported_at: timestamp(v.exported_at, "Export time"), includes_coordinates: v.includes_coordinates, data };
+  return { schema_version: 7, application_version: "farm-m4-v7", exported_at: timestamp(v.exported_at, "Export time"), includes_coordinates: v.includes_coordinates, data };
 }
 export function planImport(current: FarmData, incoming: FarmData, conflictChoice?: "device" | "backup"): ImportPlan {
   current = validateData(current); incoming = validateData(incoming);
@@ -160,13 +170,13 @@ export function planImport(current: FarmData, incoming: FarmData, conflictChoice
     }
     return [...records.values()];
   };
-  const merged = validateData({ schema_version: 6, sales: merge(current.sales,incoming.sales), expenses: merge(current.expenses,incoming.expenses), harvests: merge(current.harvests,incoming.harvests), soil_tests: merge(current.soil_tests,incoming.soil_tests), scans: merge(current.scans,incoming.scans), tasks: merge(current.tasks,incoming.tasks), farms: merge(current.farms, incoming.farms), fields: merge(current.fields, incoming.fields), cycles: merge(current.cycles, incoming.cycles) });
+  const merged = validateData({ schema_version: 7, observations: merge(current.observations,incoming.observations), sales: merge(current.sales,incoming.sales), expenses: merge(current.expenses,incoming.expenses), harvests: merge(current.harvests,incoming.harvests), soil_tests: merge(current.soil_tests,incoming.soil_tests), scans: merge(current.scans,incoming.scans), tasks: merge(current.tasks,incoming.tasks), farms: merge(current.farms, incoming.farms), fields: merge(current.fields, incoming.fields), cycles: merge(current.cycles, incoming.cycles) });
   return { merged, conflicts, additions };
 }
 export function removeCycle(data: FarmData, id: string): FarmData {
-  return { ...data, sales: data.sales.filter(s => s.cycle_id !== id), expenses: data.expenses.filter(e => e.cycle_id !== id), harvests: data.harvests.filter(h => h.cycle_id !== id), cycles: data.cycles.filter(c => c.id !== id), tasks: data.tasks.filter(t => t.cycle_id !== id), scans: data.scans.filter(s => s.cycle_id !== id) };
+  return { ...data, observations: data.observations.filter(o => o.cycle_id !== id), sales: data.sales.filter(s => s.cycle_id !== id), expenses: data.expenses.filter(e => e.cycle_id !== id), harvests: data.harvests.filter(h => h.cycle_id !== id), cycles: data.cycles.filter(c => c.id !== id), tasks: data.tasks.filter(t => t.cycle_id !== id), scans: data.scans.filter(s => s.cycle_id !== id) };
 }
 export function removeField(data: FarmData, id: string): FarmData {
   const cycleIds = new Set(data.cycles.filter(c => c.field_id === id).map(c => c.id));
-  return { ...data, sales: data.sales.filter(s => !cycleIds.has(s.cycle_id)), expenses: data.expenses.filter(e => !cycleIds.has(e.cycle_id)), harvests: data.harvests.filter(h => !cycleIds.has(h.cycle_id)), fields: data.fields.filter(f => f.id !== id), soil_tests: data.soil_tests.filter(s => s.field_id !== id), cycles: data.cycles.filter(c => !cycleIds.has(c.id)), tasks: data.tasks.filter(t => !cycleIds.has(t.cycle_id)), scans: data.scans.filter(s => s.cycle_id === null || !cycleIds.has(s.cycle_id)) };
+  return { ...data, observations: data.observations.filter(o => !cycleIds.has(o.cycle_id)), sales: data.sales.filter(s => !cycleIds.has(s.cycle_id)), expenses: data.expenses.filter(e => !cycleIds.has(e.cycle_id)), harvests: data.harvests.filter(h => !cycleIds.has(h.cycle_id)), fields: data.fields.filter(f => f.id !== id), soil_tests: data.soil_tests.filter(s => s.field_id !== id), cycles: data.cycles.filter(c => !cycleIds.has(c.id)), tasks: data.tasks.filter(t => !cycleIds.has(t.cycle_id)), scans: data.scans.filter(s => s.cycle_id === null || !cycleIds.has(s.cycle_id)) };
 }

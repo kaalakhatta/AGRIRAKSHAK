@@ -36,9 +36,9 @@ test('references, local dates and planting status gate harvests without preventi
 });
 test('v1-v4 backups migrate without losing records; future schemas and hidden arrays reject',()=>{
  for(const [version,app] of [[1,'farm-m1-v1'],[2,'farm-m3-v2'],[3,'farm-m3-v3'],[4,'farm-m4-v4']]){
- const d=data();d.schema_version=version;delete d.expenses;delete d.harvests;if(version<4)delete d.soil_tests;if(version<3)delete d.scans;if(version<2)delete d.tasks;
- const old={schema_version:version,application_version:app,exported_at:meta('x').created_at,includes_coordinates:false,data:d};const upgraded=parseBackup(JSON.stringify(old));assert.equal(upgraded.schema_version,5);assert.deepEqual(upgraded.data.cycles,d.cycles);assert.deepEqual(upgraded.data.expenses,[]);assert.deepEqual(upgraded.data.harvests,[]);assert.throws(()=>validateData({...d,expenses:[expense()]}));assert.throws(()=>validateData({...d,harvests:[harvest()]}));
- }assert.throws(()=>validateData({...data(),schema_version:6}));
+ const d=data();d.schema_version=version;delete d.expenses;delete d.harvests;delete d.sales;if(version<4)delete d.soil_tests;if(version<3)delete d.scans;if(version<2)delete d.tasks;
+ const old={schema_version:version,application_version:app,exported_at:meta('x').created_at,includes_coordinates:false,data:d};const upgraded=parseBackup(JSON.stringify(old));assert.equal(upgraded.schema_version,6);assert.deepEqual(upgraded.data.cycles,d.cycles);assert.deepEqual(upgraded.data.expenses,[]);assert.deepEqual(upgraded.data.harvests,[]);assert.throws(()=>validateData({...d,expenses:[expense()]}));assert.throws(()=>validateData({...d,harvests:[harvest()]}));
+ }assert.throws(()=>validateData({...data(),schema_version:7}));
 });
 test('backup imports remain private, idempotent and conflict-aware for both record types',()=>{
  const d=data(),b=makeBackup(d);assert.deepEqual(parseBackup(JSON.stringify(b)).data,d);assert.equal(planImport(d,structuredClone(d)).additions,0);const incoming=structuredClone(d);incoming.expenses[0].amount_minor=100;incoming.harvests[0].quantity=200;
@@ -49,7 +49,7 @@ test('cycle and field deletion cascade season records while preserving soil and 
  const cycle=removeCycle(d,'cycle');assert.deepEqual(cycle.expenses.map(e=>e.id),['other-e']);assert.deepEqual(cycle.harvests.map(h=>h.id),['other-h']);assert.equal(removeField(d,'field').expenses.length,0);assert.equal(removeField(d,'field').harvests.length,0);assert.equal(d.expenses.length,2);
 });
 test('legacy stored v4 upgrades atomically, reloads both diaries and preserves data on stale or invalid writes',async()=>{
- globalThis.indexedDB=new IDBFactory();const d=data(),legacy={...d,schema_version:4,revision:2};delete legacy.expenses;delete legacy.harvests;
+ globalThis.indexedDB=new IDBFactory();const d=data(),legacy={...d,schema_version:4,revision:2};delete legacy.expenses;delete legacy.harvests;delete legacy.sales;
  const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('agrirakshak-farm',1);r.onupgradeneeded=()=>r.result.createObjectStore('snapshots');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});await new Promise((resolve,reject)=>{const tx=db.transaction('snapshots','readwrite');tx.objectStore('snapshots').put(legacy,'current');tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error);});db.close();
- const before=await loadFarm();assert.equal(before.schema_version,5);assert.deepEqual(before.expenses,[]);const saved=await saveFarm({...before,expenses:d.expenses,harvests:d.harvests},2);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...before,expenses:[]},2),/another tab/);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...saved,harvests:[{...harvest(),unit:'basket'}]},3));assert.deepEqual(await loadFarm(),saved);
+ const before=await loadFarm();assert.equal(before.schema_version,6);assert.deepEqual(before.expenses,[]);const saved=await saveFarm({...before,expenses:d.expenses,harvests:d.harvests},2);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...before,expenses:[]},2),/another tab/);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...saved,harvests:[{...harvest(),unit:'basket'}]},3));assert.deepEqual(await loadFarm(),saved);
 });

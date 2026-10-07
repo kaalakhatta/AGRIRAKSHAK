@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { todayInZone, type Coordinates, type CropCycle, type Field } from "@/lib/domain/farm";
+import { todayInZone, type Coordinates, type CropCycle, type Field, type Snapshot, type FarmData } from "@/lib/domain/farm";
 import { WeatherClient, WeatherError, weatherFresh, type Weather } from "@/lib/providers/weather";
 import { recommendNextSteps } from "@/lib/recommendations/next-steps";
 import { NextStepsPanel } from "@/features/recommendations/next-steps-panel";
@@ -11,7 +11,7 @@ import type { SoilTest } from "@/lib/domain/soil";
 
 let sessionClient: WeatherClient | null = null;
 
-export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone }: { field: Field; cycles: CropCycle[]; location: Coordinates | null; tasks: CalendarTask[]; soilTests: SoilTest[]; timezone: string }) {
+export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone, snapshot, recordBusy, save }: { field: Field; cycles: CropCycle[]; location: Coordinates | null; tasks: CalendarTask[]; soilTests: SoilTest[]; timezone: string; snapshot: Snapshot; recordBusy:boolean;save:(data:FarmData,message:string)=>Promise<boolean> }) {
   const client = useRef<WeatherClient | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null), [error,setError] = useState("");
   const [busy,setBusy] = useState(false), [consent,setConsent] = useState(false), [now,setNow] = useState(0);
@@ -38,7 +38,7 @@ export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone
   const value = (v: number | null, unit: string) => v === null ? "Unavailable" : `${v} ${unit}`;
   return <section className="farm-card today-section" id="today" aria-labelledby="today-title">
     <div className="card-heading"><div><p className="eyebrow">{field.name} · field overview</p><h2 id="today-title">Today on your farm</h2></div><span className="cycle-badge">{field.origin === "demo" ? "Synthetic demo field" : "Your field record"}</span></div>
-    <label>Crop cycle<select value={cycleId} onChange={e => setCycleId(e.target.value)}><option value="">No cycle selected</option>{cycles.map(c => <option key={c.id} value={c.id}>{c.crop} · {c.status}</option>)}</select></label>
+    <label>Crop cycle<select disabled={recordBusy} value={cycleId} onChange={e => setCycleId(e.target.value)}><option value="">No cycle selected</option>{cycles.map(c => <option key={c.id} value={c.id}>{c.crop} · {c.status}</option>)}</select></label>
     <div className="farm-grid"><div><h3>Weather near this field</h3><p>Modelled weather estimates, separate from field sensors. Forecast days use UTC.</p>
       {location ? <><label className="check-label"><input type="checkbox" checked={consent} onChange={e => e.target.checked ? setConsent(true) : revoke()} />Send these field coordinates to Open-Meteo for weather in this session. The provider receives coordinates and your network address.</label><div className="button-row"><button className="button button-primary" type="button" disabled={!consent || busy || retryAt > now} onClick={() => void fetchWeather()}>{busy ? "Fetching weather…" : weather ? "Refresh weather" : "Fetch field weather"}</button>{consent && <button type="button" className="text-button" onClick={revoke}>Stop weather sharing and clear cache</button>}</div></> : <p>Weather unavailable: no confirmed location. You can continue keeping records and using the scanner.</p>}
       <div aria-live="polite">{error && <p role="alert">{error}</p>}{retryAt > now && <p>Next request after {new Date(retryAt).toLocaleTimeString()}.</p>}</div>
@@ -47,7 +47,7 @@ export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone
         <div className="forecast-scroll"><table><caption>Seven-day forecast · UTC · estimates</caption><thead><tr><th scope="col">Date</th><th scope="col">Min / max °C</th><th scope="col">Precipitation mm/day</th></tr></thead><tbody>{weather.days.map(day => <tr key={day.date}><th scope="row">{day.date}</th><td>{day.minimum ?? "—"} / {day.maximum ?? "—"}</td><td>{day.precipitation ?? "Unavailable"}</td></tr>)}</tbody></table></div>
       </>}
       <p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Free non-commercial endpoint; session cache only. Reloading clears estimates.</p>
-    </div><div><NextStepsPanel steps={steps} demo={field.origin === "demo" || cycle?.origin === "demo"} />
+    </div><div><NextStepsPanel key={cycleId || "no-cycle"} steps={steps} demo={field.origin === "demo" || cycle?.origin === "demo" || snapshot.farms.find(f=>f.id===field.farm_id)?.origin === "demo"} snapshot={snapshot} fieldId={field.id} cycleId={cycle?.id ?? null} timezone={timezone} busy={recordBusy} save={save} />
     </div></div>
   </section>;
 }

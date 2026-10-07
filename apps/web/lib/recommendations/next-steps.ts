@@ -1,5 +1,5 @@
 import type { SoilTest } from "../domain/soil.ts";
-import { taskTiming, type CalendarTask } from '../domain/calendar.ts';
+import { taskTiming, dueDate, type CalendarTask } from '../domain/calendar.ts';
 import { type CropCycle, type Field } from '../domain/farm.ts';
 import { weatherFresh, type Weather } from '../providers/weather.ts';
 
@@ -13,7 +13,7 @@ export function recommendNextSteps({ field, cycle, tasks, soilTests = [], weathe
   const selected = cycle?.field_id === field.id ? cycle : undefined;
   if (selected) for (const task of tasks.filter(t => t.cycle_id === selected.id && t.status === 'pending')) {
     const timing = taskTiming(task, selected, today);
-    if (['Overdue','Due today','Ready at your confirmed stage'].includes(timing)) add(`task:${task.id}`, 'Season tracking', task.title, 'This is a reminder you scheduled for this crop cycle. Review whether it still applies before acting.', 'Review reminder', '/plan', [selected.crop, timing], timing);
+    if (['Overdue','Due today','Ready at your confirmed stage'].includes(timing)) add(`task:${task.id}`, 'Season tracking', task.title, 'This is a reminder you scheduled for this crop cycle. Review whether it still applies before acting.', 'Review reminder', '/plan', [selected.crop, dueDate(task) ? `Scheduled date: ${dueDate(task)}` : 'At your confirmed stage'], timing);
     else if (timing === 'Waiting for sowing date') add(`anchor:${task.id}`, 'Season tracking', `Set the date for “${task.title}”`, 'This reminder cannot be scheduled until you confirm its sowing-date anchor in Plan.', 'Update reminder', '/plan', [selected.crop, 'Sowing anchor missing']);
   }
   if (!selected) add('cycle','Crop planning','Choose a crop cycle','Your field is recorded, but recommendations need a selected crop and season.', 'Add or select a cycle','/farm',[field.name]);

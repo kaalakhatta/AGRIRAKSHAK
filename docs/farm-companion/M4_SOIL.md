@@ -1,5 +1,7 @@
 # M4 partial: measured soil notebook
 
+Follow-up: the expense/harvest slice upgrades the combined snapshot/backup to schema 5; see M4_SEASON_RECORDS.md. The schema-4 description below records the soil milestone contract.
+
 Task 10, Arindam. Cumulative branch `codex/farm-task-10-arindam`, PR #13, Refs #11. This slice implements manual soil records; it does not complete M4 or authorize agricultural recommendations.
 
 ## Runtime and provenance

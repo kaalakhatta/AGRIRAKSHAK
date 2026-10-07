@@ -20,12 +20,12 @@ test('reject unsupported sources/metrics/units, missing values, duplicate proper
 test('sample date uses field timezone and rejects future dates, post-creation samples and missing references',()=>{
  const d=data();assert.doesNotThrow(()=>validateData(d));d.farms[0].timezone='America/Los_Angeles';assert.throws(()=>validateData(d),/after the record/);d.farms[0].timezone='Asia/Kolkata';d.soil_tests[0].sample_date='2099-01-01';assert.throws(()=>validateData(d),/future/);d.soil_tests[0]=soil();d.soil_tests[0].field_id='missing';assert.throws(()=>validateData(d),/missing field/);d.soil_tests[0]=soil('field');assert.throws(()=>validateData(d),/Duplicate/);
 });
-test('all legacy envelopes migrate to v4 without losing records; old schemas cannot hide soil data',()=>{
+test('all legacy envelopes migrate to v5 without losing records; old schemas cannot hide soil data',()=>{
  for(const [version,app] of [[1,'farm-m1-v1'],[2,'farm-m3-v2'],[3,'farm-m3-v3']]){
- const d=data();d.schema_version=version;delete d.soil_tests;if(version<3)delete d.scans;if(version<2)delete d.tasks;
- const b={schema_version:version,application_version:app,exported_at:meta('x').created_at,includes_coordinates:false,data:d};const upgraded=parseBackup(JSON.stringify(b));assert.equal(upgraded.schema_version,4);assert.deepEqual(upgraded.data.soil_tests,[]);assert.deepEqual(upgraded.data.cycles,d.cycles);assert.deepEqual(upgraded.data.scans,d.scans ?? []);assert.throws(()=>validateData({...d,soil_tests:[soil()]}));
+ const d=data();d.schema_version=version;delete d.soil_tests;delete d.expenses;delete d.harvests;if(version<3)delete d.scans;if(version<2)delete d.tasks;
+ const b={schema_version:version,application_version:app,exported_at:meta('x').created_at,includes_coordinates:false,data:d};const upgraded=parseBackup(JSON.stringify(b));assert.equal(upgraded.schema_version,5);assert.deepEqual(upgraded.data.soil_tests,[]);assert.deepEqual(upgraded.data.cycles,d.cycles);assert.deepEqual(upgraded.data.scans,d.scans ?? []);assert.throws(()=>validateData({...d,soil_tests:[soil()]}));
  }
- const d=data();assert.throws(()=>validateData({...d,schema_version:5}));assert.throws(()=>parseBackup(JSON.stringify({...makeBackup(d),application_version:'farm-m3-v3'})));
+ const d=data();assert.throws(()=>validateData({...d,schema_version:6}));assert.throws(()=>parseBackup(JSON.stringify({...makeBackup(d),application_version:'farm-m3-v3'})));
 });
 test('soil backups round-trip and imports are idempotent with explicit conflict resolution',()=>{
  const d=data(),backup=makeBackup(d);assert.deepEqual(parseBackup(JSON.stringify(backup)).data.soil_tests,d.soil_tests);assert.equal(planImport(d,structuredClone(d)).additions,0);const incoming=structuredClone(d);incoming.soil_tests[0].readings[0].value=7;
@@ -35,9 +35,9 @@ test('cycle deletion keeps field soil; field deletion cascades only its own test
  const d=data();d.fields.push({...d.fields[0],id:'other'});d.soil_tests.push({...soil('other-soil'),field_id:'other'});assert.equal(removeCycle(d,'cycle').soil_tests.length,2);assert.deepEqual(removeField(d,'field').soil_tests.map(s=>s.id),['other-soil']);assert.equal(d.soil_tests.length,2);
 });
 test('soil persists with atomic v3 migration and rejects stale tab writes',async()=>{
- globalThis.indexedDB=new IDBFactory();const d=data(),legacy={...d,schema_version:3,revision:2};delete legacy.soil_tests;
+ globalThis.indexedDB=new IDBFactory();const d=data(),legacy={...d,schema_version:3,revision:2};delete legacy.soil_tests;delete legacy.expenses;delete legacy.harvests;
  const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('agrirakshak-farm',1);r.onupgradeneeded=()=>r.result.createObjectStore('snapshots');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});await new Promise((resolve,reject)=>{const tx=db.transaction('snapshots','readwrite');tx.objectStore('snapshots').put(legacy,'current');tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error);});db.close();
- const before=await loadFarm();assert.equal(before.schema_version,4);assert.deepEqual(before.soil_tests,[]);const saved=await saveFarm({...before,soil_tests:d.soil_tests},2);assert.deepEqual((await loadFarm()).soil_tests,d.soil_tests);await assert.rejects(saveFarm({...before,soil_tests:[]},2),/another tab/);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...saved,soil_tests:[{...soil(),field_id:'missing'}]},3),/missing field/);assert.deepEqual(await loadFarm(),saved);
+ const before=await loadFarm();assert.equal(before.schema_version,5);assert.deepEqual(before.soil_tests,[]);const saved=await saveFarm({...before,soil_tests:d.soil_tests},2);assert.deepEqual((await loadFarm()).soil_tests,d.soil_tests);await assert.rejects(saveFarm({...before,soil_tests:[]},2),/another tab/);assert.deepEqual(await loadFarm(),saved);await assert.rejects(saveFarm({...saved,soil_tests:[{...soil(),field_id:'missing'}]},3),/missing field/);assert.deepEqual(await loadFarm(),saved);
 });
 test('preparation steps exclude synthetic/foreign soil and never make sample freshness or efficacy claims',()=>{
  const d=data(),input={field:d.fields[0],cycle:d.cycles[0],tasks:[],soilTests:d.soil_tests,weather:null,hasLocation:false,today:'2026-10-07',now:Date.parse(meta('x').created_at)};

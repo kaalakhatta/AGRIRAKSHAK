@@ -1,3 +1,4 @@
+import { validateSoilTest, type SoilTest } from "./soil.ts";
 import { validateScan, type ScanSummary } from "./scans.ts";
 import { validateTask, type CalendarTask } from "./calendar.ts";
 export const WATER_OPTIONS = ["unknown", "rainfed", "irrigated", "supplemental"] as const;
@@ -8,11 +9,11 @@ export type Coordinates = { latitude: number; longitude: number; accuracy_m: num
 export type Farm = Meta & { name: string; language: "en"; timezone: string };
 export type Field = Meta & { farm_id: string; name: string; region: string | null; area: { value: number; unit: "ha" | "acre" | "m2" } | null; water: typeof WATER_OPTIONS[number]; location: Coordinates | null };
 export type CropCycle = Meta & { field_id: string; crop: string; variety: string | null; status: typeof CYCLE_STATUSES[number]; sowing_date: string | null; stage: typeof STAGES[number] | null; stage_recorded_at: string | null; season: string | null };
-export type FarmData = { schema_version: 3; farms: Farm[]; fields: Field[]; cycles: CropCycle[]; tasks: CalendarTask[]; scans: ScanSummary[] };
+export type FarmData = { schema_version: 4; farms: Farm[]; fields: Field[]; cycles: CropCycle[]; tasks: CalendarTask[]; scans: ScanSummary[]; soil_tests: SoilTest[] };
 export type Snapshot = FarmData & { revision: number };
-export type Backup = { schema_version: 3; application_version: "farm-m3-v3"; exported_at: string; includes_coordinates: boolean; data: FarmData };
+export type Backup = { schema_version: 4; application_version: "farm-m4-v4"; exported_at: string; includes_coordinates: boolean; data: FarmData };
 export type ImportPlan = { merged: FarmData; conflicts: { id: string; label: string }[]; additions: number };
-export const emptyData = (): FarmData => ({ schema_version: 3, farms: [], fields: [], cycles: [], tasks: [], scans: [] });
+export const emptyData = (): FarmData => ({ schema_version: 4, farms: [], fields: [], cycles: [], tasks: [], scans: [], soil_tests: [] });
 export const newMeta = (now = new Date().toISOString()): Meta => ({ id: crypto.randomUUID(), schema_version: 1, created_at: now, updated_at: now, origin: "user" });
 
 function fail(message: string): never { throw new Error(message); }
@@ -50,7 +51,7 @@ export function validateCoordinates(value: unknown): Coordinates {
 }
 export function validateDate(value: unknown): string | null {
   if (value === null) return null;
-  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString().slice(0,10) !== value) fail("Sowing date must be a real YYYY-MM-DD date.");
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString().slice(0,10) !== value) fail("Date must be a real YYYY-MM-DD date.");
   return value;
 }
 export function todayInZone(timezone: string, now = new Date()): string {
@@ -60,14 +61,17 @@ export function todayInZone(timezone: string, now = new Date()): string {
 }
 export function validateData(value: unknown): FarmData {
   const v = object(value, "Farm records");
-  if (v.schema_version !== 1 && v.schema_version !== 2 && v.schema_version !== 3) fail("This record version is not supported. Your saved data has not been changed.");
+  if (v.schema_version !== 1 && v.schema_version !== 2 && v.schema_version !== 3 && v.schema_version !== 4) fail("This record version is not supported. Your saved data has not been changed.");
   for (const key of ["farms", "fields", "cycles"]) if (!Array.isArray(v[key]) || (v[key] as unknown[]).length > 1000) fail(`${key} must be an array with no more than 1,000 records.`);
   if (v.schema_version === 1 && v.tasks !== undefined) fail("Version 1 records cannot contain calendar reminders.");
   if (v.schema_version !== 1 && (!Array.isArray(v.tasks) || v.tasks.length > 1000)) fail("Calendar must contain no more than 1,000 reminders.");
   const tasks = v.schema_version === 1 ? [] : (v.tasks as unknown[]).map(validateTask);
-  if (v.schema_version !== 3 && v.scans !== undefined) fail("Earlier record versions cannot contain scan summaries.");
-  if (v.schema_version === 3 && (!Array.isArray(v.scans) || v.scans.length > 1000)) fail("Timeline must contain no more than 1,000 summaries.");
-  const scans = v.schema_version === 3 ? (v.scans as unknown[]).map(validateScan) : [];
+  if (Number(v.schema_version) < 3 && v.scans !== undefined) fail("Earlier record versions cannot contain scan summaries.");
+  if (Number(v.schema_version) >= 3 && (!Array.isArray(v.scans) || v.scans.length > 1000)) fail("Timeline must contain no more than 1,000 summaries.");
+  const scans = Number(v.schema_version) >= 3 ? (v.scans as unknown[]).map(validateScan) : [];
+  if (v.schema_version !== 4 && v.soil_tests !== undefined) fail("Earlier versions cannot contain soil tests.");
+  if (v.schema_version === 4 && (!Array.isArray(v.soil_tests) || v.soil_tests.length > 1000)) fail("Soil notebook must contain no more than 1,000 tests.");
+  const soil_tests = v.schema_version === 4 ? (v.soil_tests as unknown[]).map(validateSoilTest) : [];
   const farms = (v.farms as unknown[]).map(item => {
     const f = object(item, "Farm");
     const timezone = text(f.timezone, "Timezone");
@@ -87,34 +91,40 @@ export function validateData(value: unknown): FarmData {
     return { ...meta(c), field_id: text(c.field_id, "Field reference"), crop: text(c.crop, "Crop"), variety: optionalText(c.variety, "Variety"), status: choice(c.status, CYCLE_STATUSES, "Cycle status"), sowing_date: validateDate(c.sowing_date), stage, stage_recorded_at, season: optionalText(c.season, "Season") };
   });
   const ids = new Set<string>();
-  for (const record of [...farms, ...fields, ...cycles, ...tasks, ...scans]) { if (ids.has(record.id)) fail("Duplicate record IDs in this file."); ids.add(record.id); }
+  for (const record of [...farms, ...fields, ...cycles, ...tasks, ...scans, ...soil_tests]) { if (ids.has(record.id)) fail("Duplicate record IDs in this file."); ids.add(record.id); }
   const farmIds = new Set(farms.map(f => f.id)), fieldIds = new Set(fields.map(f => f.id));
   if (fields.some(f => !farmIds.has(f.farm_id)) || cycles.some(c => !fieldIds.has(c.field_id))) fail("A record references a missing farm or field.");
   if (tasks.some(t => !cycles.some(c => c.id === t.cycle_id))) fail("A reminder references a missing crop cycle.");
   if (scans.some(s => s.cycle_id !== null && !cycles.some(c => c.id === s.cycle_id))) fail("A screening summary references a missing crop cycle.");
+  for (const soil of soil_tests) {
+    const field = fields.find(f => f.id === soil.field_id);
+    if (!field) fail("A soil test references a missing field.");
+    const farm = farms.find(f => f.id === field.farm_id)!;
+    if (soil.sample_date > todayInZone(farm.timezone) || soil.sample_date > todayInZone(farm.timezone,new Date(soil.created_at))) fail("Soil sample date cannot be in the future or after the record was created.");
+  }
   for (const cycle of cycles) {
     const field = fields.find(f => f.id === cycle.field_id)!;
     const farm = farms.find(f => f.id === field.farm_id)!;
     if (cycle.sowing_date && cycle.sowing_date > todayInZone(farm.timezone) && (cycle.status !== "planned" || cycle.stage !== null)) fail("A future sowing date requires a planned cycle without a current stage.");
     if (cycle.status === "planned" && cycle.stage !== null) fail("A current growth stage requires a planted cycle. Choose Active or clear the stage.");
   }
-  return { schema_version: 3, farms, fields, cycles, tasks, scans };
+  return { schema_version: 4, farms, fields, cycles, tasks, scans, soil_tests };
 }
 export function makeBackup(data: FarmData, includeCoordinates = false, now = new Date().toISOString()): Backup {
   const clean = validateData(data);
-  return { schema_version: 3, application_version: "farm-m3-v3", exported_at: now, includes_coordinates: includeCoordinates, data: { ...clean, fields: clean.fields.map(f => ({ ...f, location: includeCoordinates ? f.location : null })) } };
+  return { schema_version: 4, application_version: "farm-m4-v4", exported_at: now, includes_coordinates: includeCoordinates, data: { ...clean, fields: clean.fields.map(f => ({ ...f, location: includeCoordinates ? f.location : null })) } };
 }
 export function parseBackup(raw: string): Backup {
   if (new TextEncoder().encode(raw).length > 2 * 1024 * 1024) fail("Backup must be smaller than 2 MB.");
   let decoded: unknown;
   try { decoded = JSON.parse(raw); } catch { fail("This file is not valid JSON. No records were changed."); }
   const v = object(decoded, "Backup");
-  if (!((v.schema_version === 1 && v.application_version === "farm-m1-v1") || (v.schema_version === 2 && v.application_version === "farm-m3-v2") || (v.schema_version === 3 && v.application_version === "farm-m3-v3"))) fail("Unsupported backup version. No records were changed.");
+  if (!((v.schema_version === 1 && v.application_version === "farm-m1-v1") || (v.schema_version === 2 && v.application_version === "farm-m3-v2") || (v.schema_version === 3 && v.application_version === "farm-m3-v3") || (v.schema_version === 4 && v.application_version === "farm-m4-v4"))) fail("Unsupported backup version. No records were changed.");
   if (typeof v.includes_coordinates !== "boolean") fail("Backup privacy flags are missing.");
   if (!v.data || typeof v.data !== "object" || (v.data as { schema_version?: unknown }).schema_version !== v.schema_version) fail("Backup and record versions disagree.");
   const data = validateData(v.data);
   if (!v.includes_coordinates && data.fields.some(f => f.location !== null)) fail("Backup contains coordinates without declaring them.");
-  return { schema_version: 3, application_version: "farm-m3-v3", exported_at: timestamp(v.exported_at, "Export time"), includes_coordinates: v.includes_coordinates, data };
+  return { schema_version: 4, application_version: "farm-m4-v4", exported_at: timestamp(v.exported_at, "Export time"), includes_coordinates: v.includes_coordinates, data };
 }
 export function planImport(current: FarmData, incoming: FarmData, conflictChoice?: "device" | "backup"): ImportPlan {
   current = validateData(current); incoming = validateData(incoming);
@@ -129,7 +139,7 @@ export function planImport(current: FarmData, incoming: FarmData, conflictChoice
     }
     return [...records.values()];
   };
-  const merged = validateData({ schema_version: 3, scans: merge(current.scans,incoming.scans), tasks: merge(current.tasks,incoming.tasks), farms: merge(current.farms, incoming.farms), fields: merge(current.fields, incoming.fields), cycles: merge(current.cycles, incoming.cycles) });
+  const merged = validateData({ schema_version: 4, soil_tests: merge(current.soil_tests,incoming.soil_tests), scans: merge(current.scans,incoming.scans), tasks: merge(current.tasks,incoming.tasks), farms: merge(current.farms, incoming.farms), fields: merge(current.fields, incoming.fields), cycles: merge(current.cycles, incoming.cycles) });
   return { merged, conflicts, additions };
 }
 export function removeCycle(data: FarmData, id: string): FarmData {
@@ -137,5 +147,5 @@ export function removeCycle(data: FarmData, id: string): FarmData {
 }
 export function removeField(data: FarmData, id: string): FarmData {
   const cycleIds = new Set(data.cycles.filter(c => c.field_id === id).map(c => c.id));
-  return { ...data, fields: data.fields.filter(f => f.id !== id), cycles: data.cycles.filter(c => !cycleIds.has(c.id)), tasks: data.tasks.filter(t => !cycleIds.has(t.cycle_id)), scans: data.scans.filter(s => s.cycle_id === null || !cycleIds.has(s.cycle_id)) };
+  return { ...data, fields: data.fields.filter(f => f.id !== id), soil_tests: data.soil_tests.filter(s => s.field_id !== id), cycles: data.cycles.filter(c => !cycleIds.has(c.id)), tasks: data.tasks.filter(t => !cycleIds.has(t.cycle_id)), scans: data.scans.filter(s => s.cycle_id === null || !cycleIds.has(s.cycle_id)) };
 }

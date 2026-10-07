@@ -1,6 +1,6 @@
 # Arindam: Task 10 core build status
 
-Branch: codex/farm-task-10-arindam. Cumulative issue: #11. Current milestone: M3 partial calendar + independent demonstration timeline ready for review; reviewed catalog, real model integration and on-device weather success remain pending.
+Branch: codex/farm-task-10-arindam. Cumulative issue: #11. Current milestone: M4 partial soil notebook plus M3 personal calendar, timeline and next-step board ready for review; reviewed catalog, real model integration and on-device weather success remain pending.
 
 ## Completed
 
@@ -36,15 +36,22 @@ M3 timeline: npm run check passes lint/typecheck/35 tests/build. Browser generat
 - Validate actual exported-file delivery on exhibition browsers; export transformation is unit-tested and browser dispatch/status was observed, but the in-app download event could not be captured.
 - M2: teammate catalog schema agreement and human-reviewed catalog integration; successful browser weather request/render on exhibition devices. Session cache is not offline installation. Engine uses exact normalized units; broader conversions/optional rules need reviewed contracts.
 - M3: reviewed seed/crop identifiers and matching, reviewed calendar templates, recommendation feedback/snooze/deduplication, evaluated model integration and real uncertainty timeline contract. Personal reminder calendar and demonstration timeline are implemented. Existing main scanner remains a clearly labelled interface simulation; actual inference work on other branches is not silently replaced/integrated here.
-- M4/M5: soil/expense/harvest records, season summaries, offline caching and exhibition release.
+- M4/M5: observation/expense/harvest/sales records, season summaries, offline caching and exhibition release. Soil notebook is implemented; engine eligibility integration still awaits reviewed methods/rules.
 - Region/crops/reviewer/date/devices/language remain TBD. No seed advice, weather or yield gain is fabricated in M1.
 
 ## Handoff
 
-Read full Task 10 brief and current PR before continuing. M2 owner handoff is ../farm-companion/M2_CONTRACT.md; current cumulative PR is #13. M1 runtime contract is apps/web/lib/domain/farm.ts, separately versioned from context v1. Cycles currently store farmer-entered crop/variety text; matching to reviewed catalog IDs is an M3 migration/integration step. FarmData/backups now use schema 3; schema-1/2 files migrate non-destructively with empty scans (and empty reminders for schema 1). See M3_CALENDAR.md and M3_TIMELINE.md before changing storage or downgrading. Unknown future versions fail closed. Do not edit teammate-owned directories or untracked services artifacts. Never close cumulative #11 for this milestone.
+Read full Task 10 brief and current PR before continuing. M2 owner handoff is ../farm-companion/M2_CONTRACT.md; current cumulative PR is #13. M1 runtime contract is apps/web/lib/domain/farm.ts, separately versioned from context v1. Cycles currently store farmer-entered crop/variety text; matching to reviewed catalog IDs is an M3 migration/integration step. FarmData/backups now use schema 4; schema-1/2/3 files migrate non-destructively with empty soil tests, plus empty scans for schema 1/2 and empty reminders for schema 1. See M3_CALENDAR.md, M3_TIMELINE.md and M4_SOIL.md before changing storage or downgrading. Unknown future versions fail closed. Do not edit teammate-owned directories or untracked services artifacts. Never close cumulative #11 for this milestone.
 
 ## Personalized next-step board
 
 Today now derives explainable preparation suggestions from the selected field/cycle, personal reminders and weather freshness. Focus filters cover crop planning, water/weather and season tracking. Due personal reminders appear first; completed and foreign-cycle tasks are excluded. Missing sowing anchors, region/season/water and active-stage records produce direct navigation to the relevant forms. Fresh weather is summarized without agronomic thresholds; stale estimates prompt refresh. Synthetic field/cycle labels remain visible. No seed, irrigation or nutrient prescriptions are generated from this preparation layer; the reviewed catalog remains pending. Feedback persistence and reviewed agronomic suggestions remain unfinished.
 
 Validation for next-step board: npm run check passes lint/typecheck/39 tests/production build. Four added tests cover missing inputs and immutability, due/completed/foreign-task isolation, foreign-field cycle exclusion, and fresh/stale weather with null versus zero. Browser synthetic field verified focus filtering and expanded input explanations; screenshot stored outside Git. No new dependency or persistence schema.
+
+
+## M4 partial: soil notebook
+
+Records provides separate Soil tests and Screening timeline views so each reloads the current snapshot when selected. Soil tests belong to fields and retain sampling date, source kind/name, optional depth and method, and explicit pH/g_kg/percent readings. Synthetic values remain labelled and excluded from measured-data preparation prompts. Edit, deletion preview, backup/import/conflicts and field deletion cascade are implemented; deleting a crop cycle keeps field soil history. No NPK, automatic report upload, unit guessing, agronomic ranges, freshness certification or dosage advice. Physical input bounds are data validation only. Future sample dates and post-creation samples reject in the field timezone.
+
+Validation: npm run check passes lint/typecheck/47 tests/build. Eight soil tests cover unknown versus zero, metric/unit/source/depth validation, timezone/reference checks, v1–v3 migration, round-trip/conflict import, field/cycle cascade, IndexedDB persistence/stale writes, and synthetic/foreign-field exclusion. Browser synthetic sample verified save, edit, reload, incomplete-depth rejection, delete-preview cancellation and preservation of the existing scan timeline. No actual browser deletion executed; cascade behavior is unit-tested. Backup file delivery and device QA remain pending. See ../farm-companion/M4_SOIL.md.

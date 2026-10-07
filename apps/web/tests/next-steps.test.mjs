@@ -4,7 +4,7 @@ import { recommendNextSteps } from '../lib/recommendations/next-steps.ts';
 const base = () => ({field:{id:'f',name:'Field',region:null,water:'unknown'},cycle:{id:'c',field_id:'f',crop:'Test crop',season:null,variety:null,status:'active',stage:null,sowing_date:null},tasks:[],weather:null,hasLocation:false,today:'2026-10-06',now:Date.parse('2026-10-06T10:00:00Z')});
 test('missing records produce actionable explainable steps without invented crop advice',()=>{
  const input=base(),before=JSON.stringify(input),steps=recommendNextSteps(input);
- assert.deepEqual(steps.map(s=>s.id),['coverage','water','weather','sowing','stage','diary']);
+ assert.deepEqual(steps.map(s=>s.id),['coverage','water','weather','sowing','stage','diary','soil-record']);
  assert.ok(steps.every(s=>s.inputs.length && s.why && s.href));assert.equal(JSON.stringify(input),before);
  assert.match(steps.find(s=>s.id==='coverage').why,/region, season, variety/);
 });

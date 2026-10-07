@@ -7,9 +7,11 @@ import { NextStepsPanel } from "@/features/recommendations/next-steps-panel";
 
 import { type CalendarTask } from "@/lib/domain/calendar";
 
+import type { SoilTest } from "@/lib/domain/soil";
+
 let sessionClient: WeatherClient | null = null;
 
-export function TodayPanel({ field, cycles, location, tasks, timezone }: { field: Field; cycles: CropCycle[]; location: Coordinates | null; tasks: CalendarTask[]; timezone: string }) {
+export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone }: { field: Field; cycles: CropCycle[]; location: Coordinates | null; tasks: CalendarTask[]; soilTests: SoilTest[]; timezone: string }) {
   const client = useRef<WeatherClient | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null), [error,setError] = useState("");
   const [busy,setBusy] = useState(false), [consent,setConsent] = useState(false), [now,setNow] = useState(0);
@@ -32,7 +34,7 @@ export function TodayPanel({ field, cycles, location, tasks, timezone }: { field
   }
   function revoke() { generation.current++; client.current?.clear(); setConsent(false); setWeather(null); setError(""); setBusy(false); }
   const fresh = weather && weatherFresh(weather,now);
-  const steps = recommendNextSteps({field, cycle, tasks, weather, hasLocation: !!location, today: todayInZone(timezone), now});
+  const steps = recommendNextSteps({field, cycle, tasks, soilTests, weather, hasLocation: !!location, today: todayInZone(timezone), now});
   const value = (v: number | null, unit: string) => v === null ? "Unavailable" : `${v} ${unit}`;
   return <section className="farm-card today-section" id="today" aria-labelledby="today-title">
     <div className="card-heading"><div><p className="eyebrow">{field.name} · field overview</p><h2 id="today-title">Today on your farm</h2></div><span className="cycle-badge">{field.origin === "demo" ? "Synthetic demo field" : "Your field record"}</span></div>

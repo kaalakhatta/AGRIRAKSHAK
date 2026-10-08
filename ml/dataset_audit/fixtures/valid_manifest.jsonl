@@ -1,0 +1,6 @@
+{"id": "a1", "path": "classA/img1.png", "label": "classA", "sha256": "aaa111", "split": "train", "source": "synthetic", "synthetic": true}
+{"id": "a2", "path": "classA/img2.png", "label": "classA", "sha256": "aaa222", "split": "train", "source": "synthetic", "synthetic": true}
+{"id": "a3", "path": "classA/img3.png", "label": "classA", "sha256": "aaa333", "split": "val", "source": "synthetic", "synthetic": false}
+{"id": "b1", "path": "classB/img1.png", "label": "classB", "sha256": "bbb111", "split": "train", "source": "synthetic", "synthetic": true}
+{"id": "b2", "path": "classB/img2.png", "label": "classB", "sha256": "bbb222", "split": "val", "source": "synthetic", "synthetic": false}
+{"id": "b3", "path": "classB/img3.png", "label": "classB", "sha256": "bbb333", "split": "test", "source": "synthetic", "synthetic": false}

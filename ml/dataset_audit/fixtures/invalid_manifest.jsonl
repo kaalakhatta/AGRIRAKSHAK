@@ -4,3 +4,10 @@
 {"id": "x4", "path": "classB/img1.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "test", "source": "synthetic", "synthetic": false}
 {"id": "x5", "path": "classB/img2.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "val", "source": "synthetic", "synthetic": true}
 {"id": "x6", "path": "classC/img1.png", "sha256": "6666666666666666666666666666666666666666666666666666666666666666", "split": "test", "source": "synthetic", "synthetic": true}
+This is a corrupt line
+"This is a scalar string"
+12345
+{"id": "x1", "path": "classA/img1.png", "label": "classA", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "split": "train", "source": "synthetic", "synthetic": false}
+{"id": "x7", "path": "classA/img3.png", "label": "classA", "sha256": "not-a-hash", "split": "train", "source": "synthetic", "synthetic": false}
+{"id": "x8", "path": "classA/img3.png", "label": "classA", "sha256": "1111111111111111111111111111111111111111111111111111111111111112", "split": "training", "source": "synthetic", "synthetic": false}
+{"id": "x9", "path": "missing_file.png", "label": "classA", "sha256": "1111111111111111111111111111111111111111111111111111111111111113", "split": "train", "source": "synthetic", "synthetic": false}

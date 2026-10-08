@@ -13,7 +13,7 @@ def main():
     try:
         input_path = Path(args.input).resolve()
         output_path = Path(args.output).resolve()
-        if output_path == input_path or input_path in output_path.parents:
+        if output_path == input_path or input_path in output_path.parents or output_path in input_path.parents:
             raise ValueError("Reports must be outside the input dataset; input files are read-only")
         report = audit_dataset(args.input)
         generate_reports(report, args.output)

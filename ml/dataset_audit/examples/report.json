@@ -1,0 +1,41 @@
+{
+    "summary": {
+        "total_classes": 2,
+        "total_images": 7,
+        "corrupt_or_unsupported": 1,
+        "exact_duplicates": 1,
+        "class_imbalance_ratio": 0.75
+    },
+    "classes": {
+        "classA": {
+            "total_images": 3,
+            "formats": {
+                "PNG": 3
+            },
+            "dimensions": {
+                "4x4": 3
+            }
+        },
+        "classB": {
+            "total_images": 4,
+            "formats": {
+                "PNG": 4
+            },
+            "dimensions": {
+                "4x4": 4
+            }
+        }
+    },
+    "duplicates": [
+        {
+            "hash": "49421415c09677e717d78087a2f7899b5f3f7fd752b8b59436bb0ca5070f5754",
+            "paths": [
+                "classB/img1.png",
+                "classB/img4.png"
+            ]
+        }
+    ],
+    "corrupt_files": [
+        "classA/corrupt.dat"
+    ]
+}

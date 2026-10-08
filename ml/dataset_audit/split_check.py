@@ -3,7 +3,7 @@ import re
 import sys
 
 
-def check_split_leakage(manifest_path):
+def check_split_leakage(manifest_path, data_dir=None):
     """Validate JSONL records; fixture findings are not evaluation evidence."""
     findings = {"errors": [], "warnings": []}
     records = []
@@ -26,12 +26,30 @@ def check_split_leakage(manifest_path):
     seen_ids = set()
     for number, record in records:
         reference = f"Line {number}"  # Never echo user paths/IDs in shared findings.
-        invalid = [field for field in ("id", "sha256", "label", "split")
-                   if not isinstance(record.get(field), str) or not record[field].strip()]
+
+        invalid = []
+        for field in ("id", "sha256", "label", "split"):
+            val = record.get(field)
+            if field == "id":
+                if not isinstance(val, (str, int)) or (isinstance(val, str) and not val.strip()):
+                    invalid.append(field)
+            else:
+                if not isinstance(val, str) or not val.strip():
+                    invalid.append(field)
+
         if invalid:
             findings["errors"].append(f"{reference}: Missing required fields or invalid types: {', '.join(invalid)}")
             continue
-        identifier, sha, label, split = (record[field] for field in ("id", "sha256", "label", "split"))
+
+        if data_dir:
+            import os
+            file_path = record.get("path")
+            if not file_path:
+                findings["errors"].append(f"{reference}: Missing file path for data-dir check")
+            elif not os.path.isfile(os.path.join(data_dir, file_path)):
+                findings["errors"].append(f"{reference}: Referenced file absent from data directory")
+
+        identifier, sha, label, split = (str(record[field]) for field in ("id", "sha256", "label", "split"))
         if identifier in seen_ids:
             findings["errors"].append(f"{reference}: Duplicate record ID")
         seen_ids.add(identifier)
@@ -75,11 +93,14 @@ def check_split_leakage(manifest_path):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python -m dataset_audit.split_check <manifest.jsonl>", file=sys.stderr)
-        return 1
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("manifest")
+    parser.add_argument("--data-dir", required=False)
+    args = parser.parse_args()
+
     try:
-        findings, invalid = check_split_leakage(sys.argv[1])
+        findings, invalid = check_split_leakage(args.manifest, args.data_dir)
     except OSError:
         findings, invalid = {"errors": ["Manifest unavailable or unreadable"], "warnings": []}, True
     print(json.dumps(findings, indent=2))

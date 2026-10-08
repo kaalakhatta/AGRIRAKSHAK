@@ -23,8 +23,8 @@
 - No field images collected; no consent process established.
 
 ## Next Actions
-- A5: Audit the existing supplied baseline bundle now; obtain provenance/evaluation/model-card evidence from Yashi.
-- A6: Finalize the consent/reviewer protocol and exhibition evidence decision; do not collect images without separate authorization.
+- [x] A5: Audit the existing supplied baseline bundle now; obtain provenance/evaluation/model-card evidence from Yashi. (Completed via BASELINE_AUDIT.md and updates to metrics/checklist)
+- [x] A6: Finalize the exhibition evidence decision and hand-off to Arindam. (Completed via EXHIBITION_MODEL_READINESS.md)
 - Coordinate with Arindam for runtime integration once ONNX artifacts are available.
 
 ## Blockers

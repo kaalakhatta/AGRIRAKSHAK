@@ -1,11 +1,25 @@
 # Team setup and reassignment status
 
-Verified 2026-10-08: setup PR #12, core PR #13 and training PR #8 are merged into main. Task 10/#11 is assigned to kaalakhatta with bot confirmation; Task 7/#10 is assigned to yashitripathi2007 with bot confirmation. Kanika's /claim has not yet been confirmed. Aanya (aanya25bce11372-stack) and Anushka (AnushkaSChandel) have pending repository invitations; acceptance/write access and claims are not yet proven.
+Verified 2026-10-08 against GitHub main and live access/issue records. Setup #12, core #13, training #8, five-person roster #17, revised training scopes #18 and planning framework #19 are merged. The registry and active briefs are available on main; no reassignment activation merge is pending.
 
-Owner requested a five-person reassignment and a larger bundle for Yashi. The registry/briefs now define Yashi's nine research/catalog/education packages, Kanika's farm-data regression role, Anushka's Task 11 dataset/model audit, Aanya's Task 12 device/exhibition QA and Arindam's Task 10 integration. Applicable historical deliverables/PR #14 are preserved. Scoped instructions and startup prompts follow the same allocation.
+## Current allocation and access
 
-Activation pending until the reassignment PR merges into main. New claims must use the assigned account after invitation acceptance; owner issue assignment alone does not confirm a working claim. Do not claim completed teammate deliverables, current agronomic review, device passes or model readiness from this planning update.
+| Contributor | Active issue | Access and claim evidence | Next startup action |
+| --- | --- | --- | --- |
+| Yashi | [Task 7 / #10](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/10) | Write access; bot-confirmed claim and mapped assignment | Resume registered training/research branch; preserve literature PR #14 |
+| Kanika | [Task 6 / #9](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/9) | Write access and assignment; no /claim comment or bot confirmation observed | Post /claim with KanikaSharma0721 and verify confirmation |
+| Arindam | [Task 10 / #11](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/11) | Admin access; bot-confirmed claim and mapped assignment | Continue core integration on codex/farm-task-10-arindam |
+| Anushka | [Task 11 / #15](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/15) | Write access as AnushkaSChandel; owner assignment for discoverability; no confirmed claim | Post /claim with AnushkaSChandel, verify confirmation, then start A1 |
+| Aanya | [Task 12 / #16](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16) | Invitation remains pending; no confirmed claim | Accept invitation with mapped account, then post /claim |
 
-Protection: GitHub main ruleset Protect main was observed disabled and classic branch protection absent on 2026-10-08. Existing web/scope workflows run, but enforced protection is not confirmed. No protection/bypass settings changed by this reassignment.
+Yashi owns six packages Y1–Y6 in eight research/ML scopes: free Colab, training/calibration/evaluation/export and supporting evidence. Arindam owns all farm intelligence and catalogs. Kanika owns farm-data/regression QA, Anushka dataset/split/model audits, and Aanya device/exhibition evidence. Exact accounts, branches, paths and briefs are canonical in [tasks.json](tasks.json); direct issue/brief links are in the [active task index](../team-tasks/README.md).
 
-Validation and handoff evidence is recorded in CORE_STATUS.md after the reassignment checks. Region/crops/reviewer/date/device/language decisions remain TBD. App offline work and model artifacts in the local checkout are unrelated and preserved outside this documentation/registry commit.
+An owner assignment is a task reservation, not a successful /claim or authorization to edit. Contributors use their own mapped accounts and wait for bot confirmation. Claims do not create branches; resume the registered branch or create it from origin/main if absent. Historical task briefs 1–4 and GitHub issues #1–5 are references; preserve previous work and PRs, and use the active registry.
+
+## Coverage, validation and remaining gates
+
+Confirmed planning focus: Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Exhibition: October 9, 2026, approximately 14:00 IST; candidate-freeze target 08:00 IST. Named agronomy reviewer, presentation-device evidence and language priorities remain TBD. Planning coverage does not establish disease-model coverage or reviewed advice.
+
+Protect main remains disabled in the live ruleset check. Web/scope workflows exist and passed on the latest delivery; passing workflows do not establish enforced protection. No protection settings were changed.
+
+Validation: 16 claim/scope tests pass. Main includes the current task registry, all five active briefs, startup guide and Anushka’s two scoped instruction files. Claims, actual devices, model metrics and agronomic review remain separate evidence gates. Current owner handoff is in [CORE_STATUS.md](CORE_STATUS.md). The task-discovery audit did not change runtime files. Its fixes are carried in combined exhibition PR #20; runtime checks are recorded in CORE_STATUS.md/M5_EXHIBITION.md. Private model artifacts remain outside Git.

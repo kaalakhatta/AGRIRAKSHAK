@@ -6,6 +6,8 @@ export function CalendarPanel({ snapshot, cycle, timezone, busy, save }: { snaps
   const [title,setTitle] = useState(""), [kind,setKind] = useState<Schedule["kind"]>("date"), [date,setDate] = useState(""), [offset,setOffset] = useState("0"), [stage,setStage] = useState<NonNullable<CropCycle["stage"]>>("establishment");
   const [editing,setEditing] = useState<string | null>(null), [error,setError] = useState(""), [remove,setRemove] = useState<string | null>(null);
   const tasks = snapshot.tasks.filter(t => t.cycle_id === cycle.id);
+  const field = snapshot.fields.find(field => field.id === cycle.field_id);
+  const demo = cycle.origin === "demo" || field?.origin === "demo" || snapshot.farms.find(farm=>farm.id === field?.farm_id)?.origin === "demo";
   const today = todayInZone(timezone);
   function reset() { setTitle(""); setDate(""); setOffset("0"); setKind("date"); setEditing(null); setError(""); }
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -29,6 +31,7 @@ export function CalendarPanel({ snapshot, cycle, timezone, busy, save }: { snaps
     document.getElementById(`${cycle.id}-reminder-title`)?.focus();
   }
   return <section className="farm-card calendar-section" aria-labelledby={`${cycle.id}-calendar-title`}><p className="eyebrow">{cycle.crop} · your schedule</p><h2 id={`${cycle.id}-calendar-title`}>Season reminders</h2><p>You choose the task and timing. These reminders are personal plans, not reviewed agricultural recommendations. Dates use {timezone}; today is {today}. No notifications are sent.</p>
+    {demo && <p className="simulation-label">Synthetic exhibition cycle · these reminders are demonstration records</p>}
     <div className="farm-grid"><form onSubmit={submit}><fieldset disabled={busy}><legend>{editing ? "Edit your reminder" : "Add your reminder"}</legend><label>Reminder title<input id={`${cycle.id}-reminder-title`} required maxLength={120} value={title} onChange={e=>setTitle(e.target.value)} placeholder="For example, update my field notes" /></label><label>Timing<select value={kind} onChange={e=>setKind(e.target.value as Schedule["kind"])}><option value="date">On a date I choose</option><option value="sowing">Days from my sowing date</option><option value="stage">At a stage I confirm</option></select></label>
     {kind === "date" && <label>Reminder date<input type="date" required value={date} onChange={e=>setDate(e.target.value)} /></label>}
     {kind === "sowing" && <><label>Days after sowing<input type="number" required min={-3650} max={3650} step={1} value={offset} onChange={e=>setOffset(e.target.value)} /></label><p>Negative days mean before sowing. {cycle.sowing_date ? `Anchor: ${cycle.sowing_date}.` : "Sowing date is unknown; this reminder stays unscheduled."}</p></>}

@@ -128,3 +128,29 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 @media (max-width: 520px) { .today-section .card-heading { flex-direction: column; } }
 .calendar-section { margin-top: 24px; }
 @media (max-width: 520px) { .site-header { gap: 18px; flex-wrap: wrap; padding: 14px 0; } .farm-nav { gap: 12px; } }
+
+.offline-bar { max-width: 1180px; margin: 12px auto 0; padding: 12px 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); font-size: .85rem; }
+.offline-bar > p { margin: 0 0 8px; }
+.offline-bar summary { cursor: pointer; font-weight: 700; }
+.offline-bar details p { max-width: 80ch; }
+@media (max-width: 520px) { .offline-bar { margin: 8px 12px 0; padding: 12px; } }
+
+.source-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+.camera-scanner { display: grid; gap: 18px; max-width: 100%; min-width: 0; }
+
+.camera-stage { aspect-ratio: 4 / 3; background: #071b13; max-width: 100%; min-height: 300px; min-width: 0; overflow: hidden; position: relative; width: 100%; }
+
+.camera-stage video { display: block; height: 100%; max-width: 100%; object-fit: cover; width: 100%; }
+
+.scan-guide { align-items: end; border: 3px solid var(--lime); border-radius: 40% 12% 40% 12%; display: flex; inset: 10%; justify-content: center; pointer-events: none; position: absolute; }
+
+.scan-guide::before, .scan-guide::after { background: var(--lime); content: ""; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); }
+
+.scan-guide::before { height: 1px; width: 22px; }
+
+.scan-guide::after { height: 22px; width: 1px; }
+
+.scan-guide span { background: rgb(7 27 19 / 78%); color: white; font-size: .82rem; font-weight: 800; margin-bottom: 12px; padding: 8px 10px; }
+
+.camera-actions { display: grid; gap: 12px; grid-template-columns: 1fr 1.4fr; }

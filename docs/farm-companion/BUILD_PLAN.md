@@ -1,6 +1,6 @@
 # AgriRakshak farm companion: full build plan
 
-Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi, Anushka, Aanya (owner reassignment 2026-10-08). This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Initial focus confirmed 2026-10-08: Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Deadline and named agronomy reviewer remain TBD.
+Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi, Anushka, Aanya (owner reassignment 2026-10-08). This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Initial focus confirmed 2026-10-08: Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Exhibition: October 9, 2026, around 14:00 IST. Owner asks for completion tonight or early morning; freeze the candidate by 08:00 IST for rehearsal. Named agronomy reviewer remains TBD.
 
 ## Product and constraints
 
@@ -56,7 +56,7 @@ Use short forms and progressive questions. A farmer can skip unknown soil or dat
 
 ## Build sequence and acceptance gates
 
-Effort is estimated team working days, not calendar promises; exhibition date is TBD. Milestones are sequential release gates, not a claim that contributors must work serially.
+Effort is estimated team working days, not calendar promises; exhibition is October 9 at about 14:00 IST. Milestones are sequential release gates, not a claim that contributors must work serially.
 
 | Milestone | Estimate | Arindam (heavy work) | Kanika (validation/QA) | Yashi (training/evidence) | Exit gate |
 | --- | --- | --- | --- | --- | --- |
@@ -71,7 +71,7 @@ Total planning range: roughly 16–27 working days, highly dependent on model re
 
 ## Team and repository coordination
 
-Keep the existing repository and open setup PR; no second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's farm-data audit/regression issue; Task 7/#10 is Yashi's Colab/training/evaluation/supporting-evidence issue. Task 11/#15 is Anushka's dataset/model audit; Task 12/#16 is Aanya's device/exhibition QA. Exact accounts, branches and exclusive paths are in tasks.json. Arindam owns all farm intelligence and catalogs; Yashi owns the eight research/ML scopes in tasks.json; Kanika supplies contract cases, Anushka audits split/model evidence, and Aanya executes device/rehearsal cases. Read their briefs and AGENT_START.md before work. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
+Keep the existing repository; setup #12, roster #17 and training scopes #18 are merged into main. No second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's farm-data audit/regression issue; Task 7/#10 is Yashi's Colab/training/evaluation/supporting-evidence issue. Task 11/#15 is Anushka's dataset/model audit; Task 12/#16 is Aanya's device/exhibition QA. Exact accounts, branches and exclusive paths are in tasks.json. Arindam owns all farm intelligence and catalogs; Yashi owns the eight research/ML scopes in tasks.json; Kanika supplies contract cases, Anushka audits split/model evidence, and Aanya executes device/rehearsal cases. Read their briefs and AGENT_START.md before work. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
 
 Read [delivery protocol](DELIVERY.md), [data model](DATA_MODEL.md), [engine plan](RECOMMENDATION_ENGINE.md) and [architecture](../ARCHITECTURE.md). The v1 weather/soil audit contract remains in ../farm-context/CONTRACT.md; future farm-record schemas are separate and versioned.
 
@@ -79,4 +79,4 @@ Read [delivery protocol](DELIVERY.md), [data model](DATA_MODEL.md), [engine plan
 
 Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. See SEHORE_INTELLIGENCE.md for the source boundary and runtime contract. Yashi must assess disease-training datasets separately; current pepper/potato/tomato training does not establish screening coverage for these crops.
 
-Exhibition date/device; named agronomy reviewer; language priority; whether an evaluated model is already available and its license/size; whether farmer records will be retained on shared exhibition devices (default: synthetic demo only). Missing decisions do not block local profile, storage, weather or rule-framework implementation.
+Exhibition is October 9, 2026, around 14:00 IST, with an 08:00 IST candidate-freeze target. Pending: presentation devices; named agronomy reviewer; language priority; whether an evaluated model is already available and its license/size; whether farmer records will be retained on shared exhibition devices (default: synthetic demo only). Missing decisions do not block local profile, storage, weather or rule-framework implementation.

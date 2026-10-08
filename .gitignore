@@ -15,6 +15,7 @@ ml/runs/
 ml/checkpoints/
 ml/artifacts/
 ml/.venv/
+.venv/
 ml/**/*.egg-info/
 __pycache__/
 .pytest_cache/
@@ -24,3 +25,13 @@ __pycache__/
 *.onnx
 !apps/web/public/models/README.md
 .vercel
+:memory:.ses
+*.egg-info/
+*.onnx.data
+services/api/model/*
+!services/api/model/.gitkeep
+
+# Generated offline shell and worker (rebuilt with app assets)
+apps/web/public/offline/
+apps/web/public/sw.js
+apps/web/public/offline-release.json

@@ -1,0 +1,1 @@
+"""AgriRakshak inference API."""

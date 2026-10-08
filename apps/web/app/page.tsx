@@ -1,55 +1,9 @@
-import Link from "next/link";
-import { LeafAnalyzer } from "@/components/leaf-analyzer";
-
-const principles = [
-  ["Private by design", "The planned model runs in the browser, so the MVP does not need to upload a farmer’s photograph."],
-  ["Honest uncertainty", "Low-confidence results ask for a clearer image or expert review instead of forcing a diagnosis."],
-  ["Learning included", "Every supported result will connect symptoms and prevention guidance to a short recognition exercise."],
-];
-
+import { SiteHeader } from "@/components/site-header";
+import { DocumentLink } from "@/components/document-link";
+import { ExhibitionStart } from "@/features/farm/exhibition-start";
 export default function Home() {
-  return (
-    <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="AgriRakshak home"><span aria-hidden="true">AR</span>AgriRakshak</a>
-        <nav className="farm-nav" aria-label="Main navigation"><a href="#analyzer-title">Leaf scanner</a><Link href="/plan">Plan</Link><Link href="/today">Today</Link><Link href="/records">Records</Link><Link href="/farm">My Farm</Link></nav>
-      </header>
-
-      <section className="hero" id="top">
-        <div>
-          <p className="eyebrow">College project exhibition · 2026</p>
-          <h1>A clearer first look at crop health.</h1>
-          <p className="lede">Upload a leaf photograph to explore AgriRakshak’s screening experience. The current milestone demonstrates the complete interface while the trained model is being prepared.</p>
-        </div>
-        <div className="hero-note">
-          <strong>Current build</strong>
-          <span>Interactive prototype</span>
-          <p>Image selection and safety states are functional. Predictions are clearly marked simulations until an evaluated model is integrated.</p>
-        </div>
-      </section>
-
-      <section className="device-note"><strong>Start your farm record.</strong> Add your fields and crop cycles, keep them on your device, and export a backup. <Link href="/farm">Open My Farm →</Link></section>
-
-      <LeafAnalyzer />
-
-      <section className="principles" id="how-it-works" aria-labelledby="principles-title">
-        <p className="eyebrow">Product principles</p>
-        <h2 id="principles-title">Designed for a responsible field demonstration</h2>
-        <div className="principle-grid">
-          {principles.map(([title, description], index) => (
-            <article key={title}>
-              <span>0{index + 1}</span>
-              <h3>{title}</h3>
-              <p>{description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <aside className="responsibility-note">
-        <strong>Responsible use</strong>
-        <p>AgriRakshak provides preliminary screening and education. Confirm important crop-treatment decisions with a qualified agricultural professional.</p>
-      </aside>
-    </main>
-  );
+  return <main><SiteHeader current="/" /><section className="hero"><div><p className="eyebrow">Your farm companion · Sehore, Madhya Pradesh</p><h1>Plan. Monitor. Improve.</h1><p className="lede">Keep your crop season in one place—from your field and personal plans to observations, costs and harvest records. Your records stay on this device.</p><div className="button-row"><DocumentLink className="button button-primary" href="/today">Open Today</DocumentLink><DocumentLink className="button button-secondary" href="/farm">Set up My Farm</DocumentLink></div></div><div className="hero-note"><strong>Initial focus</strong><span>Soybean · wheat · gram</span><p>Local records and personal reminders work now. Agricultural recommendations wait for reviewed evidence; disease screening has separate model coverage.</p></div></section>
+    <section className="principles" aria-label="Farm companion journeys"><div className="principle-grid">{[["01","Plan your season","Choose a crop cycle, prepare your inputs and keep your own reminders.","/plan"],["02","Monitor your field","Review weather availability, track due tasks and record observations.","/today"],["03","Improve your records","Review entered costs, harvests and sales with gaps and synthetic data kept visible.","/records"]].map(([number,title,description,href])=><article key={href}><span>{number}</span><h2>{title}</h2><p>{description}</p><DocumentLink href={href}>Open {title.split(' ')[0]} →</DocumentLink></article>)}</div></section>
+    <ExhibitionStart /><section className="device-note"><strong>Leaf screening is one supporting tool.</strong> The existing baseline supports bell pepper, potato and tomato; soybean, wheat and chickpea screening remains unsupported. <DocumentLink href="/scan">Open Scan →</DocumentLink></section>
+    <aside className="responsibility-note"><strong>Know what the app can tell you</strong><p>GPS does not measure soil nutrients. Weather is an estimate. Recorded receipts minus costs are not complete profit. Preliminary screening is not a diagnosis; important crop decisions need local expert review.</p></aside></main>;
 }

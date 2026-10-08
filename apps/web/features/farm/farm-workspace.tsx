@@ -5,6 +5,7 @@ import { CYCLE_STATUSES, STAGES, WATER_OPTIONS, emptyData, makeBackup, newMeta, 
 import { CalendarPanel } from "@/features/calendar/calendar-panel";
 import { PlanningPanel } from "@/features/recommendations/planning-panel";
 import { reschedulePreview, rescheduleTasks } from "@/lib/domain/calendar";
+import { checkBackup, recordCounts } from "@/lib/domain/backup-check";
 import { TodayPanel } from "@/features/weather/today-panel";
 import { loadFarm, saveFarm } from "@/lib/storage/farm-store";
 
@@ -26,6 +27,10 @@ export function FarmWorkspace({ todayOnly = false, planOnly = false }: { todayOn
   const [dateChoice,setDateChoice] = useState<"shift" | "keep" | "">("");
   const [stageConfirmed,setStageConfirmed] = useState(false);
   const [deletion, setDeletion] = useState<"all" | { field: string } | { cycle: string } | null>(null);
+  const [prepared,setPrepared]=useState<{url:string;revision:number;coordinates:boolean}|null>(null);
+  const [backupCheck,setBackupCheck]=useState<ReturnType<typeof checkBackup>|null>(null),[checkError,setCheckError]=useState('');
+  const checkRef=useRef<HTMLInputElement>(null),checking=useRef(0);
+  useEffect(()=>()=>{if(prepared)URL.revokeObjectURL(prepared.url);},[prepared]);
   const importRef = useRef<HTMLInputElement>(null);
   const deleteRef = useRef<HTMLElement>(null);
   const changeRef = useRef<HTMLElement>(null);
@@ -137,9 +142,16 @@ export function FarmWorkspace({ todayOnly = false, planOnly = false }: { todayOn
   }
   function downloadBackup() {
     if (!snapshot) return;
-    const url = URL.createObjectURL(new Blob([JSON.stringify(makeBackup(snapshot, includeCoordinates), null, 2)], { type: "application/json" }));
-    const a = document.createElement("a"); a.href = url; a.download = "agrirakshak-farm-backup.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setMessage(includeCoordinates ? "Backup exported with saved field coordinates. Keep it private." : "Backup exported without precise field coordinates.");
+    try {
+      const url=URL.createObjectURL(new Blob([JSON.stringify(makeBackup(snapshot,includeCoordinates),null,2)],{type:'application/json'}));
+      setPrepared({url,revision:snapshot.revision,coordinates:includeCoordinates});
+      setMessage('Backup prepared. Download it using the link below, then check the saved file before relying on it.');
+    } catch(e){setError(errorText(e));}
+  }
+  async function inspectFile(file?:File){
+    const request=++checking.current;setBackupCheck(null);setCheckError('');if(!file)return;
+    try{if(file.size>2*1024*1024)throw new Error('Backup must be smaller than 2 MB.');const checked=checkBackup(await file.text());if(request===checking.current)setBackupCheck(checked);}
+    catch(e){if(request===checking.current)setCheckError(errorText(e));}
   }
   async function readImport(file?: File) {
     setError(""); setIncoming(null); setResolution(""); if (!file) return;
@@ -207,8 +219,12 @@ export function FarmWorkspace({ todayOnly = false, planOnly = false }: { todayOn
       {activeField && cycles.map(cycle=><CalendarPanel key={cycle.id} snapshot={snapshot!} cycle={cycle} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} busy={busy} save={persist} />)}
       <section className="farm-card backup-section" aria-labelledby="backup-title"><h2 id="backup-title">Keep a copy of your records</h2><p>Export a JSON backup before clearing browser data or changing devices. Import is validated and previewed before anything is saved.</p>
         <label className="check-label"><input type="checkbox" checked={includeCoordinates} onChange={e => setIncludeCoordinates(e.target.checked)} />Include saved precise coordinates in my backup.</label>
-        <div className="button-row"><button type="button" disabled={!snapshot || busy} className="button button-primary" onClick={downloadBackup}>Export backup</button><button type="button" disabled={!snapshot || busy} className="button button-secondary" onClick={() => importRef.current?.click()}>Import backup</button><button type="button" disabled={!snapshot || busy} className="text-button" onClick={() => setDeletion("all")}>Delete all farm records</button></div>
+        <div className="button-row"><button type="button" disabled={!snapshot || busy} className="button button-primary" onClick={downloadBackup}>Export backup</button><button type="button" disabled={!snapshot || busy} className="button button-secondary" onClick={() => importRef.current?.click()}>Import backup</button><button type="button" disabled={busy} className="button button-secondary" onClick={()=>checkRef.current?.click()}>Check backup file</button><button type="button" disabled={!snapshot || busy} className="text-button" onClick={() => setDeletion("all")}>Delete all farm records</button></div>
         <input ref={importRef} type="file" className="visually-hidden" accept="application/json,.json" onChange={e => { void readImport(e.target.files?.[0]); e.target.value = ""; }} />
+        {prepared && (prepared.revision===snapshot?.revision && prepared.coordinates===includeCoordinates ? <p className="success-note"><a href={prepared.url} download="agrirakshak-farm-backup.json">Download prepared farm backup</a> · {prepared.coordinates ? 'Includes saved precise coordinates' : 'Excludes precise field coordinates'}. This link prepares a file; only checking your saved file confirms it is readable.</p> : <p>Records or the coordinate choice changed. Prepare a fresh backup before downloading.</p>)}
+        <input ref={checkRef} type="file" className="visually-hidden" accept="application/json,.json" onChange={e=>{void inspectFile(e.target.files?.[0]);e.target.value='';}} />
+        {checkError && <p className="form-error" role="alert">Backup check failed: {checkError} No records were changed.</p>}
+        {backupCheck && <section className="success-note" aria-label="Backup file check"><h3>Valid, compatible backup file</h3><p>All supported record types, dates, references, units and privacy flags passed validation. No records were changed.</p><p>{Object.entries(backupCheck.counts).map(([label,count])=>`${count} ${label.replaceAll('_',' ')}`).join(' · ')}</p><p>Exported {backupCheck.backup.exported_at}. {backupCheck.backup.includes_coordinates ? 'This file includes saved precise field coordinates.' : 'This file excludes precise field coordinates.'} Use Import backup for the restore preview and explicit conflict choices. The check confirms readability, not that every farm event was entered.</p>{snapshot && <p>Current device: {Object.entries(recordCounts(snapshot)).map(([label,count])=>`${count} ${label.replaceAll('_',' ')}`).join(' · ')}</p>}</section>}
         {incoming && <div className="import-preview"><h3>Review this backup</h3><p>{incoming.data.fields.length} fields · {incoming.data.cycles.length} crop cycles · {incoming.data.tasks.length} reminders · {incoming.data.scans.length} screening summaries · {incoming.data.soil_tests.length} soil tests · {incoming.data.expenses.length} expense entries · {incoming.data.harvests.length} harvest entries · {incoming.data.sales.length} sales · {incoming.data.observations.length} observations · {incoming.data.feedback.length} step responses · {preview?.additions ?? 0} new records</p>{incoming.includes_coordinates && <p>This backup includes saved precise field coordinates. Importing it will store them on this device.</p>}{previewError && <p role="alert">{previewError}</p>}
           {!!preview?.conflicts.length && <fieldset><legend>{preview.conflicts.length} changed records need a choice</legend><p>Conflicting records: {preview.conflicts.map(c => c.label).join(", ")}. Choose which version to keep for all conflicts; unrelated records remain.</p><label className="check-label"><input type="radio" name="conflict" checked={resolution === "device"} onChange={() => setResolution("device")} />Keep device versions</label><label className="check-label"><input type="radio" name="conflict" checked={resolution === "backup"} onChange={() => setResolution("backup")} />Use backup versions</label></fieldset>}
           <div className="button-row"><button type="button" className="button button-primary" disabled={busy || !preview || (!!preview.conflicts.length && !resolution)} onClick={() => void applyImport()}>Confirm import</button><button className="text-button" type="button" onClick={() => setIncoming(null)}>Cancel import</button></div>

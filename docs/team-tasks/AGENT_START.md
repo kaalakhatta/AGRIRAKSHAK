@@ -4,7 +4,7 @@ Use the same protocol in Codex, Antigravity, Claude, OpenCode or another agent. 
 
 ## Before starting
 
-Setup #12 is merged. Roster PR #17 is merged; the subsequent training-scope change must merge before Task 7 ML edits pass scope CI. Aanya and Anushka must accept their pending invitations. Claims for Yashi/#10 and Arindam/#11 were confirmed; Kanika/#9 still needs her own confirmed /claim. Preserve existing claims/branches/PRs; do not silently reserve another account's task.
+Setup #12, roster #17 and revised Task 7 training scopes #18 are merged into main. Verified 2026-10-08: AnushkaSChandel has write access and is owner-assigned to #15 for discoverability; her /claim remains unconfirmed. Aanya’s invitation remains pending. Claims for Yashi/#10 and Arindam/#11 are confirmed; Kanika is assigned to #9 without an observed /claim or bot confirmation. Preserve existing claims/branches/PRs. Use the [active task index](README.md) to find each issue and full brief even when GitHub’s assignment filter omits it.
 
 GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and human-owner merge policy. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
 
@@ -149,8 +149,9 @@ After confirmation fetch origin/main, inspect local/remote exact branch and resu
 - [x] Setup #12, core #13 and training #8 merged into main
 - [x] Task 7/#10 and Task 10/#11 claims confirmed by bot and assignments inspected
 - [x] Five-person reassignment registry/briefs merged in #17
-- [ ] Revised Task 7 training scopes merged and scope workflow verified
-- [ ] Aanya and Anushka invitations accepted and write access verified
+- [x] Revised Task 7 training scopes merged in #18; scope workflow passed
+- [x] AnushkaSChandel write access verified; owner assignment to #15 is a reservation, not a confirmed claim
+- [ ] Aanya invitation accepted and write access verified
 - [ ] Kanika, Anushka and Aanya successful mapped-account /claim observed
 - [ ] Active main protection and required web/scope contexts verified (observed disabled 2026-10-08)
 - [ ] Each agent reports exact task/branch/all registered scopes and preserves existing work

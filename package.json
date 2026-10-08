@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=@agrirakshak/web",
+    "exhibition": "node scripts/start-exhibition.mjs",
     "build": "npm run build --workspace=@agrirakshak/web",
     "lint": "npm run lint --workspace=@agrirakshak/web",
     "typecheck": "npm run typecheck --workspace=@agrirakshak/web",

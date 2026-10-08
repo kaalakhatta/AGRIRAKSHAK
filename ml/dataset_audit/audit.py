@@ -62,11 +62,12 @@ def audit_dataset(input_dir):
                 
                 # Check duplicates
                 file_hash = get_sha256(filepath)
-                hash_map[file_hash].append(filepath)
+                rel_path = os.path.relpath(filepath, input_dir)
+                hash_map[file_hash].append(rel_path)
                 
             except Exception:
                 report["summary"]["corrupt_or_unsupported"] += 1
-                report["corrupt_files"].append(filepath)
+                report["corrupt_files"].append(os.path.relpath(filepath, input_dir))
                 
         class_counts[cls] = valid_images
         report["classes"][cls]["total_images"] = valid_images
@@ -82,6 +83,9 @@ def audit_dataset(input_dir):
         report["summary"]["class_imbalance_ratio"] = min_class_count / max_class_count
     
     for file_hash, paths in hash_map.items():
+        for rel_path in paths:
+            if get_sha256(os.path.join(input_dir, rel_path)) != file_hash:
+                raise ValueError(f"File modified during audit: {rel_path}")
         if len(paths) > 1:
             report["summary"]["exact_duplicates"] += (len(paths) - 1)
             report["duplicates"].append({"hash": file_hash, "paths": paths})

@@ -4,18 +4,19 @@ This checklist is for preparing the final model bundle for deployment.
 *Note: Yashi owns training/calibration/evaluation/export; Arindam owns runtime integration.*
 
 ## Existing Specifications (From Code)
-- **Architecture:** EfficientNet-B0 (from `model.py`)
+- **Architecture:** MobileNetV3-Small (NOT EfficientNet-B0)
 - **Image size:** 224x224
 - **Normalization:** ImageNet mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
-- **Labels:** pepper/potato/tomato diseases (from `prepare_plantvillage.py`). *Target crops (soybean/wheat/chickpea) are missing.*
+- **Labels:** `Pepper,_bell`, `Potato`, `Tomato`, `Unsupported___other_plant`. *Target crops (soybean/wheat/chickpea) are missing.*
 
 ## Export and Verification
-- [ ] TBD: ONNX export verification (architecture matches training, operator support)
-- [ ] TBD: Model card (architecture, training data, labels, limitations, intended use)
+- [ ] TBD: ONNX export verification (architecture matches training, operator support). Source/run reference: MISSING.
+- [ ] TBD: Model card (architecture, training data, labels, limitations, intended use). Artifact reference: MISSING.
 
 ## Size and Latency Targets
-- [ ] TBD: Size budget (budget TBD; record actual artifact size and owner-approved device budget)
-- [ ] TBD: Latency targets (targets TBD; Aanya supplies observed timings with device/browser/build evidence)
+- [ ] TBD: Size budget (budget TBD; record actual artifact size and owner-approved device budget). NOTE: Do not invent size budget.
+- [ ] TBD: Latency targets (targets TBD; Aanya supplies observed timings with device/browser/build evidence). NOTE: Do not invent latency targets.
+- [ ] TBD: Accuracy claims and reviewer approval are currently unverified and must not be invented.
 
 ## Runtime Integration
 - [ ] TBD: Label mapping (model output indices to human-readable disease names)

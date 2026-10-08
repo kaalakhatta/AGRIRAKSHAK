@@ -1,0 +1,19 @@
+"use client";
+import { useState } from 'react';
+import { DocumentLink } from '@/components/document-link';
+
+const questions = [
+  { question: 'Where should I start?', answer: 'Add a named field in My Farm, confirm or skip its location, then create a crop cycle with the season and water access you know. Your field connects Today, Plan and Records.', href: '/farm', action: 'Set up My Farm' },
+  { question: 'Which crop should I choose?', answer: 'Compare crop basics, then record your region, season, water access and available measured soil results. Field-specific seed and action recommendations require reviewed evidence; missing inputs remain visible.', href: '#compare', action: 'Compare crop basics' },
+  { question: 'How do I check my soil?', answer: 'A soil laboratory report describes a sampled field. GPS and a mapped soil class do not measure nutrients. Keep your actual test results, sampling date, source and depth in the Soil notebook.', href: '/records', action: 'Open the Soil notebook' },
+  { question: 'What can a leaf scan tell me?', answer: 'The supplied model supports a pepper, potato and tomato baseline. Soybean, wheat and chickpea screening is unsupported. Results are preliminary; uncertain or unsupported inputs cannot establish a diagnosis.', href: '/scan', action: 'Open leaf screening' },
+  { question: 'How do I find farmer schemes?', answer: 'Save your field and crop details in My Farm, then choose that field in Government support. Answer the extra eligibility questions to see potential matches, missing details and official application routes for central and MP programmes. The office, bank or insurer confirms approval and current dates.', href: '#schemes', action: 'Find schemes for my field' },
+] as const;
+
+export function FarmHelper() {
+  const [selected, setSelected] = useState(0), answer = questions[selected];
+  return <section id="learn" className="hub-section" aria-labelledby="learn-title"><div className="hub-section-heading"><div><p className="eyebrow">Learning & help</p><h2 id="learn-title">A little help along the way</h2><p>Quick answers for using your farm companion, plus public information from the responsible organisations.</p></div></div>
+    <div className="learning-layout"><article className="farm-helper"><h3>Farm helper</h3><p>Choose a question to see a practical next step.</p><div className="helper-questions" role="group" aria-label="Farm helper questions">{questions.map((item, index) => <button type="button" key={item.question} aria-pressed={selected === index} onClick={() => setSelected(index)}>{item.question}</button>)}</div><div className="helper-answer" aria-live="polite"><h4>{answer.question}</h4><p>{answer.answer}</p><DocumentLink href={answer.href}>{answer.action} →</DocumentLink></div></article>
+      <div className="learning-resources"><h3>Official reading</h3><a href="https://soilhealth.dac.gov.in/files/FAQ_Final_English.pdf" target="_blank" rel="noopener noreferrer"><strong>Understand your Soil Health Card ↗</strong><span>Official FAQ · laboratory testing and report basics</span></a><a href="https://www.pmfby.gov.in/faq" target="_blank" rel="noopener noreferrer"><strong>Understand crop insurance ↗</strong><span>Official FAQ · cover, premium and policy terms</span></a><a href="https://www.pmkisan.gov.in/" target="_blank" rel="noopener noreferrer"><strong>Check PM-KISAN information ↗</strong><span>Official portal · exclusions, eKYC and beneficiary status</span></a><DocumentLink href="/farm#manage-fields"><strong>Protect your farm records →</strong><span>Prepare a backup, check an exported file and manage local data</span></DocumentLink><p className="hub-caption">The helper provides prepared app guidance. Agricultural recommendations still need qualified local review.</p></div></div>
+  </section>;
+}

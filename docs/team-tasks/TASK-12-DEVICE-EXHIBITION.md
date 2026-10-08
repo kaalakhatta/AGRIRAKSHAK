@@ -1,6 +1,6 @@
 # Task 12: Device QA and exhibition readiness
 
-Contributor: Aanya (@aanya25bce11372-stack)
+Contributor: Aanya (@n0debug) — owner-requested account change, 2026-10-08
 Branch: `codex/farm-task-12-aanya`
 Issue: https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16
 Allowed paths: `docs/exhibition/device-qa/**` and `docs/exhibition/presentation/**`.
@@ -8,7 +8,7 @@ Owner reassignment: 2026-10-08. Historical Task 4 is a reference; use this activ
 
 ## Start and claim
 
-Accept the repository invitation. Read root AGENTS.md, AGENT_START.md, docs/farm-context/PLAN.md, CONTRACT.md and all four docs/farm-companion planning documents. Inspect issue, branch/PRs, scoped instructions and every owned file. Post /claim with your mapped account; wait for confirmation and verify assignee before editing. Create the exact branch from current origin/main only if absent, otherwise resume inspected existing work. One active agent/checkout.
+n0debug has verified collaborator write access. The previous account aanya25bce11372-stack is no longer mapped to Task 12; its pending invitation is not required. The n0debug /claim attempt was rejected before this registry change; repeat /claim after the updated mapping is on main and wait for bot confirmation. Owner issue assignment alone is not a confirmed claim. Read root AGENTS.md, AGENT_START.md, docs/farm-context/PLAN.md, CONTRACT.md and all four docs/farm-companion planning documents. Inspect issue, branch/PRs, scoped instructions and every owned file. Post /claim with your mapped account; wait for confirmation and verify assignee before editing. Create the exact branch from current origin/main only if absent, otherwise resume inspected existing work. One active agent/checkout.
 
 ## D1 — Device/browser and accessibility test package
 

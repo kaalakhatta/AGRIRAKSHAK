@@ -4,7 +4,7 @@ Use the same protocol in Codex, Antigravity, Claude, OpenCode or another agent. 
 
 ## Before starting
 
-Setup #12, roster #17 and revised Task 7 training scopes #18 are merged into main. Verified 2026-10-08: AnushkaSChandel has write access and is owner-assigned to #15 for discoverability; her /claim remains unconfirmed. Aanya’s invitation remains pending. Claims for Yashi/#10 and Arindam/#11 are confirmed; Kanika is assigned to #9 without an observed /claim or bot confirmation. Preserve existing claims/branches/PRs. Use the [active task index](README.md) to find each issue and full brief even when GitHub’s assignment filter omits it.
+Setup #12, roster #17 and revised Task 7 training scopes #18 are merged into main. Verified 2026-10-08: AnushkaSChandel has write access and is owner-assigned to #15 for discoverability; her /claim remains unconfirmed. Aanya now maps to n0debug with verified write access; the old-account invitation is not a startup prerequisite. Claims for Yashi/#10 and Arindam/#11 are confirmed; Kanika is assigned to #9 without an observed /claim or bot confirmation. Preserve existing claims/branches/PRs. Use the [active task index](README.md) to find each issue and full brief even when GitHub’s assignment filter omits it.
 
 GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and human-owner merge policy. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
 
@@ -84,7 +84,7 @@ verify the live assignment and no second active agent before resuming.
 Only edit ml/dataset_audit/** and docs/model-validation/**.
 Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
 Report contributor/task, all registered scopes, claim, exact branch and next deliverable.
-Start A1 read-only dataset audit using tiny synthetic fixtures, then A2 manifest/leakage checks and A3 model readiness evidence. Do not download real datasets, train, edit the ML pipeline or commit weights/photos. Missing metrics stay TBD.
+Preserve PR #21’s partial A1–A3 foundation. Continue owner-assigned A4 manifest/report hardening, A5 supplied baseline-v1 evidence audit and A6 exhibition readiness packet; do not wait for target-crop training to audit the existing baseline. Do not download real datasets, train, edit the ML pipeline or commit weights/photos. Missing metrics stay TBD.
 Use only free tooling. No root dependencies/workflows/shared contracts,
 fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
@@ -100,7 +100,7 @@ work before handoff or /unclaim. One active agent/checkout for this task.
 Hi, I'm Aanya. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
 docs/team-tasks/TASK-12-DEVICE-EXHIBITION.md, PLAN.md, CONTRACT.md and the complete
 farm-companion build/data/engine/delivery plan before editing.
-My GitHub account is aanya25bce11372-stack; my cumulative
+My GitHub account is n0debug; my cumulative
 issue is #16, branch codex/farm-task-12-aanya.
 I authorize you to post /claim on my issue using my own mapped account;
 otherwise guide me to post it. Accept any pending repository invitation
@@ -151,7 +151,8 @@ After confirmation fetch origin/main, inspect local/remote exact branch and resu
 - [x] Five-person reassignment registry/briefs merged in #17
 - [x] Revised Task 7 training scopes merged in #18; scope workflow passed
 - [x] AnushkaSChandel write access verified; owner assignment to #15 is a reservation, not a confirmed claim
-- [ ] Aanya invitation accepted and write access verified
+- [x] Aanya remapped by owner to n0debug; collaborator write access verified
+- [ ] Aanya repeats /claim as n0debug after this registry update merges; previous attempt was rejected under the old mapping
 - [ ] Kanika, Anushka and Aanya successful mapped-account /claim observed
 - [ ] Active main protection and required web/scope contexts verified (observed disabled 2026-10-08)
 - [ ] Each agent reports exact task/branch/all registered scopes and preserves existing work

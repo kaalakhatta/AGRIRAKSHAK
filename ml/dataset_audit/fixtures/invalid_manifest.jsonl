@@ -1,0 +1,6 @@
+{"id": "x1", "path": "classA/img1.png", "label": "classA", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "split": "train", "source": "synthetic", "synthetic": false}
+{"id": "", "path": "classA/img2.png", "label": "classA", "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "split": "train", "source": "synthetic", "synthetic": false}
+{"id": "x3", "path": "classA/img3.png", "label": "classA", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "train", "source": "synthetic", "synthetic": false}
+{"id": "x4", "path": "classB/img1.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "test", "source": "synthetic", "synthetic": false}
+{"id": "x5", "path": "classB/img2.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "val", "source": "synthetic", "synthetic": true}
+{"id": "x6", "path": "classC/img1.png", "sha256": "6666666666666666666666666666666666666666666666666666666666666666", "split": "test", "source": "synthetic", "synthetic": true}

@@ -1,6 +1,6 @@
 # AgriRakshak farm companion: full build plan
 
-Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi. This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Deadline, target region, crops and reviewer remain TBD.
+Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi, Anushka, Aanya (owner reassignment 2026-10-08). This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Deadline, target region, crops and reviewer remain TBD.
 
 ## Product and constraints
 
@@ -65,13 +65,13 @@ Effort is estimated team working days, not calendar promises; exhibition date is
 | M2: weather + daily guidance | 3–5 days | Weather adapter/cache, Today, rule evaluator v1, stale/missing/error states | Fake-clock/provider fixtures, engine result checks, mobile plan | First reviewed action candidates and reviewer packet | Weather failure isolated; only reviewed applicable rules render; evidence visible |
 | M3: plan + monitor | 4–6 days | Seed comparison, calendar, action feedback, scanner-cycle integration | Candidate/stage/task conflicts and unsupported-region QA | Region/crop/seed evidence and stage calendar drafts | Complete plan→monitor journey; draft/missing-input cases abstain |
 | M4: records + season review | 3–5 days | Soil entry, observations, expenses, harvest/sales, summaries | Units, edits/deletes, duplicate import, backup and calculation scenarios | Soil/harvest guidance and plain-language explanations | Accurate totals from entered data; unknown area/costs stay unknown; export round-trip |
-| M5: exhibition release | 2–4 days | Accessibility/offline/size checks, free hosting, release artifacts and rollback | Real device execution, 5-minute rehearsal, risk signoff | Source/translation/reviewer audit and judge explanations | Three successful rehearsals; failures demonstrated; no fabricated features/results |
+| M5: exhibition release | 2–4 days | Accessibility/offline/size checks, free hosting, release artifacts and rollback | Contract regression and traceability; Aanya executes device tests/rehearsals, Anushka audits model readiness | Source/translation/reviewer audit and evidence for judge explanations | Three successful rehearsals; failures demonstrated; no fabricated features/results |
 
 Total planning range: roughly 16–27 working days, highly dependent on model readiness, content review and device QA. If the deadline is shorter, M1–M3 plus essential M5 checks form the first demo; M4 can follow. Actual hardware sensors, report OCR, accounts, cloud sync, market price APIs and automatic yield prediction are post-release research, not dependencies.
 
 ## Team and repository coordination
 
-Keep the existing repository and open setup PR; no second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's audit/QA issue; Task 7/#10 is Yashi's evidence/content issue. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
+Keep the existing repository and open setup PR; no second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's farm-data audit/regression issue; Task 7/#10 is Yashi's expanded nine-package research/catalog/education issue. Task 11/#15 is Anushka's dataset/model audit; Task 12/#16 is Aanya's device/exhibition QA. Exact accounts, branches and exclusive paths are in tasks.json. Yashi owns docs/research/** and data/catalog/**; Kanika supplies contract cases, Anushka audits split/model evidence, and Aanya executes device/rehearsal cases. Read their briefs and AGENT_START.md before work. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
 
 Read [delivery protocol](DELIVERY.md), [data model](DATA_MODEL.md), [engine plan](RECOMMENDATION_ENGINE.md) and [architecture](../ARCHITECTURE.md). The v1 weather/soil audit contract remains in ../farm-context/CONTRACT.md; future farm-record schemas are separate and versioned.
 

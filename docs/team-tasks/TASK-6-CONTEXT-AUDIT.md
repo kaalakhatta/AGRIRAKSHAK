@@ -1,4 +1,4 @@
-# Task 6: Data validation and exhibition QA
+# Task 6: Farm-data validation and regression QA
 
 Contributor: Kanika
 Branch: `codex/farm-task-6-kanika` (one active agent/checkout only)
@@ -26,11 +26,11 @@ Validation: `python3 -m unittest discover -s ml/farm_context_audit/tests -v`; do
 
 ## Additional work in the second allowed directory
 
-Deliver TEST_PLAN.md, DEMO_SCRIPT.md, JUDGE_QUESTIONS.md, RISK_REGISTER.md, and BUG_REPORT_TEMPLATE.md for the new context and recommendations journey.
+Deliver TEST_PLAN.md, TRACEABILITY.md, REGRESSION_CASES.md, RISK_REGISTER.md and BUG_REPORT_TEMPLATE.md for farm-context/domain validation. Preserve any existing presentation material, but Aanya now owns new device execution, demo scripts, judge questions and rehearsals in her separate paths. Hand off case IDs and expected outcomes without editing her directories.
 
 Cover permission denied, revoked permission, manual district/coordinates, inaccurate GPS, camera without location, missing soil/sensor inputs, stale data, units/depth, provider timeout/rate limits, offline/cached/demo data labels, unsupported region/crop, unreviewed content, conflicting evidence, seed suggestions with missing season/water inputs, and privacy (no precise location/photo retention by default). Include accessibility and mobile layout. Test unsupported-condition and low-confidence scans separately from farm-context advice.
 
-Use not-run/pass/fail/blocked with observed evidence; no fabricated test passes. Explain why weather/soil estimates are not live field sensors and why advice is educational. Five-minute demo with a clearly labeled synthetic fallback. No implementation or model accuracy claims until verified.
+Use not-run/pass/fail/blocked with observed evidence; no fabricated test passes. Explain why weather/soil estimates are not live field sensors and why advice is educational. Provide labelled synthetic fixture expectations for Aanya's demo/fallback package. No implementation or model accuracy claims until verified.
 
 Validation: trace every test to docs/farm-context/CONTRACT.md and acceptance criteria; list TBD values and unimplemented features.
 
@@ -40,7 +40,7 @@ Validation: trace every test to docs/farm-context/CONTRACT.md and acceptance cri
 - M0–M1: audit context v1 and build traceability cases for local field/cycle persistence, permission denial, coordinate-free export, corrupt/duplicate import, deletion and storage failures. Arindam implements runtime validators; you own independent fixtures/checklists.
 - M2–M3: freshness/source/unit fixtures, rule abstention/conflicts, calendar stage/date changes, seed applicability, uncertainty and scanner timeline cases. Do not invent agricultural thresholds.
 - M4: expense/harvest unit and amount calculations, missing area, incomplete records, sales versus harvest, refunds, edits/deletes, backup round-trip and migration rollback cases.
-- M5: execute critical journeys on available mobile/laptop devices; document pass/fail/blocked/not-run, accessibility/offline/privacy failures and three rehearsals. Produce TRACEABILITY.md mapping feature IDs F01–F13 and milestones to evidence.
+- M5: rerun the independent validator/regression cases, triage contract/unit/privacy defects and provide TRACEABILITY.md mapping F01–F13/milestones to case IDs and evidence. Aanya owns real device/accessibility/offline execution and three rehearsals; consume her evidence without counting not-run cases as passes.
 
 Your coding scope remains the small audit utility and fixtures; do not build app screens, storage, API adapters or recommendation logic. As new domain contracts arrive, report gaps rather than silently extending context v1. Never claim automatic yield improvement or full profit from incomplete records.
 

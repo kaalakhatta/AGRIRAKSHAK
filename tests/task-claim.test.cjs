@@ -22,3 +22,45 @@ test('closed and unregistered issues fail closed', async () => { assert.match((a
 test('missing identity mapping blocks claim', async () => assert.match((await run({ config: { ...registry, contributors: {} } }))[0][1], /TBD/));
 test('only assignee or owner releases', async () => { assert.equal((await run({ command: '/unclaim', assignees: ['kanika'] }))[0][0], 'release'); assert.equal((await run({ command: '/unclaim', actor: 'owner', assignees: ['kanika'] }))[0][0], 'release'); assert.match((await run({ command: '/unclaim', actor: 'other', assignees: ['kanika'] }))[0][1], /Only/); });
 test('PR comments and other commands are ignored', async () => { assert.deepEqual(await run({ pr: true }), []); assert.deepEqual(await run({ command: '/claim somebody' }), []); });
+
+const liveRegistry = require('../docs/farm-context/tasks.json');
+test('every registered contributor can claim only the mapped task and receives its current branch', async () => {
+  for (const task of liveRegistry.tasks) {
+    const actor = liveRegistry.contributors[task.contributor];
+    assert.ok(actor, `missing mapping for ${task.contributor}`);
+    const calls = await run({ actor, issue: task.issue, config: liveRegistry });
+    assert.deepEqual(calls[0], ['assign', [actor]]);
+    assert.ok(calls[1][1].includes(task.branch));
+    for (const path of task.paths) assert.ok(calls[1][1].includes(path));
+    for (const other of liveRegistry.tasks.filter(t => t.contributor !== task.contributor)) {
+      const denied = await run({ actor: liveRegistry.contributors[other.contributor], issue: task.issue, config: liveRegistry });
+      assert.equal(denied.length, 1);
+      assert.match(denied[0][1], /not mapped/);
+    }
+  }
+});
+test('returning contributors cannot claim without repository write access', async () => {
+  for (const name of ['Anushka', 'Aanya']) {
+    const task = liveRegistry.tasks.find(t => t.contributor === name);
+    assert.ok(task);
+    const calls = await run({ actor: liveRegistry.contributors[name], issue: task.issue, permission: 'read', config: liveRegistry });
+    assert.equal(calls.length, 1);
+    assert.match(calls[0][1], /write access/);
+  }
+});
+test('registered tasks have unique identities and disjoint exclusive teammate scopes', () => {
+  for (const key of ['task', 'issue', 'branch']) {
+    assert.equal(new Set(liveRegistry.tasks.map(t => t[key])).size, liveRegistry.tasks.length, `duplicate ${key}`);
+  }
+  const teammates = liveRegistry.tasks.filter(t => !t.paths.includes('*'));
+  for (const task of teammates) {
+    assert.equal(task.paths.length, 2);
+    assert.ok(Number.isInteger(task.issue) && task.issue > 0);
+    for (const path of task.paths) assert.ok(path.endsWith('/') && !path.startsWith('/') && !path.split('/').includes('..'));
+    for (const other of teammates.filter(t => t.task !== task.task)) {
+      for (const path of task.paths) for (const peer of other.paths) {
+        assert.ok(!path.startsWith(peer) && !peer.startsWith(path), `${task.contributor}/${other.contributor} overlap: ${path}, ${peer}`);
+      }
+    }
+  }
+});

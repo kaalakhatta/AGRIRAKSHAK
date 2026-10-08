@@ -3,7 +3,7 @@ import "./styles.css";
 
 export const metadata: Metadata = {
   title: "AgriRakshak",
-  description: "Crop disease screening and learning, built for the field and classroom.",
+  description: "A local-first farm companion with field records, crop cycles and preliminary disease screening.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

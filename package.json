@@ -13,6 +13,7 @@
     "build": "npm run build --workspace=@agrirakshak/web",
     "lint": "npm run lint --workspace=@agrirakshak/web",
     "typecheck": "npm run typecheck --workspace=@agrirakshak/web",
-    "check": "npm run lint && npm run typecheck && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "test": "npm run test --workspace=@agrirakshak/web"
   }
 }

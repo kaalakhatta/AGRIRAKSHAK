@@ -1,13 +1,11 @@
-# Independent teammate tasks
+# Active team tasks
 
-These assignments are intentionally isolated. Each contributor works in a separate directory and submits a pull request for the repository owner to review.
+Current phase has three contributors: Arindam (Task 10, core integration), Kanika (Task 6, validation and QA), Yashi (Task 7, evidence and content). Anushka and Aanya are inactive for this phase.
 
-The named assignments are:
+Read root AGENTS.md, docs/farm-context/PLAN.md, CONTRACT.md and tasks.json. A contributor may say “Hi, I'm Kanika” or “Hi, I'm Yashi”; their agent reads their brief and continues pending work after a successful /claim. Exact GitHub usernames and non-overlapping paths are in tasks.json.
 
-- Kanika: Task 1, dataset audit utility
-- Yashi: Task 2, literature review
-- Anushka: Task 3, disease-content framework
-- Aanya: Task 4, exhibition QA package
-- Arindam: repository owner, core application, integration, review, and deployment
+Task briefs 1–4 are historical backlog, not the active phase. Preserve their existing work and issues.
 
-To begin, the contributor can give an AI agent the repository URL and say only `Hi, I'm <name>`. The agent must read the root `AGENTS.md`, match the name to the roster, and read the linked task brief before editing.
+Whole-product scope is now defined in docs/farm-companion/BUILD_PLAN.md. The same three cumulative task issues cover milestones M0–M5; read the expanded briefs and keep STATUS.md current. Intermediate PRs reference the issue; only the completed task closes it. Farm profiles, calendars, records and review guidance are part of the app plan, while teammate paths remain unchanged.
+
+Start with [AGENT_START.md](AGENT_START.md) for Antigravity, Claude, OpenCode or a generic coding agent. It includes exact contributor prompts and a post-merge readiness checklist; no paid GitHub connector is required.

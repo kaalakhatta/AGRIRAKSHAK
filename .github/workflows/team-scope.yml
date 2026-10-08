@@ -1,0 +1,44 @@
+name: Team task scope
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    steps:
+      # Read only trusted base-branch code; never execute PR content.
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('node:fs');
+            if (!fs.existsSync('./docs/farm-context/tasks.json')) {
+              if (context.payload.pull_request.user.login.toLowerCase() === context.repo.owner.toLowerCase()) return;
+              core.setFailed('Task registry is not installed on the base branch.'); return;
+            }
+            const registry = require('./docs/farm-context/tasks.json');
+            const pr = context.payload.pull_request;
+            const task = registry.tasks.find(t => t.branch === pr.head.ref);
+            const actor = pr.user.login.toLowerCase();
+            if (!task) {
+              if (actor === registry.owner.toLowerCase()) return;
+              core.setFailed('Use your registered task branch.');
+              return;
+            }
+            if (actor !== (registry.contributors[task.contributor] || '').toLowerCase()) {
+              core.setFailed('PR author does not match assigned contributor.'); return;
+            }
+            const { data: issue } = await github.rest.issues.get({ ...context.repo, issue_number: task.issue });
+            if (!issue.assignees.some(a => a.login.toLowerCase() === actor)) {
+              core.setFailed('Claim the issue before opening a PR.'); return;
+            }
+            const files = await github.paginate(github.rest.pulls.listFiles, { ...context.repo, pull_number: pr.number, per_page: 100 });
+            const outside = files.filter(f => !task.paths.includes('*') &&
+              [f.filename, f.previous_filename].filter(Boolean).some(path => !task.paths.some(prefix => path.startsWith(prefix))));
+            if (outside.length) core.setFailed('Outside assigned paths: ' + outside.map(f => f.filename).join(', '));

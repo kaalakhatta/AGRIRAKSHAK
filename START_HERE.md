@@ -6,14 +6,14 @@ Canonical instructions: [AGENTS.md](AGENTS.md). Contributor prompts: [AGENT_STAR
 
 Setup #12, farm core #13 and training workflow #8 are merged. Roster #17 and revised Task 7 training scopes #18 are merged into main; the registered scopes are active. Fetch main and inspect tasks.json rather than relying on old preview branches.
 
-Verified 2026-10-08: AnushkaSChandel has write access; Aanya’s invitation remains pending. Yashi/Arindam claims are confirmed. Kanika is assigned to #9, but no /claim comment or bot confirmation was observed. Anushka is owner-assigned to #15 for discoverability; her own /claim is still required before editing. Task reservation does not replace bot confirmation.
+Verified 2026-10-08: AnushkaSChandel has write access; Aanya now maps to n0debug with verified write access; the old-account invitation is not a startup prerequisite. Yashi/Arindam claims are confirmed. Kanika is assigned to #9, but no /claim comment or bot confirmation was observed. Anushka is owner-assigned to #15 for discoverability; her own /claim is still required before editing. Task reservation does not replace bot confirmation.
 
 | Contributor | GitHub login | Task issue | Branch | Allowed paths |
 | --- | --- | --- | --- | --- |
 | Yashi | yashitripathi2007 | [#10](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/10) | codex/farm-task-7-yashi | Eight research/ML scopes in tasks.json |
 | Kanika | KanikaSharma0721 | [#9](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/9) | codex/farm-task-6-kanika | ml/farm_context_audit/**; docs/exhibition/farm-context/** |
 | Anushka | AnushkaSChandel | [#15](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/15) | codex/farm-task-11-anushka | ml/dataset_audit/**; docs/model-validation/** |
-| Aanya | aanya25bce11372-stack | [#16](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16) | codex/farm-task-12-aanya | docs/exhibition/device-qa/**; docs/exhibition/presentation/** |
+| Aanya | n0debug | [#16](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16) | codex/farm-task-12-aanya | docs/exhibition/device-qa/**; docs/exhibition/presentation/** |
 | Arindam | kaalakhatta | [#11](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/11) | codex/farm-task-10-arindam | Owner-directed repository-wide integration |
 
 Open your task issue from the table even if it is absent from GitHub’s “assigned to me” filter. The [active task index](docs/team-tasks/README.md) links every complete brief. Anushka starts with [Task 11’s A1 dataset audit](docs/team-tasks/TASK-11-MODEL-AUDIT.md); use the [Anushka copy-paste prompt](docs/team-tasks/AGENT_START.md#copy-paste-prompt-anushka). Historical GitHub issues #1–5 and task briefs 1–4 are references; use the active issue in this table.

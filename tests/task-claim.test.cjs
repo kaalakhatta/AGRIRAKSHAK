@@ -112,3 +112,15 @@ test('scope workflow enforces current training scopes and both rename paths', as
   assert.deepEqual((await scopeWorkflow({...args, files:[{filename:'ml/COLAB.md'}]})).failures, []);
   for (const files of [[{filename:'ml/COLAB.md.bak'}], [{filename:'ml/notebooks/new.ipynb',previous_filename:'data/catalog/action.json'}], [{filename:'data/catalog/action.json',previous_filename:'ml/notebooks/old.ipynb'}]]) assert.match((await scopeWorkflow({...args,files})).failures[0], /Outside/);
 });
+
+
+test('Aanya account switch maps n0debug and rejects the previous account', async () => {
+  const task = liveRegistry.tasks.find(t => t.contributor === 'Aanya');
+  assert.equal(liveRegistry.contributors.Aanya, 'n0debug');
+  const current = await run({actor:'n0debug',issue:task.issue,config:liveRegistry});
+  assert.deepEqual(current[0], ['assign', ['n0debug']]);
+  assert.match(current[1][1], /Claim confirmed/);
+  const old = await run({actor:'aanya25bce11372-stack',issue:task.issue,config:liveRegistry});
+  assert.equal(old.length,1);
+  assert.match(old[0][1], /not mapped/);
+});

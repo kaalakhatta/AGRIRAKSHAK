@@ -10,7 +10,7 @@ Verified 2026-10-08 against GitHub main and live access/issue records. Setup #12
 | Kanika | [Task 6 / #9](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/9) | Write access and assignment; no /claim comment or bot confirmation observed | Post /claim with KanikaSharma0721 and verify confirmation |
 | Arindam | [Task 10 / #11](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/11) | Admin access; bot-confirmed claim and mapped assignment | Continue core integration on codex/farm-task-10-arindam |
 | Anushka | [Task 11 / #15](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/15) | Write access as AnushkaSChandel; owner assignment for discoverability; no confirmed claim | Post /claim with AnushkaSChandel, verify confirmation, then start A1 |
-| Aanya | [Task 12 / #16](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16) | Invitation remains pending; no confirmed claim | Accept invitation with mapped account, then post /claim |
+| Aanya | [Task 12 / #16](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/16) | Write access as n0debug; previous /claim rejected under old mapping | Repeat /claim as n0debug after updated registry is on main |
 
 Yashi owns six packages Y1–Y6 in eight research/ML scopes: free Colab, training/calibration/evaluation/export and supporting evidence. Arindam owns all farm intelligence and catalogs. Kanika owns farm-data/regression QA, Anushka dataset/split/model audits, and Aanya device/exhibition evidence. Exact accounts, branches, paths and briefs are canonical in [tasks.json](tasks.json); direct issue/brief links are in the [active task index](../team-tasks/README.md).
 
@@ -23,3 +23,9 @@ Confirmed planning focus: Sehore, Madhya Pradesh; soybean, wheat and gram/chickp
 Protect main remains disabled in the live ruleset check. Web/scope workflows exist and passed on the latest delivery; passing workflows do not establish enforced protection. No protection settings were changed.
 
 Validation: 16 claim/scope tests pass. Main includes the current task registry, all five active briefs, startup guide and Anushka’s two scoped instruction files. Claims, actual devices, model metrics and agronomic review remain separate evidence gates. Current owner handoff is in [CORE_STATUS.md](CORE_STATUS.md). The task-discovery audit did not change runtime files. Its fixes are carried in combined exhibition PR #20; runtime checks are recorded in CORE_STATUS.md/M5_EXHIBITION.md. Private model artifacts remain outside Git.
+
+## Owner account and follow-up update — 2026-10-08
+
+Arindam explicitly remapped Aanya’s Task 12 from aanya25bce11372-stack to n0debug. n0debug has verified write access; the old-account invitation is no longer required. Issue #16 is assigned to n0debug for discoverability. The previous n0debug /claim was rejected against the old registry; repeat it after this update lands on main, and wait for confirmation. Branch and exclusive paths stay unchanged. No successful claim is fabricated.
+
+Anushka’s partial A1–A3 foundation is merged in PR #21 after owner review corrections; it is not full model-readiness completion. Task 11 now includes A4 manifest/report hardening, A5 supplied-baseline artifact/evidence audit and A6 exhibition readiness packet. Her account, issue #15, branch and two exclusive directories are unchanged; her own bot-confirmed claim is still required before new teammate edits.

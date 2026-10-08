@@ -25,7 +25,7 @@ Open your task issue from the table even if it is absent from GitHub’s “assi
 3. Post exactly /claim on your issue and wait for bot confirmation; verify the assignee. If already confirmed, verify it is current and no other agent is active before resuming.
 4. Report contributor/task, both allowed directories, exact branch, claim and next unfinished deliverable before editing.
 5. Resume the registered branch if present, or create from origin/main only if absent. No competing historical branches, shared writable checkouts, shared credentials or concurrent same-task agents.
-6. Deliver small M0–M5/package PRs, scoped validation and STATUS.md. Refs #issue for partial delivery; Closes only for full completion. Request kaalakhatta review; never push main or bypass checks.
+6. Deliver small M0–M5/package PRs, scoped validation and STATUS.md. Refs #issue for partial delivery; Closes only for full completion. Request kaalakhatta review for visibility, then self-merge your own eligible PR under [the standing authorization](docs/team-tasks/SELF_MERGE.md) without asking Arindam again. Never push main or bypass checks.
 
 Yashi owns free Colab training/calibration/evaluation/export and supporting research (Y1–Y6). First assess target-crop dataset feasibility and preserve/reconcile literature PR #14 on her registered branch. Arindam takes back catalogs and the main intelligence layer. Anushka's dataset/model audit, Kanika's farm-data cases and Aanya's device/rehearsal evidence have separate directories.
 

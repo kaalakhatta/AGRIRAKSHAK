@@ -23,7 +23,6 @@ jobs:
               core.setFailed('Task registry is not installed on the base branch.'); return;
             }
             const registry = require('./docs/farm-context/tasks.json');
-            const { isAllowedPath } = require('./.github/scripts/scope.cjs');
             const pr = context.payload.pull_request;
             const task = registry.tasks.find(t => t.branch === pr.head.ref);
             const actor = pr.user.login.toLowerCase();
@@ -39,6 +38,10 @@ jobs:
             if (!issue.assignees.some(a => a.login.toLowerCase() === actor)) {
               core.setFailed('Claim the issue before opening a PR.'); return;
             }
+            // Repository-wide owner scope still requires identity and claim checks.
+            // Load the base-branch helper only when a restricted scope needs it.
+            if (task.paths.includes('*')) return;
+            const { isAllowedPath } = require('./.github/scripts/scope.cjs');
             const files = await github.paginate(github.rest.pulls.listFiles, { ...context.repo, pull_number: pr.number, per_page: 100 });
             const outside = files.filter(f =>
               [f.filename, f.previous_filename].filter(Boolean).some(path => !isAllowedPath(task.paths, path)));

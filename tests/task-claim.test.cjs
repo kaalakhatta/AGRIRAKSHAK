@@ -79,3 +79,36 @@ test('scope rejects traversal and checks both sides of a rename', () => {
   assert.equal(permitted({filename: 'ml/notebooks/new.ipynb', previous_filename: 'data/catalog/action.json'}), false);
   assert.equal(permitted({filename: 'data/catalog/action.json', previous_filename: 'ml/notebooks/old.ipynb'}), false);
 });
+
+async function scopeWorkflow({ actor, branch, assignees, files = [], helperInstalled = true }) {
+  const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '../.github/workflows/team-scope.yml'), 'utf8');
+  const script = source.split('          script: |\n')[1].split('\n').filter(line => line.startsWith('            ')).map(line => line.slice(12)).join('\n');
+  const failures = [], imports = [];
+  const scopedRequire = id => {
+    imports.push(id);
+    if (id === 'node:fs') return { existsSync: () => true };
+    if (id.endsWith('tasks.json')) return liveRegistry;
+    if (id.endsWith('scope.cjs') && helperInstalled) return { isAllowedPath };
+    throw new Error(`Unavailable base-branch module: ${id}`);
+  };
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  await new AsyncFunction('require', 'context', 'github', 'core', script)(scopedRequire,
+    { repo: { owner: liveRegistry.owner, repo: 'repo' }, payload: { pull_request: { user: { login: actor }, head: { ref: branch }, number: 18 } } },
+    { rest: { issues: { get: async () => ({ data: { assignees: assignees.map(login => ({login})) } }) }, pulls: { listFiles: () => {} } }, paginate: async () => files },
+    { setFailed: message => failures.push(message) });
+  return { failures, imports };
+}
+test('scope workflow can bootstrap helper on owner PR while still checking mapped author and claim', async () => {
+  const owner = liveRegistry.tasks.find(t => t.contributor === 'Arindam');
+  const args = { actor: liveRegistry.owner, branch: owner.branch, assignees: [liveRegistry.owner], helperInstalled: false };
+  const result = await scopeWorkflow(args);
+  assert.deepEqual(result.failures, []);assert.ok(!result.imports.some(id => id.endsWith('scope.cjs')));
+  assert.match((await scopeWorkflow({...args,assignees:[]})).failures[0], /Claim/);
+  assert.match((await scopeWorkflow({...args,actor:'intruder'})).failures[0], /author/);
+});
+test('scope workflow enforces current training scopes and both rename paths', async () => {
+  const yashi = liveRegistry.tasks.find(t => t.contributor === 'Yashi');
+  const args = { actor: liveRegistry.contributors.Yashi, branch: yashi.branch, assignees: [liveRegistry.contributors.Yashi] };
+  assert.deepEqual((await scopeWorkflow({...args, files:[{filename:'ml/COLAB.md'}]})).failures, []);
+  for (const files of [[{filename:'ml/COLAB.md.bak'}], [{filename:'ml/notebooks/new.ipynb',previous_filename:'data/catalog/action.json'}], [{filename:'data/catalog/action.json',previous_filename:'ml/notebooks/old.ipynb'}]]) assert.match((await scopeWorkflow({...args,files})).failures[0], /Outside/);
+});

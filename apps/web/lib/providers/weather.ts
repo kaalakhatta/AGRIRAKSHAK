@@ -46,6 +46,20 @@ export function weatherFresh(weather: Weather, now: number) {
   const fetched = now - Date.parse(weather.fetched_at), observed = now - Date.parse(weather.observed_at);
   return fetched >= 0 && fetched < CACHE_MS && observed >= 0 && observed < CACHE_MS;
 }
+export function weatherURL(latitude: number, longitude: number) {
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.search = new URLSearchParams({ latitude: String(latitude), longitude: String(longitude), current: "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m", daily: "temperature_2m_min,temperature_2m_max,precipitation_sum", timezone: "GMT", wind_speed_unit: "ms", forecast_days: "7" }).toString();
+  return url;
+}
+// Explicit transport for the consented setup flow when browser-to-provider access fails.
+// The server uses the same free provider and the same validation; no paid fallback.
+export function setupWeatherTransport(http: typeof fetch = fetch): typeof fetch {
+  return async (input, init) => {
+    const url = new URL(String(input));
+    if (url.origin !== "https://api.open-meteo.com" || url.pathname !== "/v1/forecast") throw new WeatherError("Unsupported weather destination.");
+    return http("/api/weather-context", { ...init, method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({latitude:Number(url.searchParams.get("latitude")),longitude:Number(url.searchParams.get("longitude"))}) });
+  };
+}
 export class WeatherClient {
   private cache = new Map<string, Weather>();
   private nextRequest = 0;
@@ -62,8 +76,7 @@ export class WeatherClient {
     if (!refresh && cached && weatherFresh(cached, now)) return cached;
     if (now < this.nextRequest) throw new WeatherError("Please wait before requesting weather again.", this.nextRequest);
     this.nextRequest = now + THROTTLE_MS;
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.search = new URLSearchParams({ latitude: String(latitude), longitude: String(longitude), current: "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m", daily: "temperature_2m_min,temperature_2m_max,precipitation_sum", timezone: "GMT", wind_speed_unit: "ms", forecast_days: "7" }).toString();
+    const url = weatherURL(latitude, longitude);
     for (let attempt = 0; attempt < 2; attempt++) {
       if (epoch !== this.epoch) throw new WeatherError("Weather sharing was stopped.");
       const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 8000);

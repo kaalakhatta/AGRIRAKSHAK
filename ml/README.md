@@ -46,3 +46,10 @@ agrirakshak-export --checkpoint runs/baseline/best.pt --evaluation runs/baseline
 - Treat confidence as a model score, not diagnostic certainty.
 
 See [MODEL_CARD_TEMPLATE.md](MODEL_CARD_TEMPLATE.md) before publishing a model.
+
+## Cloud baseline
+
+The Colab notebook at [`notebooks/agrirakshak_colab_training.ipynb`](notebooks/agrirakshak_colab_training.ipynb)
+prepares the three-crop PlantVillage baseline, performs a smoke test and full GPU run, evaluates
+the untouched test split, exports ONNX, and downloads the deployment bundle. The dataset is
+downloaded at runtime and is never committed to this repository.

@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from .data import ManifestDataset
 from .metrics import classification_report
@@ -64,6 +64,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=130)
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--freeze-features", action="store_true")
+    parser.add_argument("--class-balanced", action="store_true")
     args = parser.parse_args()
 
     seed_everything(args.seed)
@@ -71,7 +72,27 @@ def main() -> None:
     train_data = ManifestDataset(args.manifest, args.data_root, "train", args.image_size)
     val_data = ManifestDataset(args.manifest, args.data_root, "val", args.image_size)
     generator = torch.Generator().manual_seed(args.seed)
-    train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, generator=generator)
+    sampler = None
+    if args.class_balanced:
+        class_counts = np.bincount(
+            [train_data.label_to_index[record["label"]] for record in train_data.records],
+            minlength=len(train_data.labels),
+        )
+        sample_weights = [
+            1.0 / class_counts[train_data.label_to_index[record["label"]]]
+            for record in train_data.records
+        ]
+        sampler = WeightedRandomSampler(
+            sample_weights, num_samples=len(sample_weights), replacement=True, generator=generator
+        )
+    train_loader = DataLoader(
+        train_data,
+        batch_size=args.batch_size,
+        shuffle=sampler is None,
+        sampler=sampler,
+        num_workers=args.workers,
+        generator=generator,
+    )
     val_loader = DataLoader(val_data, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
     model = build_model(len(train_data.labels), pretrained=True, freeze_features=args.freeze_features).to(device)
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, weight_decay=1e-4)

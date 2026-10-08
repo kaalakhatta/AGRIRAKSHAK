@@ -1,0 +1,6 @@
+{"id": "a1", "path": "classA/img1.png", "label": "classA", "sha256": "3fd6e6be528c182d768563a63b65ac5a70d022149a01eeeaaa30396d75f426e0", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-a1"}
+{"id": "a2", "path": "classA/img2.png", "label": "classA", "sha256": "ab28b4a64e82968abd28ebb7dbeee2c20464947ece47a40f68beae8b7c9a3924", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-a2"}
+{"id": "a3", "path": "classA/img3.png", "label": "classA", "sha256": "70ca7dc822c13a30fd9d30e414061a870261161d9cabc771a9308179a33afc26", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-a3"}
+{"id": "b1", "path": "classB/img1.png", "label": "classB", "sha256": "49421415c09677e717d78087a2f7899b5f3f7fd752b8b59436bb0ca5070f5754", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-b1"}
+{"id": "b2", "path": "classB/img2.png", "label": "classB", "sha256": "87d21ff5ceb0f9140c70642949986f381d3cd49a50edfe92b4016781177648c2", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-b2"}
+{"id": "b3", "path": "classB/img3.png", "label": "classB", "sha256": "dbebd8939136c91ce197a4e7ebda5e09621777fe48caf6a0b4225004739c2919", "split": "train", "source": "synthetic", "synthetic": true, "leaf_id": "synthetic-b3"}

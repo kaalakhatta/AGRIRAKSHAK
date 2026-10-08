@@ -48,3 +48,8 @@ Use measured soil data for field-specific soil actions. Optional regional maps a
 Arindam writes unit tests for rule decisions, conflicts, freshness, supported unit conversions, date windows and invalidated caches; provider tests use HTTP fixtures, never live network CI. Kanika supplies independent positive/negative scenario fixtures and audits output completeness. Yashi supplies supporting source/model evidence; Arindam authors farm rules and obtains actual agronomic review; only genuinely reviewed records enter runtime catalogs.
 
 Required negative cases: unknown season, denied location, unsupported region, draft/rejected entries, missing reviewer, wrong unit/depth/source kind, stale/future observations, conflicting actions, rule injection, mixed field inputs, synthetic-only data. Synthetic demo runs live in a separate labelled mode and never become real farmer advice.
+
+
+## Implemented planning adapter (M3 partial)
+
+planning-1 wraps engine-1 with source-linked seed comparison facts and reviewed sowing-relative windows/confirmed stages. Runtime remains empty awaiting real content review. See M3_PLANNING.md and ../../data/catalog/farm-context/CONTENT_GUIDE.md for the canonical validator, authoring checks, supported input/timing shapes and deferred completion/dependency protocols. Farmer records remain schema 8; previews do not adopt or reschedule personal reminders.

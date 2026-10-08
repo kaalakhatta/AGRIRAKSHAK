@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { CYCLE_STATUSES, STAGES, WATER_OPTIONS, emptyData, makeBackup, newMeta, parseBackup, planImport, removeField, removeCycle, validateCoordinates, validateData, type Backup, type Coordinates, type CropCycle, type FarmData, type Field, type Snapshot } from "@/lib/domain/farm";
 import { CalendarPanel } from "@/features/calendar/calendar-panel";
-import { FarmGuidancePanel } from "@/features/recommendations/farm-guidance-panel";
+import { PlanningPanel } from "@/features/recommendations/planning-panel";
 import { reschedulePreview, rescheduleTasks } from "@/lib/domain/calendar";
 import { TodayPanel } from "@/features/weather/today-panel";
 import { loadFarm, saveFarm } from "@/lib/storage/farm-store";
@@ -164,7 +164,7 @@ export function FarmWorkspace({ todayOnly = false, planOnly = false }: { todayOn
       {(todayOnly || planOnly) && <label>Field<select value={selected} onChange={e => setSelected(e.target.value)}><option value="">Choose a field</option>{snapshot?.fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}</select></label>}
       {activeField && !planOnly && <TodayPanel key={`${activeField.id}:${activeField.updated_at}:${(sessionLocations[activeField.id] ?? activeField.location)?.confirmed_at ?? "none"}`} field={activeField} snapshot={snapshot!} recordBusy={busy} save={persist} cycles={cycles} tasks={snapshot!.tasks} soilTests={snapshot!.soil_tests} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} location={sessionLocations[activeField.id] ?? activeField.location} />}
       {(todayOnly || planOnly) && !activeField && <p className="device-note">Choose a saved field above. Add or edit fields and crop cycles in <a href="/farm">My Farm</a>. Session-only coordinates stay on the page where you entered them.</p>}
-      {planOnly && activeField && <><label>Planning crop cycle<select value={planCycle} onChange={e=>setPlanCycle(e.target.value)}><option value="">Choose a cycle</option>{cycles.map(c=><option key={c.id} value={c.id}>{c.crop} · {c.status}</option>)}</select></label><FarmGuidancePanel snapshot={snapshot!} fieldId={activeField.id} cycleId={planCycle || null} />{cycles.find(c=>c.id===planCycle) && <CalendarPanel key={planCycle} snapshot={snapshot!} cycle={cycles.find(c=>c.id===planCycle)!} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} busy={busy} save={persist} />}</>}
+      {planOnly && activeField && <><label>Planning crop cycle<select value={planCycle} onChange={e=>setPlanCycle(e.target.value)}><option value="">Choose a cycle</option>{cycles.map(c=><option key={c.id} value={c.id}>{c.crop} · {c.status}</option>)}</select></label><PlanningPanel snapshot={snapshot!} fieldId={activeField.id} cycleId={planCycle || null} />{cycles.find(c=>c.id===planCycle) && <CalendarPanel key={planCycle} snapshot={snapshot!} cycle={cycles.find(c=>c.id===planCycle)!} timezone={snapshot!.farms.find(f=>f.id===activeField.farm_id)!.timezone} busy={busy} save={persist} />}</>}
       {!todayOnly && !planOnly && <><div className="farm-grid">
         <section className="farm-card" aria-labelledby="field-title">
           <div className="card-heading"><h2 id="field-title">{editing ? "Edit field" : "Add a field"}</h2>{editing && <button type="button" className="text-button" onClick={resetField}>Cancel edit</button>}</div>

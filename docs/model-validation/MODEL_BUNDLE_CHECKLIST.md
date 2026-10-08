@@ -14,8 +14,8 @@ This checklist is for preparing the final model bundle for deployment.
 - [ ] TBD: Model card (architecture, training data, labels, limitations, intended use)
 
 ## Size and Latency Targets
-- [ ] TBD: Size budget (target < 20MB for mobile browser inference)
-- [ ] TBD: Latency targets (< 2s inference on mid-range phone browser)
+- [ ] TBD: Size budget (budget TBD; record actual artifact size and owner-approved device budget)
+- [ ] TBD: Latency targets (targets TBD; Aanya supplies observed timings with device/browser/build evidence)
 
 ## Runtime Integration
 - [ ] TBD: Label mapping (model output indices to human-readable disease names)
@@ -25,5 +25,5 @@ This checklist is for preparing the final model bundle for deployment.
 - [ ] TBD: Version manifest (model version, training date, dataset version, evaluation date)
 
 ## Overall Status
-- Target crops (soybean/wheat/chickpea): NO model artifacts exist.
-- [BLOCKED] Model export and bundle creation waiting on target-crop training.
+- Target crops (soybean/wheat/chickpea): no supporting evaluated artifacts have been supplied to this audit.
+- A supplied pepper/potato/tomato baseline bundle can be audited independently now; target-crop training is not a prerequisite for that evidence audit. Target-crop and field-image coverage remain unverified.

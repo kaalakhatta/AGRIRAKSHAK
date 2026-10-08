@@ -7,7 +7,7 @@ This document outlines all evaluation metrics used in the ML pipeline (`ml/src/a
 - **Macro F1, overall accuracy**: Averages performance across classes.
 - **Confusion matrix**: Identifies misclassifications between specific diseases.
 - **Confidence threshold selection (target precision, coverage)**: Determines the threshold for trusting the model's prediction.
-- **Temperature scaling (calibration)**: Adjusts model confidence scores to reflect true probabilities.
+- **Temperature scaling (calibration)**: Fits confidence calibration; calibrated scores still need measured reliability evidence.
 - **Test-at-threshold metrics (precision, coverage)**: Performance metrics when the confidence threshold is applied.
 - **Per-source evaluation breakdown**: Evaluates performance on different data sources.
 

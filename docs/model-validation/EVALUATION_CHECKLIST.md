@@ -1,6 +1,6 @@
 # Model-Evaluation Readiness Checklist
 
-This checklist documents the readiness of the model evaluation pipeline.
+This checklist records available pipeline capabilities, not a completed model-evaluation decision. Checked capability items below do not certify that any supplied bundle was trained, calibrated or evaluated successfully. Actual baseline metrics, manifest/run IDs, exported-output agreement and model-card evidence remain unverified pending A5.
 Currently, the pipeline supports PlantVillage crops (pepper, potato, tomato) but lacks support for the target crops (soybean, wheat, chickpea).
 
 ## Dataset Documentation
@@ -8,31 +8,31 @@ Currently, the pipeline supports PlantVillage crops (pepper, potato, tomato) but
 - [ ] TBD: Source (Target crops missing)
 - [ ] TBD: License (Target crops missing)
 - [ ] TBD: Label taxonomy (Target crops missing)
-- [x] Done: Preprocessing steps (Supported in existing pipeline)
+- [ ] Available implementation, evidence unverified: Preprocessing steps (Supported in existing pipeline)
 
 ## Split Methodology
-- [x] Done: Seed (Supported)
-- [x] Done: Ratios (Supported)
+- [ ] Available implementation, evidence unverified: Seed (Supported)
+- [ ] Available implementation, evidence unverified: Ratios (Supported)
 - [ ] TBD: Duplicate handling
 - [ ] TBD: Leakage prevention
 
 ## Training Documentation
-- [x] Done: Architecture (EfficientNet-B0)
-- [x] Done: Hyperparameters
-- [x] Done: Augmentation
+- [ ] Available implementation, evidence unverified: Architecture (EfficientNet-B0)
+- [ ] Available implementation, evidence unverified: Hyperparameters
+- [ ] Available implementation, evidence unverified: Augmentation
 - [ ] TBD: Hardware used for target crops
 
 ## Calibration
-- [x] Done: Temperature scaling (Supported in pipeline)
-- [x] Done: Threshold selection methodology (Supported in pipeline)
+- [ ] Available implementation, evidence unverified: Temperature scaling (Supported in pipeline)
+- [ ] Available implementation, evidence unverified: Threshold selection methodology (Supported in pipeline)
 
 ## Evaluation Metrics
-- [x] Done: Per-class precision/recall/F1 (Supported in metrics.py)
-- [x] Done: Confusion matrix (Supported in metrics.py)
-- [x] Done: Macro/weighted averages (Supported in metrics.py)
+- [ ] Available implementation, evidence unverified: Per-class precision/recall/F1 (Supported in metrics.py)
+- [ ] Available implementation, evidence unverified: Confusion matrix (Supported in metrics.py)
+- [ ] Available implementation, evidence unverified: Macro/weighted averages (Supported in metrics.py)
 
 ## Uncertainty Handling
-- [x] Done: Confidence thresholds
+- [ ] Available implementation, evidence unverified: Confidence thresholds
 - [ ] TBD: Abstention policy
 - [ ] TBD: Unsupported input behavior
 

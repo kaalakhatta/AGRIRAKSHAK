@@ -11,10 +11,10 @@ def get_sha256(filepath):
     return hash_sha256.hexdigest()
 
 def audit_dataset(input_dir):
-    if not os.path.exists(input_dir):
+    if not os.path.isdir(input_dir):
         raise ValueError("Input directory does not exist")
     
-    classes = [d for d in os.listdir(input_dir) if os.path.isdir(os.path.join(input_dir, d))]
+    classes = [d for d in sorted(os.listdir(input_dir)) if os.path.isdir(os.path.join(input_dir, d))]
     if not classes:
         raise ValueError("Empty dataset or no class folders found")
     
@@ -36,7 +36,7 @@ def audit_dataset(input_dir):
     
     for cls in classes:
         cls_dir = os.path.join(input_dir, cls)
-        files = [f for f in os.listdir(cls_dir) if os.path.isfile(os.path.join(cls_dir, f))]
+        files = [f for f in sorted(os.listdir(cls_dir)) if os.path.isfile(os.path.join(cls_dir, f))]
         
         report["classes"][cls] = {
             "total_images": 0,
@@ -72,7 +72,7 @@ def audit_dataset(input_dir):
         report["classes"][cls]["total_images"] = valid_images
         report["summary"]["total_images"] += valid_images
         
-    if not class_counts:
+    if report["summary"]["total_images"] == 0:
         raise ValueError("No valid images found")
         
     min_class_count = min(class_counts.values())

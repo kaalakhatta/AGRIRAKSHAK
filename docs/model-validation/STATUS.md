@@ -18,17 +18,21 @@
 
 ## Known Gaps
 - Target crops (soybean/wheat/chickpea) are completely missing from the evaluation pipeline.
-- No actual metric values exist since training on target crops has not occurred.
+- Actual baseline metric values and run/artifact references have not been verified in this audit; target-crop training/metrics are unavailable.
 - Missing metrics tracking for calibration error, model size, latency, and field-image accuracy gap.
 - No field images collected; no consent process established.
 
 ## Next Actions
-- Wait for target-crop training to be completed by Yashi.
-- Establish the field image collection protocol and begin data collection.
+- A5: Audit the existing supplied baseline bundle now; obtain provenance/evaluation/model-card evidence from Yashi.
+- A6: Finalize the consent/reviewer protocol and exhibition evidence decision; do not collect images without separate authorization.
 - Coordinate with Arindam for runtime integration once ONNX artifacts are available.
 
 ## Blockers
 - **[BLOCKED]** Waiting on target-crop training (Yashi).
-- **[BLOCKED]** Missing model artifacts for bundle evaluation.
+- **[UNVERIFIED]** Supplied baseline metadata/metrics have not yet been audited; private artifacts stay outside Git.
 - **[BLOCKED]** Waiting on field images for field validation.
 - **[BLOCKED]** Agronomist reviewer required for field protocol sign-off.
+
+## Owner integration review — 2026-10-08
+
+Original PR #21 foundation retained with attribution. Twelve scoped unittest cases pass. Passing clean-synthetic and failing missing-input CLI examples return 0/1; valid/invalid manifest examples return 0/1. JSON/CSV output inspected; SHA-256 input preservation and output-under-input rejection verified. Real data/model metrics were not evaluated. git diff --check passed. This is partial A1–A3 delivery; follow-ups A4 manifest/report hardening, A5 supplied-baseline evidence audit and A6 exhibition readiness remain open under #15. No approved model accuracy, artifact readiness or device latency is claimed.

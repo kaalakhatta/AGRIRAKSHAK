@@ -1,0 +1,2 @@
+# Scoped image decoding dependency; no root or training dependency changes.
+Pillow>=10,<13

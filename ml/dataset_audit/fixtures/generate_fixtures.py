@@ -2,6 +2,7 @@ import os
 import struct
 import zlib
 import json
+import hashlib
 
 def make_png(width, height, r, g, b):
     def chunk(ctype, data):
@@ -45,17 +46,23 @@ def main():
         {"id": "b3", "path": "classB/img3.png", "label": "classB", "sha256": "bbb333", "split": "test", "source": "synthetic", "synthetic": False}
     ]
     
+    for record in valid_manifest:
+        record["split"] = "train"
+        record["synthetic"] = True
+        record["sha256"] = hashlib.sha256(open(os.path.join(valid_dataset_dir, record["path"]), "rb").read()).hexdigest()
+        record["leaf_id"] = "synthetic-" + record["id"]
+
     with open(os.path.join(base_dir, "valid_manifest.jsonl"), "w") as f:
         for r in valid_manifest:
             f.write(json.dumps(r) + "\n")
             
     invalid_manifest = [
-        {"id": "x1", "path": "classA/img1.png", "label": "classA", "sha256": "xxx111", "split": "train", "source": "synthetic", "synthetic": False},
-        {"id": "", "path": "classA/img2.png", "label": "classA", "sha256": "xxx222", "split": "train", "source": "synthetic", "synthetic": False},
-        {"id": "x3", "path": "classA/img3.png", "label": "classA", "sha256": "dup_hash", "split": "train", "source": "synthetic", "synthetic": False},
-        {"id": "x4", "path": "classB/img1.png", "label": "classB", "sha256": "dup_hash", "split": "test", "source": "synthetic", "synthetic": False},
-        {"id": "x5", "path": "classB/img2.png", "label": "classB", "sha256": "dup_hash", "split": "val", "source": "synthetic", "synthetic": True},
-        {"id": "x6", "path": "classC/img1.png", "sha256": "xxx666", "split": "test", "source": "synthetic", "synthetic": True}
+        {"id": "x1", "path": "classA/img1.png", "label": "classA", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "split": "train", "source": "synthetic", "synthetic": False},
+        {"id": "", "path": "classA/img2.png", "label": "classA", "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "split": "train", "source": "synthetic", "synthetic": False},
+        {"id": "x3", "path": "classA/img3.png", "label": "classA", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "train", "source": "synthetic", "synthetic": False},
+        {"id": "x4", "path": "classB/img1.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "test", "source": "synthetic", "synthetic": False},
+        {"id": "x5", "path": "classB/img2.png", "label": "classB", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "split": "val", "source": "synthetic", "synthetic": True},
+        {"id": "x6", "path": "classC/img1.png", "sha256": "6666666666666666666666666666666666666666666666666666666666666666", "split": "test", "source": "synthetic", "synthetic": True}
     ]
     
     with open(os.path.join(base_dir, "invalid_manifest.jsonl"), "w") as f:

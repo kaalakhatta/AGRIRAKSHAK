@@ -1,0 +1,17 @@
+# M3 partial: seed-comparison and crop-calendar framework
+
+2026-10-08 · Arindam / Task 10 · codex/farm-task-10-arindam · Refs #11.
+
+The Plan screen now provides separate reviewed seed comparisons and crop-schedule previews alongside the existing personal reminders. `planning-1` wraps the existing `engine-1` evaluator and Sehore field/cycle adapter; it does not change context v1, schema-8 farmer records or the disease model. Only trusted owner content is evaluated; backups cannot inject rules. No new dependencies or paid services.
+
+Seed entries have stable variety IDs, sourced comparison facts and cautions. They require explicit water access in addition to crop/region/season applicability. Eligible candidates display alphabetically, with reviewer/date/evidence and checked input IDs, without numeric ranking or availability/yield claims. Draft/rejected/unverified/incomplete/mismatched/stale/conflicting entries never expose their cultivar facts.
+
+Calendar entries specify a reviewed sowing-relative date window or farmer-confirmed stage. Unknown sowing dates remain unscheduled; unknown/future/stale stages cannot establish timing. Date windows use actual farm timezone and tested date arithmetic; passed windows suppress actions without inferring catch-up work. Stage templates must declare a reviewed freshness requirement. Previews never alter farmer reminders or completion history. Harvested/archived cycles do not generate new plans.
+
+The validator checks cross-entry IDs, fact evidence references, required coverage/provenance, exact metadata/timing shapes and unsupported versions. Future source verification dates block the entry. `scripts/validate-planning-catalog.mjs` provides free Node validation with a bounded authoring file size. See [content guide](../../data/catalog/farm-context/CONTENT_GUIDE.md). The initial catalog is empty pending current evidence and real agronomy review; this framework does not deliver actual seed advice or crop operations.
+
+Twelve synthetic planner tests cover sourced/immutable outputs, alphabetic comparison, empty-runtime consistency, draft/rejected/unverified/future review/evidence, missing water/season/soil, foreign fields/cycles/demo parents, harvested/archived cycles, absent sowing, stage freshness/time/mismatch, timezone and passed/future windows, negative offsets/leap arithmetic, conflicts, schema/reference/injection errors and invalid clocks. Synthetic facts/reviewer/timing stay in tests, never runtime content.
+
+Remaining M3: real review and current source-backed seed/action/calendar entries; completion-aware adoption and template-linked feedback/storage; expanded soil method/time contracts; evaluated model integration and independent QA. This partial delivery keeps cumulative #11 open.
+
+Validation on an isolated staged snapshot: npm run check passed lint/typecheck/109 app tests/production build. Claim/scope suite passed all 16 tests; catalog CLI accepted the empty authoring template; git diff --check passed. Browser smoke reused explicitly named synthetic Sehore/Soybean/Kharif records: missing-cycle prompt, separate unavailable seed/schedule sections, review/water/weather reasons and personal reminder form were visible. At 390 × 844 the page and document widths were both 390px and planner text wrapped without horizontal overflow. No location/weather permission, provider request, real model or new farmer data. This viewport check does not replace physical-device/accessibility QA.

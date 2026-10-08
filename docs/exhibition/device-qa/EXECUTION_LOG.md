@@ -1,21 +1,23 @@
-# Execution Log
+# Execution log
 
-## Build and Environment
-- Commit: `origin/main` (latest M5 exhibition integration)
-- Schema: v1
-- Fixtures: Synthetic exhibition sample records (Sehore plot)
-- Date: 2026-10-09
+## Submission and evidence status
 
-## D1: Core Screens and Accessibility
-- **Today/Plan/Records/My Farm (Desktop Chrome/Safari)**: pass. Responsive layout adjusts correctly.
-- **Scan**: pass. Upload from files works.
-- **Accessibility**: pass. Keyboard focus works on main forms and tabs. VoiceOver reads ARIA labels.
+Aanya’s original PR #25 / commit `80c52cd5b78db7f1b97f330086d594002ecee54e` reports desktop execution on October 9, 2026. It identifies the tested build only as moving `origin/main`, with no resolved SHA, OS/browser versions, run artifacts or fixture IDs. Owner integration preserves these reports but cannot verify them as passes. This review did not execute Chrome/Safari/VoiceOver or a physical-device rehearsal.
 
-## D2: Privacy and Failure
-- **Location**: pass. Handled denied/skip permissions gracefully.
-- **Camera**: pass (via file upload fallback).
-- **Missing Weather**: pass. Does not crash the Today view.
-- **Unavailable Model**: pass. Correctly informs the user rather than fabricating results.
-- **Offline**: pass. Local service worker caches HTML and JS chunks.
-- **Backup/Import**: pass. Valid JSON import tested with conflict resolution. Download link functions on desktop.
-- **Synthetic Records**: Only synthetic data was used. No real farmer data mutated.
+The submission says “schema v1” without naming a contract. Current farm snapshot/backup schema is 8; individual record metadata schema remains 1. Record the actual tested contract/version rather than treating these as interchangeable. Fixtures are reported as synthetic Sehore exhibition samples; exact IDs remain TBD.
+
+## Reported checks; evidence pending
+
+| Journey | Contributor report | Owner evidence status / next check |
+| --- | --- | --- |
+| Today, Plan, Records, My Farm on desktop | Pass reported | Unverified; exact build/versions, cases and results required |
+| Scan file upload | Pass reported | Unverified; consent, fixture kind and endpoint result required |
+| Keyboard focus / VoiceOver | Pass reported | Unverified; separate keyboard and screen-reader run records required |
+| Location denial / skip | Pass reported | Unverified; capture permission outcome and manual/revoke cases separately |
+| Camera | File-upload fallback reported | Camera permission/capture not established by upload |
+| Missing weather / unavailable model | Pass reported | Unverified; failure setup and observed UI required |
+| Offline HTML/JS cache | Pass reported | Unverified; record installation/update and server/network-off reload cases |
+| Backup import / conflicts / desktop download | Pass reported | Unverified; verify actual saved-file delivery and recovery on disposable synthetic records |
+| Synthetic-only records | Reported | No real farmer data or private artifacts included in the submitted diff |
+
+Actual physical mobile, storage failure, deletion confirmation, invalid/large/empty uploads and three verified rehearsals remain not-run or evidence-pending. Do not mark them passed from software CI. Owner software/browser evidence from other runs is separately recorded in [M5 exhibition](../../farm-companion/M5_EXHIBITION.md) and [field setup](../../farm-companion/FIELD_SETUP.md); it does not verify this contributor’s claimed device runs.

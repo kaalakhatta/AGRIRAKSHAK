@@ -4,6 +4,7 @@ import { todayInZone, type Coordinates, type CropCycle, type Field, type Snapsho
 import { WeatherClient, WeatherError, weatherFresh, type Weather } from "@/lib/providers/weather";
 import { recommendNextSteps } from "@/lib/recommendations/next-steps";
 import { NextStepsPanel } from "@/features/recommendations/next-steps-panel";
+import { FarmGuidancePanel } from "@/features/recommendations/farm-guidance-panel";
 
 import { type CalendarTask } from "@/lib/domain/calendar";
 
@@ -48,6 +49,7 @@ export function TodayPanel({ field, cycles, location, tasks, soilTests, timezone
       </>}
       <p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Free non-commercial endpoint; session cache only. Reloading clears estimates.</p>
     </div><div><NextStepsPanel key={cycleId || "no-cycle"} steps={steps} demo={field.origin === "demo" || cycle?.origin === "demo" || snapshot.farms.find(f=>f.id===field.farm_id)?.origin === "demo"} snapshot={snapshot} fieldId={field.id} cycleId={cycle?.id ?? null} timezone={timezone} busy={recordBusy} save={save} />
+    <FarmGuidancePanel snapshot={snapshot} fieldId={field.id} cycleId={cycle?.id ?? null} weather={weather ? { field_id: field.id, weather } : null} />
     </div></div>
   </section>;
 }

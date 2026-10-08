@@ -32,12 +32,12 @@ M3 timeline: npm run check passes lint/typecheck/35 tests/build. Browser generat
 
 ## Remaining
 
-- Human review/merge of M1 PR; independent GPS permission-denied/unavailable and physical-phone/accessibility/storage-failure QA.
+- Core PR #13 is merged; independent GPS permission-denied/unavailable and physical-phone/accessibility/storage-failure QA.
 - Validate actual exported-file delivery on exhibition browsers; export transformation is unit-tested and browser dispatch/status was observed, but the in-app download event could not be captured.
 - M2: teammate catalog schema agreement and human-reviewed catalog integration; successful browser weather request/render on exhibition devices. Session cache is not offline installation. Engine uses exact normalized units; broader conversions/optional rules need reviewed contracts.
 - M3: reviewed seed/crop identifiers and matching, reviewed calendar templates, reviewed-action feedback integration, evaluated model integration and real uncertainty timeline contract. Personal reminder calendar and demonstration timeline are implemented. Existing main scanner remains a clearly labelled interface simulation; actual inference work on other branches is not silently replaced/integrated here.
 - M4/M5: broader season summaries and release QA, offline caching and exhibition release. Soil notebook is implemented; engine eligibility integration still awaits reviewed methods/rules.
-- Region/crops/reviewer/date/devices/language remain TBD. No seed advice, weather or yield gain is fabricated in M1.
+- Initial focus is Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Reviewer/date/devices/language remain TBD. No seed advice, weather or yield gain is fabricated in M1.
 
 ## Handoff
 
@@ -103,7 +103,7 @@ Validation: npm run check passes lint/typecheck/87 tests/production build; git d
 Browser synthetic QA saved done on seed-preparation (active list 4→3), reopened it without duplicating the record (3→4), edited to needs-help with a literal HTML-looking plain-text note, snoozed water-record preparation until Oct 9 and verified hidden/handled display. Switching to a second cycle showed its unaffected steps and zero saved responses. Reload preserved the original two feedback records, needs-help badge and snooze/date/note; records remained visibly synthetic. No weather consent, outbound help message or permanent deletion performed. Changed-source/expiry/stale-write cases were tested with deterministic fixtures, not by altering the user's records or waiting for a real date boundary. Physical-device QA and exported-file delivery remain pending. See ../farm-companion/M3_FEEDBACK.md. Next implementation slice: offline availability/update behavior and backup/recovery QA for the local companion.
 
 
-## Owner reassignment: 2026-10-08
+## Earlier owner reassignment: 2026-10-08 (superseded below)
 
 User restored Anushka/Aanya and requested a larger Yashi bundle. Task 7/#10 now owns all docs/research and data/catalog through nine ordered Y1–Y9 packages, including preserved literature PR #14 and disease/quiz frameworks. Task 6/#9 focuses on farm-data audit/regression expectations. New Task 11/#15 reserves dataset integrity/leakage/model readiness audit for AnushkaSChandel; Task 12/#16 reserves device/accessibility/failure QA and presentation/rehearsals for aanya25bce11372-stack. Both invitations were pending; new claims and actual device/artifact evidence remain unverified. Arindam retains Task 10/#11 runtime integration.
 
@@ -112,3 +112,14 @@ Registry, root/nested instructions, full briefs, roadmap/ownership docs, startup
 Validation: node --test tests/task-claim.test.cjs passes 12 tests (including real-registry mapped-account/isolation, returning-user write-access gate and unique/disjoint scopes); git diff --check passes. Registry-to-brief/path/link verification passes for five mapped tasks and four disjoint teammate directory pairs. No runtime changes or dependencies in this reassignment; existing uncommitted offline/UI edits and services model artifacts remain outside the commit.
 
 Activation: the updated registry must merge into main before Tasks 11/12 claims and expanded Task 7 scope work. Existing Task 7/10 bot claims remain valid; Kanika has no confirmed bot claim. Live main protection ruleset was observed disabled; no protection/bypass settings were changed. Next independent contributor actions: invitation acceptance and verified /claim; Yashi recovers PR #14 on the registered branch; audits/QA/content work proceed in their separate scopes.
+
+
+## Sehore intelligence and revised training ownership: 2026-10-08
+
+Owner takes back catalogs and the major farm intelligence. Yashi retains Task 7/#10 on codex/farm-task-7-yashi and owns the eight explicit research/ML scopes for free Colab, training, calibration, evaluation, ONNX export and supporting evidence. Anushka independently audits; Kanika and Aanya retain their distinct assignments. Claims for #10/#11 remain confirmed; current issue bodies preserve the prior assignments. No training work or metrics were fabricated by this update.
+
+Initial focus: Sehore, Madhya Pradesh, with soybean, wheat and gram/chickpea; agronomy reviewer remains TBD. farm-guidance.ts now binds the saved field/cycle and fresh same-field weather to engine-1, uses explicit crop/region aliases, keeps stage confirmation time, blocks demo parents, and excludes inferred soil, forecast issuance and scan confidence. Today and Plan show readiness/abstention reasons. Runtime catalog remains empty; only matched reviewed fixtures prove the path in tests. Current training selects pepper/potato/tomato, so target-crop scanner coverage is not established. See ../farm-companion/SEHORE_INTELLIGENCE.md.
+
+Validation: isolated staged snapshot npm run check passed lint/typecheck/97 app tests/production build; node --test tests/task-claim.test.cjs passed 14 tests; git diff --check passed. Exact-file ML scopes cannot admit suffix filenames, traversal or outside rename sources. Existing offline/UI dirty work and services model artifacts are excluded from this PR. Next: genuine agronomy review and source-backed catalogs/seed-calendar contracts; Yashi target-crop dataset feasibility and actual Colab execution; independent model/device QA. This partial milestone does not close #10/#11.
+
+Browser smoke on the isolated production build: created explicitly named synthetic Sehore/Soybean/Kharif records through the forms, selected the cycle in Today, then reopened the saved field/cycle in Plan. Both rendered the focus and missing-water/weather/reviewer reasons; Plan retained the personal reminder form and did not render crop actions. No GPS/weather permission or outbound provider request was used. This is desktop UI evidence, not physical-device or model QA.

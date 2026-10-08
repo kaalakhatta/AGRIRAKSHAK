@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { claim } = require('../.github/scripts/claim.cjs');
+const { isAllowedPath } = require('../.github/scripts/scope.cjs');
 const registry = { owner: 'owner', contributors: { Kanika: 'kanika' }, tasks: [{ task: 6, issue: 6, contributor: 'Kanika', branch: 'codex/task6', paths: ['ml/audit/'], brief: 'brief.md' }] };
 async function run({ actor = 'kanika', command = '/claim', assignees = [], state = 'open', permission = 'write', issue = 6, pr = false, config = registry } = {}) {
   const calls = [];
@@ -54,13 +55,27 @@ test('registered tasks have unique identities and disjoint exclusive teammate sc
   }
   const teammates = liveRegistry.tasks.filter(t => !t.paths.includes('*'));
   for (const task of teammates) {
-    assert.equal(task.paths.length, 2);
+    assert.ok(task.paths.length >= 2);
     assert.ok(Number.isInteger(task.issue) && task.issue > 0);
-    for (const path of task.paths) assert.ok(path.endsWith('/') && !path.startsWith('/') && !path.split('/').includes('..'));
+    for (const path of task.paths) assert.ok(!path.startsWith('/') && !path.split('/').includes('..'));
     for (const other of teammates.filter(t => t.task !== task.task)) {
       for (const path of task.paths) for (const peer of other.paths) {
         assert.ok(!path.startsWith(peer) && !peer.startsWith(path), `${task.contributor}/${other.contributor} overlap: ${path}, ${peer}`);
       }
     }
   }
+});
+
+test('Yashi owns training and research, while runtime and farm catalogs remain owner scope', () => {
+  const paths = liveRegistry.tasks.find(t => t.contributor === 'Yashi').paths;
+  for (const file of ['docs/research/farm-context/SOURCES.md', 'ml/src/agrirakshak_ml/train.py', 'ml/tests/test_metrics.py', 'ml/notebooks/agrirakshak_colab_training.ipynb', 'ml/COLAB.md', 'ml/pyproject.toml', 'ml/README.md', 'ml/MODEL_CARD_TEMPLATE.md']) assert.equal(isAllowedPath(paths, file), true, file);
+  for (const file of ['data/catalog/farm-context/action.schema.json', 'apps/web/lib/recommendations/engine.ts', 'ml/dataset_audit/audit.py', 'ml/farm_context_audit/test.py', 'ml/COLAB.md.bak', 'ml/README.md/other', 'ml/notebooks-extra/a.ipynb', '.github/workflows/ml-unit.yml', 'package.json']) assert.equal(isAllowedPath(paths, file), false, file);
+});
+test('scope rejects traversal and checks both sides of a rename', () => {
+  const paths = ['ml/notebooks/', 'ml/COLAB.md'];
+  for (const file of ['/ml/COLAB.md', 'ml/notebooks/../dataset_audit/a.py', 'ml/notebooks/./a.py', 'ml//notebooks/a.py', 'ml\\notebooks\\a.py']) assert.equal(isAllowedPath(paths, file), false);
+  const permitted = change => [change.filename, change.previous_filename].filter(Boolean).every(file => isAllowedPath(paths, file));
+  assert.equal(permitted({filename: 'ml/notebooks/new.ipynb', previous_filename: 'ml/notebooks/old.ipynb'}), true);
+  assert.equal(permitted({filename: 'ml/notebooks/new.ipynb', previous_filename: 'data/catalog/action.json'}), false);
+  assert.equal(permitted({filename: 'data/catalog/action.json', previous_filename: 'ml/notebooks/old.ipynb'}), false);
 });

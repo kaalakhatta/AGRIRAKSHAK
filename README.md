@@ -1,6 +1,6 @@
 # AgriRakshak
 
-**Teammate agents: read [START_HERE.md](START_HERE.md) before edits. The updated setup activates on main after human merge of [PR #12](https://github.com/kaalakhatta/AGRIRAKSHAK/pull/12).**
+**Teammate agents: read [START_HERE.md](START_HERE.md) before edits. Setup and the five-person roster are merged; follow the current registered scopes.**
 
 AgriRakshak is a college exhibition farm companion planned to help farmers plan crops, monitor a growing season and review their records. Preliminary leaf-disease screening is one part of the product.
 
@@ -16,6 +16,8 @@ AgriRakshak is a college exhibition farm companion planned to help farmers plan 
 
 No guaranteed yield increases, professional diagnoses or pesticide/fertilizer prescriptions. Recommendations require applicable reviewed evidence; missing data stays missing. GPS does not measure soil nutrients. Weather estimates are not actual field sensors.
 
+Initial focus is Sehore, Madhya Pradesh, for soybean, wheat and gram/chickpea. Agronomy reviewer remains TBD; selected planning coverage does not establish disease-model coverage.
+
 ## Zero-paid-service build
 
 Keep Next.js/TypeScript and the existing scanner work. Use local browser storage for farm records, versioned reviewed content, and a deterministic rule engine. No mandatory accounts, hosted database, paid AI, subscription APIs or card-required services. Optional weather enrichment uses eligible free access with cache/failure labels; a local runnable build is always required. Sensor hardware and external inference are not assumed available. Model unavailability never produces a fabricated result.
@@ -28,7 +30,7 @@ The new `/farm` screen implements local field/crop-cycle records, confirmed opti
 
 Read [full build plan](docs/farm-companion/BUILD_PLAN.md), [architecture](docs/ARCHITECTURE.md), [data model](docs/farm-companion/DATA_MODEL.md), [engine plan](docs/farm-companion/RECOMMENDATION_ENGINE.md) and [repository/delivery protocol](docs/farm-companion/DELIVERY.md).
 
-Arindam owns runtime integration (Task 10/#11), Kanika farm-data validation/regression (Task 6/#9), Yashi the expanded research/catalog/education bundle (Task 7/#10), Anushka dataset/model audits (Task 11/#15), and Aanya device QA/exhibition readiness (Task 12/#16). Agents read [AGENTS.md](AGENTS.md), their complete brief and [task registry](docs/farm-context/tasks.json), then use the [/claim workflow](CONTRIBUTING.md). Setup #12 is merged; the reassignment registry must land on main before new claims work. Historical deliverables and open PRs are preserved.
+Arindam owns the main farm intelligence, catalogs and runtime integration (Task 10/#11), Kanika farm-data validation/regression (Task 6/#9), Yashi free Colab training/evaluation/export and supporting research (Task 7/#10), Anushka dataset/model audits (Task 11/#15), and Aanya device QA/exhibition readiness (Task 12/#16). Agents read [AGENTS.md](AGENTS.md), their complete brief and [task registry](docs/farm-context/tasks.json), then use the [/claim workflow](CONTRIBUTING.md). Setup #12 and roster #17 are merged; the latest Task 7 training-scope change must merge before those ML edits pass scope CI. Historical deliverables and open PRs are preserved.
 
 ## Repository
 

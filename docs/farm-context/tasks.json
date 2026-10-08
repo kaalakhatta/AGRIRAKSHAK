@@ -24,13 +24,19 @@
     {
       "task": 7,
       "contributor": "Yashi",
-      "title": "Research, evidence and complete education catalogs",
+      "title": "Colab training, model evaluation and supporting evidence",
       "brief": "docs/team-tasks/TASK-7-FARM-EVIDENCE.md",
       "branch": "codex/farm-task-7-yashi",
       "issue": 10,
       "paths": [
         "docs/research/",
-        "data/catalog/"
+        "ml/src/agrirakshak_ml/",
+        "ml/tests/",
+        "ml/notebooks/",
+        "ml/pyproject.toml",
+        "ml/COLAB.md",
+        "ml/README.md",
+        "ml/MODEL_CARD_TEMPLATE.md"
       ]
     },
     {

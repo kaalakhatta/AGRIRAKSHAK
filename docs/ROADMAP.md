@@ -2,7 +2,7 @@
 
 AgriRakshak now targets an educational farm companion: plan a crop, monitor the season and review recorded outcomes. Disease screening remains a module. Zero paid APIs/subscriptions or mandatory cloud services. Active team: Arindam, Kanika, Yashi, Anushka and Aanya (reassigned 2026-10-08).
 
-The canonical detailed roadmap is [BUILD_PLAN.md](farm-companion/BUILD_PLAN.md). All runtime modules below remain planned until validated. Target district/crops, exhibition date/device and agronomic reviewer are TBD.
+The canonical detailed roadmap is [BUILD_PLAN.md](farm-companion/BUILD_PLAN.md). All runtime modules below remain planned until validated. Initial focus: Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Exhibition date/device and agronomic reviewer remain TBD.
 
 | Milestone | Main outcome | Acceptance |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ The canonical detailed roadmap is [BUILD_PLAN.md](farm-companion/BUILD_PLAN.md).
 | M4 | Soil, expenses, harvests and season review | Unit-safe recorded totals and complete backup round-trip |
 | M5 | Exhibition release | Accessibility/offline/device checks, versioned local backup, three rehearsals |
 
-Arindam owns the heavy app/domain/storage/adapters/engine/model/integration/deployment work. Kanika owns farm-data audit/regression fixtures. Yashi owns the expanded nine-package research/evidence/catalog/education bundle. Anushka owns dataset integrity/leakage and model readiness audits. Aanya owns device/accessibility/offline QA and exhibition/rehearsal evidence. Paths and branches remain in [tasks.json](farm-context/tasks.json).
+Arindam owns the heavy app/domain/storage/adapters/engine/model/integration/deployment work. Kanika owns farm-data audit/regression fixtures. Yashi owns free Colab training/calibration/evaluation/export and supporting research. Arindam owns all farm intelligence and catalogs. Anushka owns dataset integrity/leakage and model readiness audits. Aanya owns device/accessibility/offline QA and exhibition/rehearsal evidence. Paths and branches remain in [tasks.json](farm-context/tasks.json).
 
 ## Preserve the model research track
 

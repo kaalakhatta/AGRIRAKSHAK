@@ -1,68 +1,47 @@
-# Task 7: Research, evidence and complete education catalogs
+# Task 7: Colab training, model evaluation and supporting evidence
 
 Contributor: Yashi (@yashitripathi2007)
 Branch: `codex/farm-task-7-yashi`
 Issue: https://github.com/kaalakhatta/AGRIRAKSHAK/issues/10
-Allowed paths: `docs/research/**` and `data/catalog/**`.
-Owner reassignment: 2026-10-08. This is the largest teammate bundle, delivered in small cumulative PRs rather than one oversized PR. Existing work is preserved.
+Allowed scopes: `docs/research/**`, `ml/src/agrirakshak_ml/**`, `ml/tests/**`, `ml/notebooks/**`, `ml/pyproject.toml`, `ml/COLAB.md`, `ml/README.md`, `ml/MODEL_CARD_TEMPLATE.md`.
+Owner reassignment: 2026-10-08. This replaces the earlier nine-package catalog assignment; preserve its completed work and history.
 
-## Startup and boundaries
+## Startup and ownership
 
-Read root AGENTS.md, AGENT_START.md, docs/farm-context/PLAN.md, CONTRACT.md, all four docs/farm-companion planning documents, scoped instructions and every existing file in both owned directories. Inspect STATUS.md, issue #10 and PR #14. Your claim was confirmed on 2026-10-07; verify it remains assigned to your mapped account and ensure no second agent is active. If necessary post /claim and wait for bot confirmation. Fetch main; inspect/resume the registered branch, or create it from origin/main only if absent.
+Read root AGENTS.md, AGENT_START.md, PLAN.md, CONTRACT.md, the four farm-companion planning documents, scoped instructions and every existing file in your registered scopes. Inspect STATUS.md, issue #10, merged training PR #8 and literature PR #14. Your /claim was confirmed; verify the live assignee is your mapped account before resuming. Fetch main, inspect/resume the exact registered branch, or create it from origin/main if absent. One active agent and separate checkout for this task.
 
-Arindam explicitly broadens your former farm-context-only paths to both complete research/catalog trees, incorporating applicable historical Tasks 2 and 3. This does not authorize apps/web, ml, shared contracts, root dependencies or workflows. No paid services, pesticide products/concentrations/dosages, fertilizer dosages, invented thresholds, source verification, reviewer approvals or model results.
+Arindam takes back the major intelligence work: farm-context binding, deterministic recommendations, seed/action/calendar/content schemas and catalogs, app/API/scanner integration, shared contracts and deployment. You own the existing image-model pipeline, free Google Colab notebook, training, calibration, evaluation, ONNX export and supporting scientific/dataset-license research. Anushka independently audits dataset/split/model evidence; she does not train. Kanika audits farm-data/regression cases; Aanya executes device/exhibition QA.
 
-## Nine ordered work packages
+No data/catalog, apps/web, services, shared-contract, workflow or root-dependency edits. ML dependencies may be changed only in ml/pyproject.toml when essential to the existing free pipeline; document need/license/compatibility. Do not introduce paid/card-required compute, AI calls or automatic paid fallbacks. No datasets, weights/checkpoints, farmer photos, locations, credentials or notebook execution outputs containing them in Git. Preserve supplied local model artifacts.
 
-### Y1 — Preserve and deliver the existing literature review
+## Six cumulative packages
 
-Inspect PR #14 and preserve its commits, attribution and three files: LITERATURE_REVIEW.md, BIBLIOGRAPHY.md and CLAIMS_REGISTER.md under docs/research. Its original branch docs/literature-review failed the registered-branch check. Carry the existing work into codex/farm-task-7-yashi after inspecting both branches; do not overwrite it, create a competing Task 2 assignment, or discard the open PR. Cross-reference PR #14 in the replacement milestone PR and let Arindam reconcile the old PR after integration.
+### Y1 — Target-crop feasibility and dataset evidence
 
-Audit its citations/claims before claiming verification. Cover CNN classification, MobileNet/EfficientNet, PlantVillage limitations, field generalization, leakage, imbalance, augmentation and calibration. Keep at least ten credible sources in the literature bibliography; published results must retain their original dataset/conditions. Separate cited findings from project results and interpretation. Do not rerun completed research merely to create more files.
+The owner-selected companion scope is Sehore, Madhya Pradesh, for soybean, wheat and gram/chickpea. The existing prepare_plantvillage.py currently selects bell pepper, potato and tomato; this is a historical scanner baseline, not target-crop coverage. Audit candidate image datasets for each requested crop: source/version, licenses and permitted use, healthy/disease/unsupported labels, real class counts, field versus controlled images, geographic/device gaps and expert label review. Report unsupported or unavailable coverage honestly. Do not relabel unrelated images or call source claims project metrics. Agree any crop expansion and preprocessing/label contract with Arindam on #10 before changing the baseline.
 
-### Y2 — Source inventory and zero-cost provider assessment
+### Y2 — Preserve literature and source register
 
-Under docs/research/farm-context maintain SOURCES.md, PROVIDER_MATRIX.md, CLAIMS_REGISTER.md and REVIEW_GAPS.md. Open at least eight primary agricultural/provider sources and record URL, accessed date, supported claim, region/crop/season, limitations, license/attribution, access requirements, rate limits and pricing. Verify current official documentation instead of copying old provider facts. Distinguish model weather, forecasts, station/device telemetry, soil maps and laboratory tests. No paid/card-required provider qualifies. Target region/crops/reviewer remain TBD; propose evidence-backed coverage options for the owner, not a selected launch scope.
+Preserve PR #14 commits, attribution and LITERATURE_REVIEW.md, BIBLIOGRAPHY.md and CLAIMS_REGISTER.md. Its docs/literature-review branch fails the registered branch check; migrate the reviewed work into the existing Task 7 branch after inspecting both branches and reference #14 in the replacement PR. Keep at least ten credible literature sources covering CNNs, transfer learning, controlled-background limitations, field generalization, leakage, imbalance, augmentation and calibration. Verify primary sources and retain original evaluation conditions. Keep dataset/license/claims/review-gap registers under docs/research. Any agronomy evidence is a source handoff to Arindam, not executable rules or expert approval.
 
-### Y3 — Five farm catalog schemas and validation
+### Y3 — Reproducible free Colab smoke run
 
-Under data/catalog/farm-context create crop.schema.json, seed.schema.json, action.schema.json, calendar.schema.json, evidence.schema.json, CONTENT_GUIDE.md, examples/ and a documented free validation method. Read docs/farm-companion/M2_CONTRACT.md and RECOMMENDATION_ENGINE.md before proposing field/operator/unit shapes. Coordinate ambiguities on #10; shared engine/contracts remain Arindam's responsibility.
+Maintain ml/notebooks/agrirakshak_colab_training.ipynb and ml/COLAB.md, using the pipeline merged in #8 rather than creating a second trainer. Pin dataset/source versions and seeds, verify setup, manifest, grouped split, one-epoch smoke train, evaluation and export. Free GPU availability is optional and variable; document CPU smoke/failure/resume paths. No paid runtime or subscription. Export outputs before session expiry. Actual execution details belong in a source-linked run report; unexecuted notebook cells are not a successful run.
 
-Schemas represent stable IDs/version, applicability region/crop/season/stage, required inputs with units/depth/interval/provenance, evidence IDs, contraindications, missing-input/abstention reasons, localized text and draft/reviewed/rejected states. Reviewed records require real reviewer identity/date and verified evidence. Validate examples and cross-record references; negative examples should demonstrate rejection. Add only scoped validation tooling; no root dependency changes.
+### Y4 — Training, calibration and independent evaluation
 
-### Y4 — Crop and seed comparison drafts
+Use the untouched real-image test set only for final reporting; hyperparameters and calibration use train/validation data. Keep duplicates and same-leaf/source groups out of multiple splits. Document class balancing, augmentation, stopping rule, seeds and environment. Report real per-class precision/recall/F1/support, macro F1, confusion matrix, calibration and threshold/coverage protocol. Evaluate realistic field images independently where permitted; absent field validation remains a gap. Never invent accuracy or reviewer approval. Hand manifests/methods to Anushka without editing her audit directories.
 
-Create a source-linked coverage matrix and candidate drafts for the owner-selected region and up to three crops only after selection. Compare verified facts, sowing windows, water/soil prerequisites, uncertainty and local expert confirmation. No arbitrary ranking, yield guarantee, seed availability claim or fabricated cultivar suitability. Until region/crops are selected, produce templates, source inventories and explicit gaps instead of pretending coverage exists.
+### Y5 — Export bundle and model card
 
-### Y5 — Action and crop-calendar drafts
+Deliver the existing versioned ONNX bundle contract with labels, preprocessing metadata, supported/unsupported crops, model version, real metrics and uncertainty/calibration metadata. Compare exported-model outputs against the evaluated checkpoint and document size/latency only where measured. Complete MODEL_CARD_TEMPLATE.md from actual evidence. Artifacts stay outside Git; coordinate an approved artifact handoff with Arindam. Do not write the model into apps/web/public or services yourself. Confidence is a model score, not diagnosis or farm-recommendation confidence.
 
-Draft source-backed establishment, observation, soil-testing, weather-awareness, irrigation-planning and harvest task templates. Each carries its evidence, timing basis, required inputs, contraindications, missing-input reason and review status. Never invent days-after-sowing windows, thresholds or operational advice. Read how personal reminders differ from reviewed calendar templates. No executable engine, adapter, app screen or notification work.
+### Y6 — Owner integration handoff
 
-### Y6 — Disease-education framework
+Provide commit/run IDs, dataset/version/license register, preprocessing/label contract, real metrics, model card, export checks and missing target-crop/device evidence. Arindam owns runtime integration and release decisions; Aanya verifies actual device behavior; Anushka audits evidence. Preserve the prior baseline until any replacement passes review. Target-crop screening stays unavailable until evaluated artifacts actually support it. Farm guidance remains separate and needs genuine agronomic review.
 
-In data/catalog create schema.json, CONTENT_GUIDE.md and examples/ for the educational disease content backlog. Represent stable IDs, crop, verified scientific name when available, symptoms, confusable conditions, prevention, expert referral, sources, review state, languages and quiz links. Include clearly draft placeholders for healthy, unsupported and uncertain states. Do not assume the model's labels define approved crop coverage. No automatic prescription or diagnosis.
+## Validation and submission
 
-### Y7 — Quiz and language framework
+Run `python -m compileall ml/src` and the existing ML unit checks: from ml, `python -m pytest tests` and `ruff check src tests` when installed. Verify notebook JSON and reproducible commands. Execute and record smoke/train/evaluation/export checks when compute/data are available; never mark blocked checks passed. No additional real training is needed merely to validate a documentation PR.
 
-Create quiz.schema.json and draft examples linked to content/evidence IDs. Include an evidence-backed answer explanation, review status and localization keys. Maintain a translation/glossary inventory with English-first text and regional-language priorities TBD. Translated agricultural text requires actual review; machine translation cannot be marked reviewed. Validate quiz/content links and language fallbacks without editing the app.
-
-### Y8 — Record explanations and responsible claims
-
-Provide source-linked draft plain-language explanations of soil-test method/depth/units, observation records, costs/refunds, harvest versus sales, missing area and incomplete-cost limitations. Do not call recorded receipts-minus-outlay profit or infer causal yield improvement. Extend the claims register and FAQ drafts for weather/soil/sensors, model uncertainty and privacy; Aanya consumes these for presentation, rather than independently inventing evidence.
-
-### Y9 — Coverage, review packet and license inventory
-
-Maintain COVERAGE.md, REVIEW_PACKET.md and ATTRIBUTION.md in docs/research/farm-context. Map every topic/region/crop/language and entry to sources, verification status, actual reviewer/date, license and outstanding gaps. Inventory content/dataset/provider attribution from primary sources, flag uncertain permissions and avoid presenting a dataset mirror's metadata as expert/legal approval. Prepare a faculty/agronomy review checklist; seeking a reviewer is not approval. No contact or outreach unless separately authorized.
-
-## Delivery order and evidence
-
-- M0–M1: Y1 then Y2/Y3; first deliver the preserved literature and source/schema foundation.
-- M2–M3: Y4/Y5/Y6/Y7 in separate reviewable slices. Advice-dependent content stays draft while coverage/reviewer inputs are missing.
-- M4: Y8, with schema/record references and no economic or health inferences.
-- M5: Y9 and a final source/link/translation/reviewer audit of all prior packages.
-
-Maintain docs/research/STATUS.md and data/catalog/STATUS.md; preserve any existing nested status files. Record each package's completed/pending files, opened sources, validation command/output, blockers and next deliverable. If offline, mark citations unverified and continue schemas/gap inventories. A source count is a minimum inventory, not proof of catalog review.
-
-Validate all examples against documented schemas; validate stable IDs/evidence/quiz links, review gates and missing reviewer fields. Run git diff --check. Include source verification checklist and explicit unknowns in every milestone PR. Do not mark all nine packages complete from a literature-only PR.
-
-Submit on the exact branch with Task 7, milestone/package IDs and Refs #10; Closes #10 only after the entire cumulative assignment is complete. Request kaalakhatta review. Never merge/push main or bypass checks. Preserve branch/PR/unfinished work before /unclaim.
+Maintain docs/research/STATUS.md for evidence and ml/src/agrirakshak_ml/STATUS.md for pipeline/run handoff. Show diff, commit/push only the registered branch, open small package PRs with Task 7, Y1–Y6, `Refs #10`, changed scopes, checks/output, sources and limitations; request kaalakhatta review. Close #10 only after the whole cumulative task is finished. Never merge/push main. Record branch/PR and unfinished work before /unclaim.

@@ -1,3 +1,3 @@
-# Yashi: catalog
+# Arindam: farm intelligence catalogs
 
-Follow root AGENTS.md and read docs/team-tasks/TASK-7-FARM-EVIDENCE.md completely (paths relative to repository root). Use the registered GitHub issue and /claim before editing. The owner expanded your two paths to docs/research/** and data/catalog/** on 2026-10-08; this subtree remains part of Task 7. Only the registered paths are writable for your task. Read all existing files in both directories; continue pending work and keep STATUS.md with evidence. Do not execute core integration work or change the shared contract.
+Owner reassignment, 2026-10-08: data/catalog is Task 10 owner scope, removed from Task 7. Read root AGENTS.md, TASK-10-FARM-CORE.md, current engine contract and full companion plan. Preserve existing content and coordinate pending handoffs on #10/#11. Focus Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. No executable advice without verified evidence, relevant complete inputs and real agronomic review; reviewer remains TBD. No fabricated thresholds, pesticide/fertilizer dosages, rankings or model-coverage claims.

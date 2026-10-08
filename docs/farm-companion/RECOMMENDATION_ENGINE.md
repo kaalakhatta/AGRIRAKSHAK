@@ -10,7 +10,7 @@ Farmer groups: Check today, Plan this week, Prepare for next season, and Missing
 
 ## Versioned rule shape
 
-Yashi's action schema and Arindam's evaluator agree on a declarative structure:
+Arindam owns catalog schemas and the evaluator; the declarative structure is:
 
 - id, version, topic, title/text translation keys; crop/variety/region/stage/season applicability.
 - required_inputs and optional_inputs, expected units/depth/source kinds, maximum ages where meaningful.
@@ -45,6 +45,6 @@ Use measured soil data for field-specific soil actions. Optional regional maps a
 
 ## Tests and review
 
-Arindam writes unit tests for rule decisions, conflicts, freshness, supported unit conversions, date windows and invalidated caches; provider tests use HTTP fixtures, never live network CI. Kanika supplies independent positive/negative scenario fixtures and audits output completeness. Yashi supplies source-backed draft rules and reviewer packets; only genuinely reviewed records enter runtime catalogs.
+Arindam writes unit tests for rule decisions, conflicts, freshness, supported unit conversions, date windows and invalidated caches; provider tests use HTTP fixtures, never live network CI. Kanika supplies independent positive/negative scenario fixtures and audits output completeness. Yashi supplies supporting source/model evidence; Arindam authors farm rules and obtains actual agronomic review; only genuinely reviewed records enter runtime catalogs.
 
 Required negative cases: unknown season, denied location, unsupported region, draft/rejected entries, missing reviewer, wrong unit/depth/source kind, stale/future observations, conflicting actions, rule injection, mixed field inputs, synthetic-only data. Synthetic demo runs live in a separate labelled mode and never become real farmer advice.

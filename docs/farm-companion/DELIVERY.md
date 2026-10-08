@@ -18,7 +18,7 @@ apps/web/                         Existing Next.js app; Arindam owns all runtime
   tests/                          Planned domain/provider/storage/integration tests
   public/                         App assets; approved model release mechanism, not Git weights
 
-data/catalog/                     Yashi: disease/quiz and farm catalog schemas, draft content
+data/catalog/                     Arindam: disease/quiz and farm catalog schemas, draft content
   farm-context/                   Seed/action/crop/calendar/evidence catalog work
   seed.schema.json                Planned
   action.schema.json              Planned
@@ -34,7 +34,10 @@ ml/dataset_audit/                 Anushka: dataset integrity and split/leakage a
 docs/model-validation/            Anushka: model evidence/readiness protocol and gaps
 docs/exhibition/device-qa/        Aanya: observed device/accessibility/privacy/offline QA
 docs/exhibition/presentation/     Aanya: demo/judge/fallback/rehearsal/release evidence
-ml/                              Arindam: existing training/evaluation/export pipeline
+ml/src/agrirakshak_ml/            Yashi: existing training/evaluation/export pipeline
+ml/tests/, ml/notebooks/          Yashi: pipeline tests and free Colab notebook
+ml/pyproject.toml, COLAB.md,       Yashi: exact-file scopes (paths include ml/ prefix)
+  README.md, MODEL_CARD_TEMPLATE.md
 services/                        Existing untracked model artifacts: preserve, inspect only
                                   before any integration; do not add model weights to Git
 scripts/                         Planned owner-only catalog/release validation helpers
@@ -52,14 +55,15 @@ Within apps/web, domain rules/storage must be independent of React components. U
 | Producer → consumer | Artifact | Gate |
 | --- | --- | --- |
 | Arindam → Kanika | Existing context v1 and new versioned domain contracts | Shared schemas stable before audit implementation |
-| Yashi → Arindam | Schemas, source register, region/crop coverage, reviewed seed/action/calendar entries | Schema validation plus human agronomic review |
+| Yashi → Arindam | Evaluated ONNX bundle contract, real metrics/model card, dataset/license/source register | Reproducible training/export, supported labels, honest target-crop/field gaps |
+| Arindam → runtime | Reviewed seed/action/calendar catalogs for selected coverage | Verified evidence, genuine agronomic review and input checks |
 | Kanika → Arindam | Independent synthetic fixtures, expected outcomes, QA traceability | Fixtures label synthetic and do not invent agricultural thresholds |
 | Arindam/Kanika → Aanya | Implemented build, expected cases and known gaps | Real device/rehearsal execution; pending is not pass |
 | Arindam → Anushka | Supplied manifests/model/evaluation evidence | Independent audit; absent artifacts remain unavailable |
 | Yashi/Anushka → Aanya | Verified claims and model limitations | Presentation reflects actual evidence |
 | All teammates → owner | Milestone PR, STATUS.md evidence and next steps | Human review/merge; no agent merges without explicit owner authorization |
 
-Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. Task 7 owns only docs/research/** and data/catalog/**. Task 11 owns only ml/dataset_audit/** and docs/model-validation/**. Task 12 owns only docs/exhibition/device-qa/** and docs/exhibition/presentation/**. Arindam owns remaining paths and integration, but must not concurrently edit teammate-owned files. Coordinate schema changes through their issues and review; shared-contract changes require an explicit version and migration note.
+Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. Task 7 owns docs/research/**, ml/src/agrirakshak_ml/**, ml/tests/**, ml/notebooks/** and the exact files ml/pyproject.toml, ml/COLAB.md, ml/README.md, ml/MODEL_CARD_TEMPLATE.md. Arindam owns data/catalog and all runtime intelligence. Task 11 owns only ml/dataset_audit/** and docs/model-validation/**. Task 12 owns only docs/exhibition/device-qa/** and docs/exhibition/presentation/**. Arindam owns remaining paths and integration, but must not concurrently edit teammate-owned files. Coordinate schema changes through their issues and review; shared-contract changes require an explicit version and migration note.
 
 ## Claim and cumulative branch workflow
 
@@ -71,7 +75,7 @@ Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. T
 6. After human merge, fetch and reconcile with main without force-pushing over others. If a branch was deleted, recreate the same registered branch from main after confirming the milestone PR is merged. Never resurrect old commits by blindly pushing a stale branch.
 7. Record remaining work before /unclaim. Reclaimer resumes the documented branch/PR/checklist. Cross-task overlap goes to Arindam.
 
-The existing PR scope check validates registered branches/authors/claim and both old/new rename paths. Setup #12 is merged and the workflows exist on main. The live main ruleset was observed disabled on 2026-10-08; web/scope runs do not prove enforced protection. The reassignment registry must merge before Tasks 11/12 can claim. Existing historical issues/PRs stay preserved; use active task issues, not duplicate legacy assignments.
+The existing PR scope check validates registered branches/authors/claim and both old/new rename paths. Setup #12 is merged and the workflows exist on main. The live main ruleset was observed disabled on 2026-10-08; web/scope runs do not prove enforced protection. Roster #17 is merged; the revised training scopes must land before Yashi’s ML edits pass CI. Existing historical issues/PRs stay preserved; use active task issues, not duplicate legacy assignments.
 
 ## Verification per milestone
 

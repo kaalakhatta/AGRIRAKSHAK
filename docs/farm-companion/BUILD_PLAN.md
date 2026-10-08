@@ -1,6 +1,6 @@
 # AgriRakshak farm companion: full build plan
 
-Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi, Anushka, Aanya (owner reassignment 2026-10-08). This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Deadline, target region, crops and reviewer remain TBD.
+Planning baseline: 2026-10-05. Owner: Arindam. Active team: Arindam, Kanika, Yashi, Anushka, Aanya (owner reassignment 2026-10-08). This document defines the intended build; no module is complete merely because it appears here. It supersedes the disease-only product scope while preserving the scanner and existing backlog. Initial focus confirmed 2026-10-08: Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Deadline and named agronomy reviewer remain TBD.
 
 ## Product and constraints
 
@@ -8,7 +8,7 @@ Help a farmer plan, monitor and review a growing season through evidence-backed 
 
 Hard budget: zero paid APIs, subscriptions, credit-card requirements, paid AI endpoints or mandatory cloud databases. Free external data is optional enrichment; unavailable services must not break local records, calendars or scanning. Never switch to paid endpoints automatically. Use existing devices; physical sensors are optional and are not assumed free hardware.
 
-Initial breadth: farm profile, weather briefing, seed/crop candidates, stage-based tasks, disease screening, soil notebook, expense diary and harvest records. Initial agronomic depth: one selected region and up to three crops, pending owner confirmation. Platform and record features can proceed while region/crops are TBD; live advice for unspecified coverage must abstain.
+Initial breadth: farm profile, weather briefing, seed/crop candidates, stage-based tasks, disease screening, soil notebook, expense diary and harvest records. Initial agronomic depth: Sehore and the three owner-selected crops. This is a planning focus, not established expert-reviewed advice or scanner coverage. Local records support other crops; agricultural guidance abstains outside reviewed coverage.
 
 ## Farmer journeys
 
@@ -58,23 +58,25 @@ Use short forms and progressive questions. A farmer can skip unknown soil or dat
 
 Effort is estimated team working days, not calendar promises; exhibition date is TBD. Milestones are sequential release gates, not a claim that contributors must work serially.
 
-| Milestone | Estimate | Arindam (heavy work) | Kanika (validation/QA) | Yashi (evidence/content) | Exit gate |
+| Milestone | Estimate | Arindam (heavy work) | Kanika (validation/QA) | Yashi (training/evidence) | Exit gate |
 | --- | --- | --- | --- | --- | --- |
-| M0: ready-to-build foundation | 1–2 days | Merge-ready plan, contracts, claim/scope workflow; choose region/crops/reviewer with owner | Contract fixture inventory and test traceability | Provider/source inventory; coverage gaps | Human merges setup; real claim test; required scope check verified |
-| M1: local farm foundation | 3–5 days | Profile/cycle screens, IndexedDB repositories, export/import/delete, location consent | Data audit and profile/privacy/import scenarios | Crop/region catalog schema and evidence records | Reload preserves local data; denial/skip works; corrupt import cannot damage records |
-| M2: weather + daily guidance | 3–5 days | Weather adapter/cache, Today, rule evaluator v1, stale/missing/error states | Fake-clock/provider fixtures, engine result checks, mobile plan | First reviewed action candidates and reviewer packet | Weather failure isolated; only reviewed applicable rules render; evidence visible |
-| M3: plan + monitor | 4–6 days | Seed comparison, calendar, action feedback, scanner-cycle integration | Candidate/stage/task conflicts and unsupported-region QA | Region/crop/seed evidence and stage calendar drafts | Complete plan→monitor journey; draft/missing-input cases abstain |
-| M4: records + season review | 3–5 days | Soil entry, observations, expenses, harvest/sales, summaries | Units, edits/deletes, duplicate import, backup and calculation scenarios | Soil/harvest guidance and plain-language explanations | Accurate totals from entered data; unknown area/costs stay unknown; export round-trip |
-| M5: exhibition release | 2–4 days | Accessibility/offline/size checks, free hosting, release artifacts and rollback | Contract regression and traceability; Aanya executes device tests/rehearsals, Anushka audits model readiness | Source/translation/reviewer audit and evidence for judge explanations | Three successful rehearsals; failures demonstrated; no fabricated features/results |
+| M0: ready-to-build foundation | 1–2 days | Merge-ready plan, contracts, claim/scope workflow; choose region/crops/reviewer with owner | Contract fixture inventory and test traceability | Target-crop dataset/license feasibility; literature preservation | Human merges setup; real claim test; required scope check verified |
+| M1: local farm foundation | 3–5 days | Profile/cycle screens, IndexedDB repositories, export/import/delete, location consent | Data audit and profile/privacy/import scenarios | Reproducible free Colab smoke workflow and evidence | Reload preserves local data; denial/skip works; corrupt import cannot damage records |
+| M2: weather + daily guidance | 3–5 days | Weather adapter/cache, Today, rule evaluator v1, stale/missing/error states | Fake-clock/provider fixtures, engine result checks, mobile plan | Training/calibration and real evaluation reports | Weather failure isolated; only reviewed applicable rules render; evidence visible |
+| M3: plan + monitor | 4–6 days | Seed comparison, calendar, action feedback, scanner-cycle integration | Candidate/stage/task conflicts and unsupported-region QA | ONNX export/model-card handoff; crop coverage gaps | Complete plan→monitor journey; draft/missing-input cases abstain |
+| M4: records + season review | 3–5 days | Soil entry, observations, expenses, harvest/sales, summaries | Units, edits/deletes, duplicate import, backup and calculation scenarios | Independent model-evidence handoff to Anushka | Accurate totals from entered data; unknown area/costs stay unknown; export round-trip |
+| M5: exhibition release | 2–4 days | Accessibility/offline/size checks, free hosting, release artifacts and rollback | Contract regression and traceability; Aanya executes device tests/rehearsals, Anushka audits model readiness | Verified model/source/license limitations for judge explanations | Three successful rehearsals; failures demonstrated; no fabricated features/results |
 
 Total planning range: roughly 16–27 working days, highly dependent on model readiness, content review and device QA. If the deadline is shorter, M1–M3 plus essential M5 checks form the first demo; M4 can follow. Actual hardware sensors, report OCR, accounts, cloud sync, market price APIs and automatic yield prediction are post-release research, not dependencies.
 
 ## Team and repository coordination
 
-Keep the existing repository and open setup PR; no second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's farm-data audit/regression issue; Task 7/#10 is Yashi's expanded nine-package research/catalog/education issue. Task 11/#15 is Anushka's dataset/model audit; Task 12/#16 is Aanya's device/exhibition QA. Exact accounts, branches and exclusive paths are in tasks.json. Yashi owns docs/research/** and data/catalog/**; Kanika supplies contract cases, Anushka audits split/model evidence, and Aanya executes device/rehearsal cases. Read their briefs and AGENT_START.md before work. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
+Keep the existing repository and open setup PR; no second app/repo. Task 10/#11 is Arindam's cumulative build issue. Task 6/#9 is Kanika's farm-data audit/regression issue; Task 7/#10 is Yashi's Colab/training/evaluation/supporting-evidence issue. Task 11/#15 is Anushka's dataset/model audit; Task 12/#16 is Aanya's device/exhibition QA. Exact accounts, branches and exclusive paths are in tasks.json. Arindam owns all farm intelligence and catalogs; Yashi owns the eight research/ML scopes in tasks.json; Kanika supplies contract cases, Anushka audits split/model evidence, and Aanya executes device/rehearsal cases. Read their briefs and AGENT_START.md before work. Same fixed branches and non-overlapping teammate paths. Complete one milestone at a time with small reviewed PRs. For intermediate PRs use `Refs #<issue>` and a milestone ID; `Closes` only after the full cumulative task is done. Never merge through an agent.
 
 Read [delivery protocol](DELIVERY.md), [data model](DATA_MODEL.md), [engine plan](RECOMMENDATION_ENGINE.md) and [architecture](../ARCHITECTURE.md). The v1 weather/soil audit contract remains in ../farm-context/CONTRACT.md; future farm-record schemas are separate and versioned.
 
-## Pending owner decisions
+## Confirmed coverage and pending owner decisions
 
-Target state/district and up to three crops; exhibition date/device; named agronomy reviewer; language priority; whether an evaluated model is already available and its license/size; whether farmer records will be retained on shared exhibition devices (default: synthetic demo only). Missing decisions do not block local profile, storage, weather or rule-framework implementation.
+Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. See SEHORE_INTELLIGENCE.md for the source boundary and runtime contract. Yashi must assess disease-training datasets separately; current pepper/potato/tomato training does not establish screening coverage for these crops.
+
+Exhibition date/device; named agronomy reviewer; language priority; whether an evaluated model is already available and its license/size; whether farmer records will be retained on shared exhibition devices (default: synthetic demo only). Missing decisions do not block local profile, storage, weather or rule-framework implementation.

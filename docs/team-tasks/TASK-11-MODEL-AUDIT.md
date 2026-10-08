@@ -24,7 +24,7 @@ Provide deterministic valid/invalid synthetic fixtures and actionable JSON findi
 
 ## A3 — Independent model-evaluation readiness packet
 
-In docs/model-validation create EVALUATION_CHECKLIST.md, METRICS_REGISTER.md, FIELD_IMAGE_PROTOCOL.md, MODEL_BUNDLE_CHECKLIST.md and STATUS.md. Map dataset/version/split seed/labels/preprocessing to evaluation evidence, per-class precision/recall/F1, confusion matrix, calibration/uncertainty, unsupported inputs, model size and latency. Missing metrics/artifacts remain TBD. Do not train, calibrate, export, deploy or modify model artifacts; Arindam owns those operations. Read existing ML docs/model-card templates and identify gaps instead of fabricating results.
+In docs/model-validation create EVALUATION_CHECKLIST.md, METRICS_REGISTER.md, FIELD_IMAGE_PROTOCOL.md, MODEL_BUNDLE_CHECKLIST.md and STATUS.md. Map dataset/version/split seed/labels/preprocessing to evaluation evidence, per-class precision/recall/F1, confusion matrix, calibration/uncertainty, unsupported inputs, model size and latency. Missing metrics/artifacts remain TBD. Do not train, calibrate, export, deploy or modify model artifacts; Yashi owns training/calibration/evaluation/export; Arindam owns runtime integration and deployment. Read existing ML docs/model-card templates and identify gaps instead of fabricating results.
 
 Plan consented, non-identifying phone/field-image evaluation separately from controlled-background data. Include limitations and a reviewer handoff; do not collect or message people without authorization. Yashi owns citation/license research; reference her verified sources and flag gaps rather than duplicate the literature review. Aanya owns device/browser measurements and provides observed timings when available.
 

@@ -1,6 +1,6 @@
 # Farm companion data model and local storage plan
 
-Status: proposed entity contract, not executable schemas. Arindam owns runtime types, validators and migrations; Yashi owns content schemas in her assigned directory. Do not extend the existing context v1 silently.
+Status: proposed entity contract, not executable schemas. Arindam owns runtime types, validators and migrations; Arindam also owns catalog schemas/content; Yashi supplies research and evaluated model artifacts. Do not extend the existing context v1 silently.
 
 ## Entity boundaries
 
@@ -22,7 +22,7 @@ All persisted entities carry schema_version, a generated stable ID, created_at/u
 | Expense | cycle_id, date, category, positive amount, currency, optional note; refunds represented explicitly, never guessed |
 | Harvest | cycle_id, date, positive quantity, unit, optional harvested_area; multiple harvest events supported |
 | Sale | cycle_id, date, positive quantity/unit, gross_amount/currency; harvested and sold quantities are separate |
-| CatalogEntry/Evidence | version, applicability region/crop/stage/language, review status, source URLs and access dates, reviewer/date; Yashi authors content |
+| CatalogEntry/Evidence | version, applicability region/crop/stage/language, review status, source URLs and access dates, reviewer/date; Arindam owns content and review integration |
 
 Initial economic reporting uses INR. Do not aggregate unlike currencies or quantities without a documented conversion; no exchange-rate API needed. Store currency minor units to avoid decimal rounding drift. Area conversion uses explicit constants and tests; missing area means no per-area yield. Soil analytes require test method/unit compatibility; total nitrogen is not interchangeable with plant-available nitrogen.
 

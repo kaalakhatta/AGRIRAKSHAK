@@ -1,5 +1,6 @@
 "use client";
 
+import { SaveSummary } from "@/features/scanning/save-summary";
 import Image from "next/image";
 import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 import { runMockInference } from "@/lib/inference/mock";
@@ -9,11 +10,13 @@ const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 
 export function LeafAnalyzer() {
+  const request = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [screenedAt,setScreenedAt] = useState("");
   const [result, setResult] = useState<ScreeningResult | null>(null);
 
   useEffect(() => () => {
@@ -21,6 +24,7 @@ export function LeafAnalyzer() {
   }, [previewUrl]);
 
   function validateAndSelect(nextFile?: File) {
+    request.current++; setIsAnalyzing(false);
     setError(null);
     setResult(null);
     if (!nextFile) return;
@@ -48,6 +52,7 @@ export function LeafAnalyzer() {
   }
 
   function clearSelection() {
+    request.current++; setIsAnalyzing(false);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setFile(null);
     setPreviewUrl(null);
@@ -57,10 +62,12 @@ export function LeafAnalyzer() {
 
   async function analyze() {
     if (!file) return;
+    const token = ++request.current;
     setIsAnalyzing(true);
     setResult(null);
-    setResult(await runMockInference(file));
-    setIsAnalyzing(false);
+    try { const next = await runMockInference(file); if (token === request.current) { setScreenedAt(new Date().toISOString()); setResult(next); } }
+    catch { if (token === request.current) setError("Screening is unavailable. No result or summary was saved."); }
+    finally { if (token === request.current) setIsAnalyzing(false); }
   }
 
   return (
@@ -107,13 +114,13 @@ export function LeafAnalyzer() {
 
         <input ref={inputRef} className="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onChange={handleChange} />
         {error && <p className="form-error" role="alert">{error}</p>}
-        {result && <ResultPanel result={result} />}
+        {result && <ResultPanel result={result} screenedAt={screenedAt} />}
       </div>
     </section>
   );
 }
 
-function ResultPanel({ result }: { result: ScreeningResult }) {
+function ResultPanel({ result, screenedAt }: { result: ScreeningResult; screenedAt: string }) {
   const percentage = Math.round(result.confidence * 100);
   const uncertain = result.confidence < result.uncertaintyThreshold;
   return (
@@ -128,6 +135,7 @@ function ResultPanel({ result }: { result: ScreeningResult }) {
         <button className="button button-secondary" type="button" disabled>Learn about this condition</button>
         <span>Education content will unlock with the evaluated model and reviewed catalog.</span>
       </div>
+      <SaveSummary key={result.modelVersion} result={result} screenedAt={screenedAt} />
     </section>
   );
 }

@@ -35,7 +35,7 @@ Read docs/farm-companion/BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md 
 5. Edit only allowed paths. Teammates cannot change root dependencies, workflows, shared contracts or apps/web. Arindam owns integration repository-wide and coordinates shared-file changes through issues.
 6. Run the brief's checks, show the diff and explain gaps. Keep STATUS.md inside your directory with evidence and next actions.
 7. Commit/push only the task branch. Open a PR to main linking the issue and milestone and request kaalakhatta review. Use Refs #issue for partial milestone delivery; Closes #issue only when the entire cumulative assignment is finished. Include task number, changed files, checks/output, verified sources, limitations and scope confirmation. Attach created PRs to the chat when tools support it.
-8. Never push main, bypass protection, or merge a PR. Only the human owner merges. `/unclaim` requires the assignee or owner; first record branch/PR and unfinished work in the issue. Reclaim the same branch, not a competing branch.
+8. Arindam authorizes every mapped contributor’s agent to merge its own eligible task PR without asking the owner again. Follow docs/team-tasks/SELF_MERGE.md: review the complete diff, fix blockers, verify claim/scope and all five checks on the current head, then run the guarded self-merge command. Never push main or bypass checks/protection. `/unclaim` requires the assignee or owner; first record branch/PR and unfinished work in the issue. Reclaim the same branch, not a competing branch.
 
 ## Data and advice boundaries
 

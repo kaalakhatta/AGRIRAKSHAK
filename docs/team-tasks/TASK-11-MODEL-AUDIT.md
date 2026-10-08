@@ -58,4 +58,4 @@ Hand off a prioritized defect/gap register, judge-safe model claim wording, name
 
 Run `python3 -m unittest discover -s ml/dataset_audit/tests -v`, a passing/failing CLI example, JSON/CSV inspection and git diff --check. Verify input file hashes are unchanged by the audit. Record commands/output and next actions in STATUS.md in both owned directories. No dataset, checkpoint, weight, notebook output, secret, user photo or precise farmer location in Git.
 
-Submit Task 11 milestone PRs with Refs #15, exact paths, checks/evidence/limitations and kaalakhatta review. Closes only for full cumulative completion. No web/API/shared-contract/workflow changes. Never merge, push main, force-reset existing work or claim another contributor's task.
+Submit Task 11 milestone PRs with Refs #15, exact paths, checks/evidence/limitations and kaalakhatta review. Closes only for full cumulative completion. No web/API/shared-contract/workflow changes. Self-merge only your own eligible PR under [SELF_MERGE.md](SELF_MERGE.md). Never push main, bypass checks, force-reset existing work or claim another contributor's task.

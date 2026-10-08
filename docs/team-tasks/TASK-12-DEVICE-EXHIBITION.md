@@ -34,4 +34,4 @@ Risk entries include likelihood/impact, detection, mitigation, responsible contr
 
 Report defects with precise reproducible steps, expected/actual behavior, build, evidence and severity; route fixes to Arindam rather than modifying apps/web. Maintain status in both directories. Check Markdown links, case-to-requirement traceability, all TBD/not-run entries and git diff --check. No root dependencies, workflows, code, catalog, dataset/model, secrets or personal images/locations.
 
-Submit Task 12 milestone PRs with Refs #16, scope, observed checks and gaps, and kaalakhatta review. Closes only for full completion. Never merge/push main, fabricate device results or use a second concurrent agent on the task.
+Submit Task 12 milestone PRs with Refs #16, scope, observed checks and gaps, and kaalakhatta review. Closes only for full completion. Self-merge only your own eligible PR under [SELF_MERGE.md](SELF_MERGE.md). Never push main, bypass checks, fabricate device results or use a second concurrent agent on the task.

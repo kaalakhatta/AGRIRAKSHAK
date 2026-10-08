@@ -61,7 +61,7 @@ Within apps/web, domain rules/storage must be independent of React components. U
 | Arindam/Kanika → Aanya | Implemented build, expected cases and known gaps | Real device/rehearsal execution; pending is not pass |
 | Arindam → Anushka | Supplied manifests/model/evaluation evidence | Independent audit; absent artifacts remain unavailable |
 | Yashi/Anushka → Aanya | Verified claims and model limitations | Presentation reflects actual evidence |
-| All teammates → owner | Milestone PR, STATUS.md evidence and next steps | Human review/merge; no agent merges without explicit owner authorization |
+| All teammates → owner | Milestone PR, STATUS.md evidence and next steps | Standing authorized own-PR merge after full diff review, verified claim/scope and all current-head checks; see SELF_MERGE.md |
 
 Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. Task 7 owns docs/research/**, ml/src/agrirakshak_ml/**, ml/tests/**, ml/notebooks/** and the exact files ml/pyproject.toml, ml/COLAB.md, ml/README.md, ml/MODEL_CARD_TEMPLATE.md. Arindam owns data/catalog and all runtime intelligence. Task 11 owns only ml/dataset_audit/** and docs/model-validation/**. Task 12 owns only docs/exhibition/device-qa/** and docs/exhibition/presentation/**. Arindam owns remaining paths and integration, but must not concurrently edit teammate-owned files. Coordinate schema changes through their issues and review; shared-contract changes require an explicit version and migration note.
 
@@ -72,7 +72,7 @@ Task 6 owns only ml/farm_context_audit/** and docs/exhibition/farm-context/**. T
 3. Separate clone/worktree for each contributor. Fetch main. Use registered branch, never a shared working checkout. If it exists, inspect/resume; never reset remote work.
 4. Deliver one milestone slice, run brief/domain checks, update STATUS.md and show diff. PR includes Task N, milestone M, validation/evidence and allowed-path confirmation.
 5. Intermediate PRs use Refs #issue. Final complete cumulative delivery uses Closes #issue. Do not close the issue merely because one milestone is merged.
-6. After human merge, fetch and reconcile with main without force-pushing over others. If a branch was deleted, recreate the same registered branch from main after confirming the milestone PR is merged. Never resurrect old commits by blindly pushing a stale branch.
+6. After an eligible authorized merge, fetch and reconcile with main without force-pushing over others. If a branch was deleted, recreate the same registered branch from main after confirming the milestone PR is merged. Never resurrect old commits by blindly pushing a stale branch.
 7. Record remaining work before /unclaim. Reclaimer resumes the documented branch/PR/checklist. Cross-task overlap goes to Arindam.
 
 The existing PR scope check validates registered branches/authors/claim and both old/new rename paths. Setup #12 is merged and the workflows exist on main. The live main ruleset was observed disabled on 2026-10-08; web/scope runs do not prove enforced protection. Roster #17 is merged; the revised training scopes must land before Yashi’s ML edits pass CI. Existing historical issues/PRs stay preserved; use active task issues, not duplicate legacy assignments.

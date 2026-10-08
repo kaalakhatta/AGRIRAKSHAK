@@ -6,7 +6,7 @@ Use the same protocol in Codex, Antigravity, Claude, OpenCode or another agent. 
 
 Setup #12, roster #17 and revised Task 7 training scopes #18 are merged into main. Verified 2026-10-08: AnushkaSChandel has write access and is owner-assigned to #15 for discoverability; her /claim remains unconfirmed. Aanya now maps to n0debug with verified write access; the old-account invitation is not a startup prerequisite. Claims for Yashi/#10 and Arindam/#11 are confirmed; Kanika is assigned to #9 without an observed /claim or bot confirmation. Preserve existing claims/branches/PRs. Use the [active task index](README.md) to find each issue and full brief even when GitHub’s assignment filter omits it.
 
-GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and human-owner merge policy. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
+GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and standing own-PR merge authorization in SELF_MERGE.md. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
 
 ## Open the repository
 
@@ -40,7 +40,8 @@ fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
 branch and open small milestone/package PRs for kaalakhatta review.
 Use Refs #10 for partial delivery; Closes only for the whole task.
-Never merge, push main or bypass protection. Preserve branch/PR/remaining
+Self-merge my own eligible PR using docs/team-tasks/SELF_MERGE.md without asking
+Arindam again. Never push main or bypass checks/protection. Preserve branch/PR/remaining
 work before handoff or /unclaim. One active agent/checkout for this task.
 ```
 
@@ -65,7 +66,8 @@ fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
 branch and open small milestone/package PRs for kaalakhatta review.
 Use Refs #9 for partial delivery; Closes only for the whole task.
-Never merge, push main or bypass protection. Preserve branch/PR/remaining
+Self-merge my own eligible PR using docs/team-tasks/SELF_MERGE.md without asking
+Arindam again. Never push main or bypass checks/protection. Preserve branch/PR/remaining
 work before handoff or /unclaim. One active agent/checkout for this task.
 ```
 
@@ -90,7 +92,8 @@ fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
 branch and open small milestone/package PRs for kaalakhatta review.
 Use Refs #15 for partial delivery; Closes only for the whole task.
-Never merge, push main or bypass protection. Preserve branch/PR/remaining
+Self-merge my own eligible PR using docs/team-tasks/SELF_MERGE.md without asking
+Arindam again. Never push main or bypass checks/protection. Preserve branch/PR/remaining
 work before handoff or /unclaim. One active agent/checkout for this task.
 ```
 
@@ -115,7 +118,8 @@ fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
 branch and open small milestone/package PRs for kaalakhatta review.
 Use Refs #16 for partial delivery; Closes only for the whole task.
-Never merge, push main or bypass protection. Preserve branch/PR/remaining
+Self-merge my own eligible PR using docs/team-tasks/SELF_MERGE.md without asking
+Arindam again. Never push main or bypass checks/protection. Preserve branch/PR/remaining
 work before handoff or /unclaim. One active agent/checkout for this task.
 ```
 
@@ -143,6 +147,10 @@ After confirmation fetch origin/main, inspect local/remote exact branch and resu
 - Run scoped checks and inspect all changed/untracked paths. Content remains draft without actual expert review. Zero paid APIs/services, secret/user-photo/location/model artifacts, invented agronomic thresholds or test passes.
 - Milestone PR includes Task N, M0–M5/package ID, Refs #issue, path confirmation, commands/output/sources, remaining gaps and kaalakhatta review. No full-task close for one package.
 - Maintain STATUS.md at the locations specified in each brief. On tool/session handoff record exact branch/PR, validated commit, unfinished checklist and blockers. Resume that branch; do not take another role to bypass usage limits.
+
+## Self-merge after a reviewed slice
+
+Arindam has given standing authorization for each mapped contributor’s agent to merge its own eligible PR. Read [SELF_MERGE.md](SELF_MERGE.md), inspect the entire diff and recorded evidence, fix blockers, and add `Self-review: complete` to the PR body. Wait for all five CI checks, then run `node .github/scripts/self-merge.cjs PR_NUMBER`. This performs the merge using your own GitHub login; no repeated owner approval is required. If a gate fails, fix it or record the actual blocker rather than bypassing it. Owner review requests are for visibility; actual requested changes and active GitHub review requirements must be satisfied.
 
 ## Owner readiness checklist
 

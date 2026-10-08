@@ -38,7 +38,11 @@ jobs:
             if (!issue.assignees.some(a => a.login.toLowerCase() === actor)) {
               core.setFailed('Claim the issue before opening a PR.'); return;
             }
+            // Repository-wide owner scope still requires identity and claim checks.
+            // Load the base-branch helper only when a restricted scope needs it.
+            if (task.paths.includes('*')) return;
+            const { isAllowedPath } = require('./.github/scripts/scope.cjs');
             const files = await github.paginate(github.rest.pulls.listFiles, { ...context.repo, pull_number: pr.number, per_page: 100 });
-            const outside = files.filter(f => !task.paths.includes('*') &&
-              [f.filename, f.previous_filename].filter(Boolean).some(path => !task.paths.some(prefix => path.startsWith(prefix))));
+            const outside = files.filter(f =>
+              [f.filename, f.previous_filename].filter(Boolean).some(path => !isAllowedPath(task.paths, path)));
             if (outside.length) core.setFailed('Outside assigned paths: ' + outside.map(f => f.filename).join(', '));

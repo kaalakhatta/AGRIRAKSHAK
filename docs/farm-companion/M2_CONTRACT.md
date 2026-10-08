@@ -1,6 +1,6 @@
 # M2 runtime handoff
 
-Owner contracts, 2026-10-05. Context v1 and teammate catalogs remain unchanged. Yashi's catalog schema is still pending; `engine-1` is an owner evaluator handoff proposal, not a claim that catalog integration is complete.
+Owner contracts, 2026-10-05. Context v1 and teammate catalogs remain unchanged. Ownership update 2026-10-08: Arindam now owns all catalogs and intelligence, while Yashi owns Colab training/evaluation/export and supporting research. Reviewed content is still pending; `engine-1` is an owner evaluator handoff proposal, not a claim that catalog integration is complete.
 
 ## Weather v1
 

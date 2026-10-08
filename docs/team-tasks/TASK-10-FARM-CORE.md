@@ -16,15 +16,19 @@ Read docs/farm-companion/BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md 
 
 ## Work
 
-Own the heavy implementation: versioned TypeScript contracts, weather adapters with direct browser access where supported; zero-cost proxy only if necessary, sensor ingress if hardware is supplied, provider timeouts/cache/provenance, location consent and manual fallback, deterministic recommendation engine, scanner result UI, integration tests, privacy controls, CI and deployment.
+Own the major farm intelligence, all catalogs and heavy implementation: versioned TypeScript contracts, weather adapters with direct browser access where supported; zero-cost proxy only if necessary, sensor ingress if hardware is supplied, provider timeouts/cache/provenance, location consent and manual fallback, deterministic recommendation engine, scanner result UI, integration tests, privacy controls, CI and deployment.
 
-Implement local farm/cycle storage first, weather second, recommendations only from reviewed evidence and complete required inputs. Manual measured soil entries come before optional regional maps. Select providers after Task 7; weather and soil failures must be independent and must not prevent disease scanning. No API keys in the client. Normalize units and soil depths before evaluating rules. Sanitize telemetry, authenticate device submissions, and enforce timestamps before any live sensor label. Without a device, display unavailable or explicitly synthetic demo readings.
+Implement local farm/cycle storage first, weather second, recommendations only from reviewed evidence and complete required inputs. Manual measured soil entries come before optional regional maps. Use verified supporting research from Task 7; weather and soil failures must be independent and must not prevent disease scanning. No API keys in the client. Normalize units and soil depths before evaluating rules. Sanitize telemetry, authenticate device submissions, and enforce timestamps before any live sensor label. Without a device, display unavailable or explicitly synthetic demo readings.
 
 Use crop, region, season, soil evidence and water availability for seed candidate screening; never infer NPK, soil pH or cultivar suitability from a leaf image/GPS. Return candidates, reasons, evidence, missing inputs and cautions, not yield guarantees. Do not rank varieties until a reviewed scoring protocol exists. Build action guidance separately from disease prediction confidence. Block draft content and stale required inputs, and abstain on unsupported crops/regions.
 
 Acceptance: scan works with location denied; manual location works; context cards show source/time/kind/status; provider failure is isolated; no precise location in logs/storage by default; invalid units and stale required inputs abstain; draft recommendations never render; synthetic data has visible labels; reviewed fixture produces an explainable candidate; mobile flow passes QA.
 
 Validation: `npm run check`, meaningful engine/adapter tests with fake clocks and HTTP fixtures, and Task 6 device checklist. Integrate Tasks 6–7 after review. No merge by an agent.
+
+## Initial coverage and training handoff
+
+Owner confirmed Sehore, Madhya Pradesh; soybean, wheat and gram/chickpea. Named agronomy reviewer remains TBD. Own catalog schemas/content, reviewed seed/action/calendar guidance, context binding and runtime/API/scanner integration. Yashi owns Colab, training, calibration, evaluation and ONNX export in her registered ML scopes. Coordinate preprocessing/labels/artifact handoff on #10; do not concurrently edit her pipeline. Current trainer targets bell pepper/potato/tomato, so requested crop screening is not yet established.
 
 ## Core milestones and acceptance
 

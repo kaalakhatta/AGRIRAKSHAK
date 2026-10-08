@@ -4,7 +4,7 @@ Use the same protocol in Codex, Antigravity, Claude, OpenCode or another agent. 
 
 ## Before starting
 
-Setup #12 is merged. The five-person reassignment registry must be on main before new Task 11/12 claims or expanded Task 7 scope can work. Aanya and Anushka must accept their pending invitations. Claims for Yashi/#10 and Arindam/#11 were confirmed; Kanika/#9 still needs her own confirmed /claim. Preserve existing claims/branches/PRs; do not silently reserve another account's task.
+Setup #12 is merged. Roster PR #17 is merged; the subsequent training-scope change must merge before Task 7 ML edits pass scope CI. Aanya and Anushka must accept their pending invitations. Claims for Yashi/#10 and Arindam/#11 were confirmed; Kanika/#9 still needs her own confirmed /claim. Preserve existing claims/branches/PRs; do not silently reserve another account's task.
 
 GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and human-owner merge policy. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
 
@@ -31,10 +31,10 @@ I authorize you to post /claim on my issue using my own mapped account;
 otherwise guide me to post it. Accept any pending repository invitation
 first. Wait for bot confirmation and verify assignee; if already claimed,
 verify the live assignment and no second active agent before resuming.
-Only edit docs/research/** and data/catalog/**.
+Only edit the eight Task 7 research/ML scopes in tasks.json; Arindam owns catalogs and runtime intelligence.
 Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
-Report contributor/task, both paths, claim, exact branch and next deliverable.
-Deliver the nine Y1–Y9 packages in order and small PRs. First preserve PR #14 literature commits/files/attribution and carry them into my registered Task 7 branch; do not overwrite published work. Verify primary sources, validate schemas/examples and keep draft/review gates. No app/engine/training work.
+Report contributor/task, all registered scopes, claim, exact branch and next deliverable.
+Deliver Y1–Y6 in small PRs: target-crop dataset feasibility, preserved literature #14, reproducible free Colab, real training/calibration/evaluation, ONNX/model-card export and owner handoff. Start with Y1: the current pepper/potato/tomato baseline does not establish soybean/wheat/chickpea coverage. No app/API/catalog/engine integration work.
 Use only free tooling. No root dependencies/workflows/shared contracts,
 fabricated sources/results/approval or private data/model artifacts.
 Run brief checks, show diff, update STATUS.md, commit/push only my task
@@ -58,7 +58,7 @@ first. Wait for bot confirmation and verify assignee; if already claimed,
 verify the live assignment and no second active agent before resuming.
 Only edit ml/farm_context_audit/** and docs/exhibition/farm-context/**.
 Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
-Report contributor/task, both paths, claim, exact branch and next deliverable.
+Report contributor/task, all registered scopes, claim, exact branch and next deliverable.
 Continue the earliest unfinished farm-context audit and independent domain/regression cases. Aanya owns device execution/demo/rehearsals; supply case IDs and expected results.
 Use only free tooling. No root dependencies/workflows/shared contracts,
 fabricated sources/results/approval or private data/model artifacts.
@@ -83,7 +83,7 @@ first. Wait for bot confirmation and verify assignee; if already claimed,
 verify the live assignment and no second active agent before resuming.
 Only edit ml/dataset_audit/** and docs/model-validation/**.
 Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
-Report contributor/task, both paths, claim, exact branch and next deliverable.
+Report contributor/task, all registered scopes, claim, exact branch and next deliverable.
 Start A1 read-only dataset audit using tiny synthetic fixtures, then A2 manifest/leakage checks and A3 model readiness evidence. Do not download real datasets, train, edit the ML pipeline or commit weights/photos. Missing metrics stay TBD.
 Use only free tooling. No root dependencies/workflows/shared contracts,
 fabricated sources/results/approval or private data/model artifacts.
@@ -108,7 +108,7 @@ first. Wait for bot confirmation and verify assignee; if already claimed,
 verify the live assignment and no second active agent before resuming.
 Only edit docs/exhibition/device-qa/** and docs/exhibition/presentation/**.
 Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
-Report contributor/task, both paths, claim, exact branch and next deliverable.
+Report contributor/task, all registered scopes, claim, exact branch and next deliverable.
 Start D1 device matrix/test plan, then D2 available synthetic-data failure/privacy/backup/offline journeys and D3 presentation/fallback/three actual rehearsals. Mark unrun cases not-run; do not claim pending model/offline functionality. No app fixes or deployment.
 Use only free tooling. No root dependencies/workflows/shared contracts,
 fabricated sources/results/approval or private data/model artifacts.
@@ -137,22 +137,23 @@ After confirmation fetch origin/main, inspect local/remote exact branch and resu
 
 ## Work, validation and handoff
 
-- Read the complete brief and all files/nested instructions in both owned trees. No simultaneous owner edits in teammate trees; coordinate handoffs through task issues.
-- Kanika owns farm-data validator/regression expectations. Anushka owns dataset/split/model audit evidence. Aanya owns observed device/accessibility/failure testing and exhibition rehearsals. Yashi owns all scientific/provider/license research, schemas/catalogs and review packets.
-- Yashi's larger scope includes docs/research and data/catalog parent trees; her older literature PR #14 is preserved and referenced in the registered-branch delivery. Applicable historical Tasks 1–4 are references, not duplicate active assignments.
+- Read the complete brief and all files/nested instructions in all registered scopes. No simultaneous owner edits in teammate trees; coordinate handoffs through task issues.
+- Kanika owns farm-data validator/regression expectations. Anushka owns dataset/split/model audit evidence. Aanya owns observed device/accessibility/failure testing and exhibition rehearsals. Yashi owns training/calibration/evaluation/export and supporting scientific/dataset-license research. Arindam owns schemas/catalogs, farm guidance, app/API and scanner integration.
+- Yashi's eight scopes include docs/research and the specific existing training directories/files; her older literature PR #14 is preserved and referenced in the registered-branch delivery. Applicable historical Tasks 1–4 are references, not duplicate active assignments.
 - Run scoped checks and inspect all changed/untracked paths. Content remains draft without actual expert review. Zero paid APIs/services, secret/user-photo/location/model artifacts, invented agronomic thresholds or test passes.
 - Milestone PR includes Task N, M0–M5/package ID, Refs #issue, path confirmation, commands/output/sources, remaining gaps and kaalakhatta review. No full-task close for one package.
-- Maintain STATUS.md in both trees. On tool/session handoff record exact branch/PR, validated commit, unfinished checklist and blockers. Resume that branch; do not take another role to bypass usage limits.
+- Maintain STATUS.md at the locations specified in each brief. On tool/session handoff record exact branch/PR, validated commit, unfinished checklist and blockers. Resume that branch; do not take another role to bypass usage limits.
 
 ## Owner readiness checklist
 
 - [x] Setup #12, core #13 and training #8 merged into main
 - [x] Task 7/#10 and Task 10/#11 claims confirmed by bot and assignments inspected
-- [ ] Five-person reassignment registry/briefs merged; updated scope workflow reads them
+- [x] Five-person reassignment registry/briefs merged in #17
+- [ ] Revised Task 7 training scopes merged and scope workflow verified
 - [ ] Aanya and Anushka invitations accepted and write access verified
 - [ ] Kanika, Anushka and Aanya successful mapped-account /claim observed
 - [ ] Active main protection and required web/scope contexts verified (observed disabled 2026-10-08)
-- [ ] Each agent reports exact task/branch/two directories and preserves existing work
+- [ ] Each agent reports exact task/branch/all registered scopes and preserves existing work
 - [ ] Available devices, reviewed catalog coverage and rehearsal evidence verified
 
 A prepared checklist is not evidence that its unchecked steps passed. No paid connector or shared credentials are required.

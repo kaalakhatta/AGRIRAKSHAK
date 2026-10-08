@@ -1,3 +1,3 @@
-# Yashi: research
+# Yashi: supporting research
 
-Follow root AGENTS.md and read docs/team-tasks/TASK-7-FARM-EVIDENCE.md completely (paths relative to repository root). Use the registered GitHub issue and /claim before editing. The owner expanded your two paths to docs/research/** and data/catalog/** on 2026-10-08; this subtree remains part of Task 7. Only the registered paths are writable for your task. Read all existing files in both directories; continue pending work and keep STATUS.md with evidence. Do not execute core integration work or change the shared contract.
+Follow root AGENTS.md and the complete Task 7 brief. Use tasks.json for all registered research/ML scopes, mapped account, issue #10 and exact branch. Verify the existing /claim, inspect files and preserve PR #14. Own scientific/dataset-license evidence and Colab training handoff. Arindam owns all catalogs and runtime intelligence. No app/API/shared-contract/workflow changes or fabricated sources/results/approval. Keep STATUS.md with evidence and next actions. Never merge or push main.

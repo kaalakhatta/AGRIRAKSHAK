@@ -32,7 +32,7 @@ The v1 schema can represent a soil_map for regional educational context. It must
 
 ## Recommendation output
 
-`schema_version`, `catalog_version`, `generated_at`, `status` (candidates/abstained), `seed_candidates`, `actions`, `missing_inputs`, `cautions`. Each candidate/action includes stable catalog ID, reasons, evidence URLs, input reading IDs, applicability region/season and reviewer reference. Catalog schema belongs to Yashi; executable engine belongs to Arindam.
+`schema_version`, `catalog_version`, `generated_at`, `status` (candidates/abstained), `seed_candidates`, `actions`, `missing_inputs`, `cautions`. Each candidate/action includes stable catalog ID, reasons, evidence URLs, input reading IDs, applicability region/season and reviewer reference. Catalog schemas/content and executable engine belong to Arindam. Yashi supplies supporting evidence and separately trains/evaluates/exports the disease model.
 
 Only reviewed entries with reviewer identity/date, verified evidence and complete applicable inputs may render. Missing soil, unknown season/water, stale required data, unsupported crop/region, contradictory evidence or only draft content → abstain for the affected rule. Independent safe reviewed actions may still appear. No numeric ranking until reviewed scoring exists. Never derive seed suitability from disease confidence. Include “check locally with an agricultural expert” and explain uncertainty in plain language.
 

@@ -8,7 +8,7 @@ Owner reassignment: 2026-10-08. Historical Task 1 is a reference; use this activ
 
 ## Start and claim
 
-Accept the repository invitation. Read root AGENTS.md, AGENT_START.md, docs/farm-context/PLAN.md, CONTRACT.md and BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md, DELIVERY.md. Inspect your issue, branch/PRs, all owned files and scoped instructions. Post /claim using your mapped account and wait for bot confirmation/assignee verification. No editing from a pending invitation or an assignment alone. Create the exact branch from current origin/main only if absent; otherwise resume after inspecting it. One active agent/checkout.
+Write access for AnushkaSChandel was verified on 2026-10-08. Verify your signed-in account and current access; accept an invitation only if one is still pending. Owner assignment to #15 is for discoverability and does not replace your /claim. Read root AGENTS.md, AGENT_START.md, docs/farm-context/PLAN.md, CONTRACT.md and BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md, DELIVERY.md. Inspect your issue, branch/PRs, all owned files and scoped instructions. Post /claim using your mapped account and wait for bot confirmation/assignee verification. No editing from a pending invitation or an assignment alone. Create the exact branch from current origin/main only if absent; otherwise resume after inspecting it. One active agent/checkout.
 
 ## A1 — Read-only dataset integrity utility
 

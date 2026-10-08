@@ -1,23 +1,23 @@
 # Farm companion phase entry point
 
-AgriRakshak expands from a scan-centric app into Plan → Monitor → Improve: local field/crop-cycle profiles, free weather context, reviewed seed/action rules, crop calendars, scanning, measured soil entries, expenses and harvest records.
+AgriRakshak covers Plan → Monitor → Improve: local profiles/cycles, optional free weather, reviewed catalogs/rules, personal calendars, preliminary disease screening, measured soil and season records. Canonical plan: ../farm-companion/BUILD_PLAN.md, DATA_MODEL.md, RECOMMENDATION_ENGINE.md and DELIVERY.md. Context v1 in CONTRACT.md remains separate from versioned farm records.
 
-The canonical whole-build plan is [BUILD_PLAN.md](../farm-companion/BUILD_PLAN.md). Read its [data model](../farm-companion/DATA_MODEL.md), [engine specification](../farm-companion/RECOMMENDATION_ENGINE.md) and [repository/delivery protocol](../farm-companion/DELIVERY.md). This setup defines future implementation; it does not deliver runtime features.
-
-## Team and issues
+## Owner-directed team allocation — 2026-10-08
 
 | Contributor | Cumulative task | Exclusive teammate paths |
 | --- | --- | --- |
-| Arindam | Task 10 / issue #11: all heavy core implementation/integration | Repository-wide owner scope; coordinate teammate overlap |
-| Kanika | Task 6 / issue #9: data audit and full companion QA | ml/farm_context_audit/**; docs/exhibition/farm-context/** |
-| Yashi | Task 7 / issue #10: research and full companion content/catalog | docs/research/farm-context/**; data/catalog/farm-context/** |
+| Yashi | 7 / #10: nine research/content packages | docs/research/**; data/catalog/** |
+| Kanika | 6 / #9: farm-data validation and regression QA | ml/farm_context_audit/**; docs/exhibition/farm-context/** |
+| Anushka | 11 / #15: dataset/model audit | ml/dataset_audit/**; docs/model-validation/** |
+| Aanya | 12 / #16: device QA and exhibition readiness | docs/exhibition/device-qa/**; docs/exhibition/presentation/** |
+| Arindam | 10 / #11: runtime implementation and integration | Owner-directed repository-wide; coordinate teammate overlap |
 
-Exact accounts, branches and issue numbers remain in tasks.json. Anushka/Aanya are inactive; historical Tasks 1–4 remain intact. Reuse the existing setup PR #12 and issues; no competing branches or duplicate task issues. /claim activates after human merge; one active agent per contributor/account and separate writable checkouts are still required. Use Refs for intermediate milestone PRs and Closes only for full task completion.
+Accounts/branches/issues are canonical in tasks.json. Yashi's former farm-context-only scope expands to the parent research/catalog trees; preserve literature PR #14 and migrate its work to her registered branch. Applicable historical Tasks 1–4 are references folded into the active briefs, not separate competing assignments. Kanika supplies expected cases; Aanya executes device/rehearsal QA. Anushka audits dataset/model evidence; Arindam trains/exports/integrates. Yashi owns scientific/provider/license claims and review packets for all consumers.
 
-## Important constraints
+Setup #12, core #13 and training workflow #8 are merged. The reassignment registry must merge before Tasks 11/12 can be claimed. Returning teammates' invitations were pending at the 2026-10-08 check. Existing Task 7/10 claims are confirmed; Kanika's claim remains pending. Read AGENT_START.md, use each mapped account and wait for successful /claim. No shared credentials/checkouts or concurrent agents per task.
 
-Zero paid APIs/subscriptions/card-required services. Local records/calendar/catalog run without cloud accounts. Optional weather uses Open-Meteo's free non-commercial service within limits and attribution; no paid fallback. SoilGrids REST is paused and ISRIC advises against farm-level use; no field soil advice from maps. Use manual measured soil results first. Physical sensors are optional and require existing hardware. No new recommendation ML model is necessary.
+## Boundaries and remaining decisions
 
-Source facts checked 2026-10-05: https://open-meteo.com/en/pricing ; https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_02.html ; https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_04.html .
+Zero paid APIs/subscriptions/card-required services. Core records/calendar run locally; external services must fail independently. Weather estimates, regional soil maps, soil laboratory results and physical telemetry remain distinct. Source availability/terms need current official verification; manual measured soil comes first. Unknown district/crops, expert reviewer, exhibition date/devices and language priorities remain TBD. Independent platform/audit/schema/QA planning continues; reviewed advice abstains without required evidence and review.
 
-Context v1 in CONTRACT.md remains the weather/soil audit interface. Farm entities are separately versioned; no silent schema changes. Region, up to three crops, expert reviewer, exhibition date/device and language priorities remain TBD; independent platform work proceeds while evidence-dependent advice abstains.
+Use Refs for intermediate M0–M5 deliveries and Closes only for the entire task. Preserve existing branches/PRs/status. No seed ranking, efficacy/profit claims or fabricated passes. GitHub's main ruleset was observed disabled on 2026-10-08; passing scope workflow is not proof of active protection.

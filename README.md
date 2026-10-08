@@ -28,7 +28,7 @@ The new `/farm` screen implements local field/crop-cycle records, confirmed opti
 
 Read [full build plan](docs/farm-companion/BUILD_PLAN.md), [architecture](docs/ARCHITECTURE.md), [data model](docs/farm-companion/DATA_MODEL.md), [engine plan](docs/farm-companion/RECOMMENDATION_ENGINE.md) and [repository/delivery protocol](docs/farm-companion/DELIVERY.md).
 
-Arindam owns the heavy implementation (Task 10/#11), Kanika owns independent data validation/QA (Task 6/#9), and Yashi owns evidence/content (Task 7/#10). Agents read [AGENTS.md](AGENTS.md), their complete brief and [task registry](docs/farm-context/tasks.json), then use the [/claim workflow](CONTRIBUTING.md). The bot activates after the setup PR is human-merged. Historical assignments are preserved.
+Arindam owns runtime integration (Task 10/#11), Kanika farm-data validation/regression (Task 6/#9), Yashi the expanded research/catalog/education bundle (Task 7/#10), Anushka dataset/model audits (Task 11/#15), and Aanya device QA/exhibition readiness (Task 12/#16). Agents read [AGENTS.md](AGENTS.md), their complete brief and [task registry](docs/farm-context/tasks.json), then use the [/claim workflow](CONTRIBUTING.md). Setup #12 is merged; the reassignment registry must land on main before new claims work. Historical deliverables and open PRs are preserved.
 
 ## Repository
 
@@ -45,7 +45,7 @@ docs/exhibition/farm-context/     QA/demo/release evidence
 
 ## Teammates using Antigravity or other agents
 
-Clone/open the repository root and follow [the teammate startup guide](docs/team-tasks/AGENT_START.md). It includes copy-paste prompts for Kanika and Yashi, role/account checks, /claim instructions and free-agent handoff steps. Root GEMINI.md, CLAUDE.md and opencode.json are entry points to the same canonical AGENTS.md. Setup must be human-merged before claims work on main.
+Clone/open the repository root and follow [the teammate startup guide](docs/team-tasks/AGENT_START.md). It includes copy-paste prompts for all four teammates, role/account checks, /claim instructions and free-agent handoff steps. Root GEMINI.md, CLAUDE.md and opencode.json are entry points to the same canonical AGENTS.md. Accept any pending invitation and verify the bot claim before editing.
 
 ## Local development
 

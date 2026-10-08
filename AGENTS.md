@@ -8,13 +8,15 @@ Match names case-insensitively. If the user introduces themselves, state their a
 
 | Contributor | Active task | Brief | Allowed paths |
 | --- | --- | --- | --- |
-| Kanika | 6: Data validation and exhibition QA | [TASK-6-CONTEXT-AUDIT.md](docs/team-tasks/TASK-6-CONTEXT-AUDIT.md) | `ml/farm_context_audit/**`, `docs/exhibition/farm-context/**` |
-| Yashi | 7: Evidence research and seed/action catalog | [TASK-7-FARM-EVIDENCE.md](docs/team-tasks/TASK-7-FARM-EVIDENCE.md) | `docs/research/farm-context/**`, `data/catalog/farm-context/**` |
+| Kanika | 6: Farm-data validation and regression QA | [TASK-6-CONTEXT-AUDIT.md](docs/team-tasks/TASK-6-CONTEXT-AUDIT.md) | `ml/farm_context_audit/**`, `docs/exhibition/farm-context/**` |
+| Yashi | 7: Research, evidence and complete education catalogs | [TASK-7-FARM-EVIDENCE.md](docs/team-tasks/TASK-7-FARM-EVIDENCE.md) | `docs/research/**`, `data/catalog/**` |
 | Arindam | 10: Farm companion core and integration | [TASK-10-FARM-CORE.md](docs/team-tasks/TASK-10-FARM-CORE.md) | `owner-directed` (repository-wide) |
+| Anushka | 11: Dataset integrity and model-evaluation audit | [TASK-11-MODEL-AUDIT.md](docs/team-tasks/TASK-11-MODEL-AUDIT.md) | `ml/dataset_audit/**`, `docs/model-validation/**` |
+| Aanya | 12: Device QA and exhibition readiness | [TASK-12-DEVICE-EXHIBITION.md](docs/team-tasks/TASK-12-DEVICE-EXHIBITION.md) | `docs/exhibition/device-qa/**`, `docs/exhibition/presentation/**` |
 
-Links above are repository-root relative. Anushka and Aanya have no active assignment in this phase. They must contact Arindam before starting work.
+Links above are repository-root relative. This roster was reassigned by Arindam on 2026-10-08. Yashi has the largest research/content bundle; the other teammate directories are exclusive. Aanya and Anushka must accept their GitHub invitations, then obtain a confirmed /claim before editing. An assignment or invitation is not a successful claim.
 
-The canonical roster, issue numbers and branches are in docs/farm-context/tasks.json. All agents (Codex, Claude, AntiGravity and others) follow these instructions. Tasks 1–4 remain historical backlog; do not discard their work or start them without owner direction.
+The canonical roster, issue numbers and branches are in docs/farm-context/tasks.json. All agents (Codex, Claude, AntiGravity and others) follow these instructions. Tasks 1–4 remain historical references. This owner-directed reassignment carries their applicable deliverables into Tasks 7, 11 and 12; preserve previous work and PRs, and use the active registered branches instead of starting historical branches.
 
 ## Agent startup
 

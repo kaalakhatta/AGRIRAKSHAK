@@ -1,107 +1,158 @@
 # Start here: teammate agents
 
-Use the same protocol in Codex, Antigravity, Claude, OpenCode or another coding agent. Root AGENTS.md is authoritative; tool-specific files only point here. This guide does not install tools, select a paid model, or supply credentials. “OpenCore” may refer to another tool: use the explicit prompts below whenever automatic rule discovery is unknown.
+Use the same protocol in Codex, Antigravity, Claude, OpenCode or another agent. Root AGENTS.md and docs/farm-context/tasks.json are canonical. Owner reassignment: 2026-10-08. This guide does not install tools, select paid models or supply credentials.
 
-## Before the teammates begin
+## Before starting
 
-Arindam must human-review and merge setup PR #12. The active task registry and claim workflow must exist on main. Do not start from the old main instructions or from an uploaded ZIP that lacks Git metadata. A preview of this PR is not authorization to work before a claim succeeds.
+Setup #12 is merged. The five-person reassignment registry must be on main before new Task 11/12 claims or expanded Task 7 scope can work. Aanya and Anushka must accept their pending invitations. Claims for Yashi/#10 and Arindam/#11 were confirmed; Kanika/#9 still needs her own confirmed /claim. Preserve existing claims/branches/PRs; do not silently reserve another account's task.
 
-After merge, confirm Actions is enabled, verify the task scope check remains required protection, and smoke-test /claim with each actual teammate account. Required-check identifiers use the check-run context `scope` (workflow name: Team task scope); inspect the branch-protection UI/check run before selecting it. If claims fail, show the Actions failure and contact Arindam rather than assigning yourself silently. The setup does not automatically configure protection or teammate tool permissions.
+GitHub main ruleset Protect main was observed disabled on 2026-10-08. web/scope checks exist, but enforced protection is not confirmed. Agents still follow scoped instructions, claim requirements and human-owner merge policy. Missing access/claim confirmation blocks edits; independent read-only planning can continue.
 
 ## Open the repository
 
-Use the tool's clone/import-from-GitHub function, or run:
+Use the tool's GitHub clone/import feature, or:
 
 ```bash
 git clone https://github.com/kaalakhatta/AGRIRAKSHAK.git
 cd AGRIRAKSHAK
 ```
 
-Open this repository root as the agent workspace. Each contributor uses their own clone and GitHub login; never share the owner's token or a writable checkout. No special GitHub MCP/plugin is necessary: normal Git plus GitHub website or the free `gh` CLI is sufficient. `gh` is optional. A tool without terminal/Git access can review files but cannot perform the full edit/validate/PR workflow; use a capable local environment or hand the patch/evidence to the contributor.
-
-Automatic instruction discovery depends on tool/version. Antigravity recognizes AGENTS.md/GEMINI.md; OpenCode recognizes AGENTS.md with optional opencode.json instructions; CLAUDE.md tells Claude-family tools to read the canonical file. Other agents should be given the explicit prompt below. Do not run an initialization command that overwrites existing instructions.
-
-## Copy-paste prompt: Kanika
-
-```text
-Hi, I'm Kanika. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
-docs/team-tasks/TASK-6-CONTEXT-AUDIT.md, the full companion build plan
-and context contract before changing anything. My GitHub account is
-KanikaSharma0721. My cumulative task is issue #9; the exact branch is
-codex/farm-task-6-kanika. I authorize you to post /claim on my issue
-using my account; otherwise guide me to post it in GitHub. Wait for
-bot confirmation and verify the issue assignee before editing.
-Only edit ml/farm_context_audit/** and docs/exhibition/farm-context/**.
-Inspect existing files, STATUS.md, issue checklist and linked PRs;
-continue the earliest unfinished milestone. Report my task, allowed
-paths, claim state, branch and next deliverable first. Run the brief's
-checks, show the diff, commit/push my task branch and open a milestone
-PR for kaalakhatta review. Never merge or push main. No paid services,
-app integration code or fabricated test/source/approval results.
-```
+Each contributor uses their own GitHub login and separate clone/worktree. Never share the owner's token or writable checkout. Automatic rule loading depends on the tool; explicitly read AGENTS.md and the brief. Do not run an initialization command that overwrites instructions. A ZIP without Git metadata is not a GitHub-enabled checkout.
 
 ## Copy-paste prompt: Yashi
 
 ```text
 Hi, I'm Yashi. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
-docs/team-tasks/TASK-7-FARM-EVIDENCE.md, the full companion build plan
-and context contract before changing anything. My GitHub account is
-yashitripathi2007. My cumulative task is issue #10; the exact branch is
-codex/farm-task-7-yashi. I authorize you to post /claim on my issue
-using my account; otherwise guide me to post it in GitHub. Wait for
-bot confirmation and verify the issue assignee before editing.
-Only edit docs/research/farm-context/** and data/catalog/farm-context/**.
-Inspect existing files, STATUS.md, issue checklist and linked PRs;
-continue the earliest unfinished milestone. Report my task, allowed
-paths, claim state, branch and next deliverable first. Verify primary
-sources, validate schemas/examples, show the diff, commit/push my task
-branch and open a milestone PR for kaalakhatta review. Never merge or
-push main. No paid services, web/engine code, invented citations,
-agricultural thresholds or reviewer approvals. If browsing is unavailable,
-mark sources unverified and continue schema work within scope.
+docs/team-tasks/TASK-7-FARM-EVIDENCE.md, PLAN.md, CONTRACT.md and the complete
+farm-companion build/data/engine/delivery plan before editing.
+My GitHub account is yashitripathi2007; my cumulative
+issue is #10, branch codex/farm-task-7-yashi.
+I authorize you to post /claim on my issue using my own mapped account;
+otherwise guide me to post it. Accept any pending repository invitation
+first. Wait for bot confirmation and verify assignee; if already claimed,
+verify the live assignment and no second active agent before resuming.
+Only edit docs/research/** and data/catalog/**.
+Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
+Report contributor/task, both paths, claim, exact branch and next deliverable.
+Deliver the nine Y1–Y9 packages in order and small PRs. First preserve PR #14 literature commits/files/attribution and carry them into my registered Task 7 branch; do not overwrite published work. Verify primary sources, validate schemas/examples and keep draft/review gates. No app/engine/training work.
+Use only free tooling. No root dependencies/workflows/shared contracts,
+fabricated sources/results/approval or private data/model artifacts.
+Run brief checks, show diff, update STATUS.md, commit/push only my task
+branch and open small milestone/package PRs for kaalakhatta review.
+Use Refs #10 for partial delivery; Closes only for the whole task.
+Never merge, push main or bypass protection. Preserve branch/PR/remaining
+work before handoff or /unclaim. One active agent/checkout for this task.
 ```
 
-## Claim and branch checks
+## Copy-paste prompt: Kanika
 
-/claim is an exact GitHub issue comment, not a command in the agent chat or terminal. Links: [Kanika #9](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/9), [Yashi #10](https://github.com/kaalakhatta/AGRIRAKSHAK/issues/10). Claims require the mapped account and repository write access. A wrong/owner account cannot claim a teammate issue. Do not treat posting as success.
+```text
+Hi, I'm Kanika. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
+docs/team-tasks/TASK-6-CONTEXT-AUDIT.md, PLAN.md, CONTRACT.md and the complete
+farm-companion build/data/engine/delivery plan before editing.
+My GitHub account is KanikaSharma0721; my cumulative
+issue is #9, branch codex/farm-task-6-kanika.
+I authorize you to post /claim on my issue using my own mapped account;
+otherwise guide me to post it. Accept any pending repository invitation
+first. Wait for bot confirmation and verify assignee; if already claimed,
+verify the live assignment and no second active agent before resuming.
+Only edit ml/farm_context_audit/** and docs/exhibition/farm-context/**.
+Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
+Report contributor/task, both paths, claim, exact branch and next deliverable.
+Continue the earliest unfinished farm-context audit and independent domain/regression cases. Aanya owns device execution/demo/rehearsals; supply case IDs and expected results.
+Use only free tooling. No root dependencies/workflows/shared contracts,
+fabricated sources/results/approval or private data/model artifacts.
+Run brief checks, show diff, update STATUS.md, commit/push only my task
+branch and open small milestone/package PRs for kaalakhatta review.
+Use Refs #9 for partial delivery; Closes only for the whole task.
+Never merge, push main or bypass protection. Preserve branch/PR/remaining
+work before handoff or /unclaim. One active agent/checkout for this task.
+```
 
-If gh is available, these read-only commands help verify identity/state:
+## Copy-paste prompt: Anushka
+
+```text
+Hi, I'm Anushka. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
+docs/team-tasks/TASK-11-MODEL-AUDIT.md, PLAN.md, CONTRACT.md and the complete
+farm-companion build/data/engine/delivery plan before editing.
+My GitHub account is AnushkaSChandel; my cumulative
+issue is #15, branch codex/farm-task-11-anushka.
+I authorize you to post /claim on my issue using my own mapped account;
+otherwise guide me to post it. Accept any pending repository invitation
+first. Wait for bot confirmation and verify assignee; if already claimed,
+verify the live assignment and no second active agent before resuming.
+Only edit ml/dataset_audit/** and docs/model-validation/**.
+Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
+Report contributor/task, both paths, claim, exact branch and next deliverable.
+Start A1 read-only dataset audit using tiny synthetic fixtures, then A2 manifest/leakage checks and A3 model readiness evidence. Do not download real datasets, train, edit the ML pipeline or commit weights/photos. Missing metrics stay TBD.
+Use only free tooling. No root dependencies/workflows/shared contracts,
+fabricated sources/results/approval or private data/model artifacts.
+Run brief checks, show diff, update STATUS.md, commit/push only my task
+branch and open small milestone/package PRs for kaalakhatta review.
+Use Refs #15 for partial delivery; Closes only for the whole task.
+Never merge, push main or bypass protection. Preserve branch/PR/remaining
+work before handoff or /unclaim. One active agent/checkout for this task.
+```
+
+## Copy-paste prompt: Aanya
+
+```text
+Hi, I'm Aanya. Read root AGENTS.md, docs/team-tasks/AGENT_START.md,
+docs/team-tasks/TASK-12-DEVICE-EXHIBITION.md, PLAN.md, CONTRACT.md and the complete
+farm-companion build/data/engine/delivery plan before editing.
+My GitHub account is aanya25bce11372-stack; my cumulative
+issue is #16, branch codex/farm-task-12-aanya.
+I authorize you to post /claim on my issue using my own mapped account;
+otherwise guide me to post it. Accept any pending repository invitation
+first. Wait for bot confirmation and verify assignee; if already claimed,
+verify the live assignment and no second active agent before resuming.
+Only edit docs/exhibition/device-qa/** and docs/exhibition/presentation/**.
+Inspect all owned files/scoped instructions, STATUS.md, issue and PRs.
+Report contributor/task, both paths, claim, exact branch and next deliverable.
+Start D1 device matrix/test plan, then D2 available synthetic-data failure/privacy/backup/offline journeys and D3 presentation/fallback/three actual rehearsals. Mark unrun cases not-run; do not claim pending model/offline functionality. No app fixes or deployment.
+Use only free tooling. No root dependencies/workflows/shared contracts,
+fabricated sources/results/approval or private data/model artifacts.
+Run brief checks, show diff, update STATUS.md, commit/push only my task
+branch and open small milestone/package PRs for kaalakhatta review.
+Use Refs #16 for partial delivery; Closes only for the whole task.
+Never merge, push main or bypass protection. Preserve branch/PR/remaining
+work before handoff or /unclaim. One active agent/checkout for this task.
+```
+
+## Claim and branch verification
+
+/claim is an exact GitHub issue comment, not a terminal/chat command. Check your account and task first:
 
 ```bash
 git status --short
 git remote -v
 git branch --show-current
 gh api user --jq .login
-gh issue view 9 --repo kaalakhatta/AGRIRAKSHAK --json assignees,state,body
+gh issue view 10 --repo kaalakhatta/AGRIRAKSHAK --json assignees,state,body,comments
 ```
 
-Yashi uses issue 10 in the last command. If gh is not available, check the signed-in GitHub account, issue assignee, bot confirmation and PR list in the browser. Local Git commit name/email is not GitHub authentication. Do not expose or paste tokens into chat/files.
+Use your own issue number (Kanika 9, Yashi 10, Anushka 15, Aanya 16). Without gh, inspect the signed-in GitHub account, issue/bot confirmation and PR list in the browser. Local Git names are not proof of authentication. Never expose tokens.
 
-After confirmation, fetch origin/main and inspect whether your exact branch already exists locally/remotely. Create it from main only if absent. Resume existing branch/PR otherwise; never blindly reset, force-push, or create a competing branch. One active agent per contributor; a confirmed claim does not lock out another session using the same account.
+After confirmation fetch origin/main, inspect local/remote exact branch and resume it if present; create only if absent. Never blindly reset, force-push or restart old task branches. If invitation/claim fails, show the failure and contact Arindam. The owner cannot post a teammate /claim using the owner account.
 
-## Work and validation
+## Work, validation and handoff
 
-- Read all existing files in both owned directories and nested instructions. Keep STATUS.md in each directory with current milestone, completed/pending items, test evidence and blockers.
-- Kanika starts with the dependency-free Python audit and independent QA cases; Yashi starts with evidence inventory and schemas. Neither needs the app/server running to begin. Python/schema tooling must be free. No root dependency installs/changes by teammates.
-- Yashi opens sources before marking verified. If offline, draft schemas and gap inventories can proceed; fabricated citations/review are forbidden.
-- Run the brief's commands, inspect changed paths (including untracked files), and show the contributor the diff/limitations. A passing status check does not authorize merging.
-- Open a small PR to main; use Task 6 or 7, milestone ID, Refs #issue, allowed-path confirmation, checks/output/sources and remaining items. Request kaalakhatta review. Closes only when the full cumulative task is complete.
-- If scoped instructions and a tool's defaults conflict, stop the unauthorized step and report it. Instruction files guide behavior; GitHub scope checks plus human review are the backstop, not a local filesystem sandbox.
+- Read the complete brief and all files/nested instructions in both owned trees. No simultaneous owner edits in teammate trees; coordinate handoffs through task issues.
+- Kanika owns farm-data validator/regression expectations. Anushka owns dataset/split/model audit evidence. Aanya owns observed device/accessibility/failure testing and exhibition rehearsals. Yashi owns all scientific/provider/license research, schemas/catalogs and review packets.
+- Yashi's larger scope includes docs/research and data/catalog parent trees; her older literature PR #14 is preserved and referenced in the registered-branch delivery. Applicable historical Tasks 1–4 are references, not duplicate active assignments.
+- Run scoped checks and inspect all changed/untracked paths. Content remains draft without actual expert review. Zero paid APIs/services, secret/user-photo/location/model artifacts, invented agronomic thresholds or test passes.
+- Milestone PR includes Task N, M0–M5/package ID, Refs #issue, path confirmation, commands/output/sources, remaining gaps and kaalakhatta review. No full-task close for one package.
+- Maintain STATUS.md in both trees. On tool/session handoff record exact branch/PR, validated commit, unfinished checklist and blockers. Resume that branch; do not take another role to bypass usage limits.
 
-## Handoff when free-agent limits are reached
+## Owner readiness checklist
 
-Before changing tools/sessions, save STATUS.md and record the exact branch/PR, last validated commit, unfinished checklist and blockers. The next agent reads them and resumes the same task. If releasing to another collaborator, document the handoff before /unclaim. Never create a second task or claim another contributor's role to work around a model limit. Don't mark blocked work complete.
+- [x] Setup #12, core #13 and training #8 merged into main
+- [x] Task 7/#10 and Task 10/#11 claims confirmed by bot and assignments inspected
+- [ ] Five-person reassignment registry/briefs merged; updated scope workflow reads them
+- [ ] Aanya and Anushka invitations accepted and write access verified
+- [ ] Kanika, Anushka and Aanya successful mapped-account /claim observed
+- [ ] Active main protection and required web/scope contexts verified (observed disabled 2026-10-08)
+- [ ] Each agent reports exact task/branch/two directories and preserves existing work
+- [ ] Available devices, reviewed catalog coverage and rehearsal evidence verified
 
-## Readiness checklist for the owner
-
-- [ ] PR #12 human-reviewed and merged; main contains this guide and tasks.json
-- [x] Actions enabled; active main ruleset requires web and scope (verified 2026-10-05)
-- [ ] Kanika can clone with her account and successfully claim #9
-- [ ] Yashi can clone with her account and successfully claim #10
-- [ ] Each agent reports the correct branch/two allowed directories before edits
-- [ ] Real out-of-scope PR is blocked by required scope protection (use a harmless temporary test PR; owner deletes/closes it)
-- [ ] No agent can merge under the agreed human-only workflow; no shared credentials
-
-Only externally verified checks are marked passed. Repo entry files are prepared; actual teammate-agent sessions and post-merge claims still need verification.
-
-Instruction-format sources checked 2026-10-05: [Antigravity rules](https://www.antigravity.google/docs/rules/) and [OpenCode rules](https://opencode.ai/docs/rules/). Compatibility with other tools is provided by explicit prompts, not a claim that every agent auto-loads instructions.
+A prepared checklist is not evidence that its unchecked steps passed. No paid connector or shared credentials are required.

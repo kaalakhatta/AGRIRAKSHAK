@@ -4,13 +4,15 @@
   "contributors": {
     "Kanika": "KanikaSharma0721",
     "Yashi": "yashitripathi2007",
-    "Arindam": "kaalakhatta"
+    "Arindam": "kaalakhatta",
+    "Anushka": "AnushkaSChandel",
+    "Aanya": "aanya25bce11372-stack"
   },
   "tasks": [
     {
       "task": 6,
       "contributor": "Kanika",
-      "title": "Data validation and exhibition QA",
+      "title": "Farm-data validation and regression QA",
       "brief": "docs/team-tasks/TASK-6-CONTEXT-AUDIT.md",
       "branch": "codex/farm-task-6-kanika",
       "issue": 9,
@@ -22,13 +24,13 @@
     {
       "task": 7,
       "contributor": "Yashi",
-      "title": "Evidence research and seed/action catalog",
+      "title": "Research, evidence and complete education catalogs",
       "brief": "docs/team-tasks/TASK-7-FARM-EVIDENCE.md",
       "branch": "codex/farm-task-7-yashi",
       "issue": 10,
       "paths": [
-        "docs/research/farm-context/",
-        "data/catalog/farm-context/"
+        "docs/research/",
+        "data/catalog/"
       ]
     },
     {
@@ -40,6 +42,30 @@
       "issue": 11,
       "paths": [
         "*"
+      ]
+    },
+    {
+      "task": 11,
+      "contributor": "Anushka",
+      "title": "Dataset integrity and model-evaluation audit",
+      "brief": "docs/team-tasks/TASK-11-MODEL-AUDIT.md",
+      "branch": "codex/farm-task-11-anushka",
+      "issue": 15,
+      "paths": [
+        "ml/dataset_audit/",
+        "docs/model-validation/"
+      ]
+    },
+    {
+      "task": 12,
+      "contributor": "Aanya",
+      "title": "Device QA and exhibition readiness",
+      "brief": "docs/team-tasks/TASK-12-DEVICE-EXHIBITION.md",
+      "branch": "codex/farm-task-12-aanya",
+      "issue": 16,
+      "paths": [
+        "docs/exhibition/device-qa/",
+        "docs/exhibition/presentation/"
       ]
     }
   ],

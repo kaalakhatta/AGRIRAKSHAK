@@ -2,15 +2,16 @@
 
 Task 2 — Literature review (AgriRakshak)
 Contributor: Yashi
-Branch: `docs/literature-review`
+Original submission branch: `docs/literature-review` (PR #14). Owner integration preserves Yashi’s commit; future Task 7 work uses `codex/farm-task-7-yashi`.
 Allowed path: `docs/research/**`
 
 ## 1. Purpose and scope
 
 AgriRakshak is a college exhibition project for preliminary crop-disease screening and
-education. The core application runs a small ONNX image classifier in the browser and
-shows reviewed educational content. This review establishes a verifiable research
-foundation for the project report and the exhibition defence.
+education. The current companion stores farm records locally and offers consented
+server-side ONNX screening for the supplied baseline. Browser inference and reviewed
+agronomic content remain pending; neither is established by this literature review.
+This review establishes a research foundation for the project report and the exhibition defence.
 
 Scope of the review, as required by the task brief:
 
@@ -119,8 +120,9 @@ The field-generalization evidence is consistent across sources:
 - Best cross-condition generalization of 81.60%; PlantVillage + field images reached
   77.50–80.33% [8].
 - Ramcharan et al. (2019) [10] deployed a mobile deep learning model for cassava
-  disease diagnosis and observed performance drops on real-world mobile video: F1
-  decreased by 32% for pronounced symptoms, mainly because of recall loss. In other
+  disease diagnosis and observed performance drops under real-world conditions: F1
+  decreased by 32% for pronounced symptoms in still images and by 39% in video,
+  mainly because of recall loss. In other
   words, in deployment the model missed diseased cases it had handled in the lab.
 
 ### 4.2 Our interpretation
@@ -203,9 +205,10 @@ ImageNet top-1 accuracy while being substantially smaller than the prior best mo
 
 ### 8.2 Our interpretation — why lightweight CNNs matter here
 
-AgriRakshak runs an ONNX classifier **in the browser**, on a visitor's or student's own
-device, with no guaranteed GPU and a small model budget for download and inference
-latency. That constraint is exactly the problem MobileNet was designed for [5]: fewer
+Browser inference is a planned option, not the current implementation. The supplied
+baseline presently runs in the consented local Python API. On-device deployment would
+need model download and latency measurements on actual exhibition hardware. MobileNet
+was designed for mobile efficiency [5]: fewer
 parameters and multiply-accumulates per inference mean faster load times, responsive
 prediction on modest hardware, and the ability to demo at an exhibition without
 specialised equipment. EfficientNet [6] provides useful architecture context — it shows
@@ -266,9 +269,9 @@ their themes to AgriRakshak yields the project's responsible-use position:
   limitations and uncertainty rather than presenting a single accuracy figure.
 - **Non-maleficence.** Outputs are framed as candidates for human attention; users are
   directed to local agricultural experts for action.
-- **Privacy.** Users' photographs are processed in the browser and are not uploaded for
-  training without consent; no user photographs or personal data are committed to the
-  repository.
+- **Privacy.** Real screening sends a selected photo to the configured local API only
+  after explicit analysis consent. Photos are not retained for training; no user
+  photographs or personal data are committed to the repository.
 
 These are our project commitments derived from the themes above, not claims that [15]
 or [16] endorse AgriRakshak.
@@ -281,8 +284,8 @@ or [16] endorse AgriRakshak.
 2. **Bias is documented, not hypothetical.** 49.0% accuracy from 8 background pixels
    [4] is concrete evidence that models can learn background instead of symptoms.
 3. **Field conditions reduce performance.** Cross-condition generalization tops out at
-   81.60% in [8], and real-world mobile deployment cost 32% F1 for pronounced cassava
-   symptoms [10].
+   81.60% in [8], and the reported F1 drop for pronounced cassava symptoms was 32% for real-world
+   images and 39% for video [10].
 4. **Evaluation must be per-class.** Imbalance can make accuracy misleading [11]; MCC is
    supported for the binary case only [12].
 5. **Augmentation claims must be scoped.** Taxonomy from [13]; quantitative gains from

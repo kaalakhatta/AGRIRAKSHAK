@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { WeatherClient, parseWeather, weatherFresh, CACHE_MS } from '../lib/providers/weather.ts';
+import { WeatherClient, parseWeather, weatherFresh, setupWeatherTransport, CACHE_MS } from '../lib/providers/weather.ts';
 import { validateCatalog, evaluateCatalog } from '../lib/recommendations/engine.ts';
 const NOW = Date.parse('2026-10-05T12:05:00Z');
 function weather() { return { utc_offset_seconds:0,timezone:'GMT',current:{time:'2026-10-05T12:00',interval:900,temperature_2m:24,relative_humidity_2m:50,precipitation:0,wind_speed_10m:2},current_units:{temperature_2m:'°C',relative_humidity_2m:'%',precipitation:'mm',wind_speed_10m:'m/s'},daily_units:{temperature_2m_min:'°C',temperature_2m_max:'°C',precipitation_sum:'mm'},daily:{time:Array.from({length:7},(_,i)=>`2026-10-${String(5+i).padStart(2,'0')}`),temperature_2m_min:Array(7).fill(20),temperature_2m_max:Array(7).fill(30),precipitation_sum:Array(7).fill(0)}}; }
@@ -15,6 +15,15 @@ test('weather rejects wrong units, future time, malformed days, missing interval
 test('weather cache isolates coordinates, throttle spans fields, refresh and expiry respect budget',async()=>{
  let time=NOW,calls=0;const c=new WeatherClient(async url=>{calls++;assert.equal(new URL(url).searchParams.get('wind_speed_unit'),'ms');return response(weather());},()=>time,async()=>{});
  await c.get(0,0);await c.get(0,0);assert.equal(calls,1);await assert.rejects(c.get(0,1),/wait/);await assert.rejects(c.get(0,0,true),/wait/);time+=60000;await c.get(0,1);assert.equal(calls,2);c.clear();assert.equal(c.cached(0,0),undefined);
+});
+test('setup weather transport sends only coordinates in a same-origin POST, preserves abort/privacy and validates provider results',async()=>{
+ let calls=0;
+ const client=new WeatherClient(setupWeatherTransport(async(url,options)=>{
+  calls++;assert.equal(url,'/api/weather-context');assert.equal(options.method,'POST');assert.deepEqual(JSON.parse(options.body),{latitude:23,longitude:77});assert.equal(options.credentials,'omit');assert.equal(options.referrerPolicy,'no-referrer');assert.equal(options.cache,'no-store');assert.ok(options.signal);return response(weather());
+ }),()=>NOW,async()=>{});
+ const result=await client.get(23,77);assert.equal(result.current.temperature,24);assert.equal(result.interval_seconds,900);assert.equal(calls,1);
+ await assert.rejects(setupWeatherTransport(async()=>{throw Error('must not transmit');})('https://example.com/forecast'),/Unsupported/);
+ const bad=weather();bad.current_units.wind_speed_10m='km/h';const invalid=new WeatherClient(setupWeatherTransport(async()=>response(bad)),()=>NOW,async()=>{});await assert.rejects(invalid.get(23,77),/units/);assert.equal(invalid.cached(23,77),undefined);
 });
 test('transient weather failure retries once; 429 honors Retry-After without retry; old cache survives failure',async()=>{
  let calls=0;const c=new WeatherClient(async()=>{calls++;return calls===1?new Response('',{status:503}):response(weather());},()=>NOW,async()=>{});await c.get(0,0);assert.equal(calls,2);

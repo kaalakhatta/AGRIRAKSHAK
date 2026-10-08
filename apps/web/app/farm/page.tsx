@@ -1,3 +1,3 @@
 import { SiteHeader } from "@/components/site-header";
-import { FarmWorkspace } from "@/features/farm/farm-workspace";
-export default function Page() { return <main><SiteHeader current="/farm" /><FarmWorkspace /></main>; }
+import { FarmEntry } from "@/features/farm/farm-entry";
+export default function Page() { return <main><SiteHeader current="/farm" /><FarmEntry /></main>; }

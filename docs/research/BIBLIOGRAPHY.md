@@ -2,7 +2,7 @@
 
 Task 2 — Literature review (AgriRakshak)
 Contributor: Yashi
-Branch: `docs/literature-review`
+Original submission branch: `docs/literature-review` (PR #14). Owner integration preserves Yashi’s commit; future Task 7 work uses `codex/farm-task-7-yashi`.
 
 All sixteen sources below were opened and checked before citation. Numbers correspond
 to the citations in [LITERATURE_REVIEW.md](LITERATURE_REVIEW.md) and the source column
@@ -18,7 +18,7 @@ Verification-limitation markers used below:
 
 ---
 
-## Peer-reviewed journal articles
+## Research papers: journal articles and preprints
 
 **[1]** Mohanty, S. P., Hughes, D. P., & Salathé, M. (2016). Using Deep Learning for
 Image-Based Plant Disease Detection. *Frontiers in Plant Science*, *7*, 1419.
@@ -39,7 +39,7 @@ URL: https://arxiv.org/abs/1511.08060
 - Publication venue beyond the arXiv identifier was not verified from the source and is
   therefore not stated.
 
-**[4]** Noyan, S. (2022). Uncovering bias in the PlantVillage dataset.
+**[4]** Noyan, M. A. (2022). Uncovering bias in the PlantVillage dataset.
 arXiv:2206.04374.
 DOI: `10.48550/arXiv.2206.04374`
 URL: https://arxiv.org/abs/2206.04374
@@ -71,8 +71,8 @@ DOI: `10.3389/fpls.2017.01852`
 Disease Diagnosis. *Frontiers in Plant Science*, *10*, 272.
 DOI: `10.3389/fpls.2019.00272`
 
-- Verified content: performance dropped in real-world mobile video; F1 decreased by 32%
-  for pronounced symptoms, mainly because of recall loss.
+- Verified content: performance dropped under real-world conditions; F1 decreased by 32%
+  for pronounced symptoms in still images and by 39% in video, mainly because of recall loss.
 - Full author list beyond the first author was not transcribed from the source and is
   abbreviated with "et al." rather than reconstructed.
 

@@ -1,6 +1,6 @@
 # Madhya Pradesh field setup — Task 10 / M1–M2–M3
 
-Owner-requested first case, October 8–9, 2026: name a field → locate it on a Madhya Pradesh map → show lookup progress → display mapped soil and weather → choose soybean, wheat or gram/chickpea → save and show first planning steps. Keep cumulative #11 open. This does not change Yashi’s Colab/training/evaluation/export ownership.
+Owner-requested first case, October 8–9, 2026: name a field → locate it on a Madhya Pradesh map → show lookup progress → display mapped soil and weather → choose soybean, wheat or gram/chickpea → save and open the crop dashboard, then the full farm dashboard. See [DASHBOARDS.md](DASHBOARDS.md) for the 9 October calendar/market follow-up. Keep cumulative #11 open. This does not change Yashi’s Colab/training/evaluation/export ownership.
 
 ## Implemented behavior
 
@@ -18,7 +18,7 @@ The soil card displays ISRIC’s WRB `MostProbable` mapped class. The fixed WMS 
 
 Weather uses the existing Open-Meteo units/time/interval parser, 30-minute transient cache, throttle, cancellation and bounded retry behavior. Browser-to-provider access failed in the in-app QA browser; this setup therefore uses the same free provider via a fixed app-server POST route. Current model estimates display temperature, humidity, precipitation with its interval, wind, validity time and freshness. Other existing weather controls retain their original direct transport. No station-observation or forecast-issuance time is invented.
 
-Crop, intended season and water access are explicit inputs. A revision-checked atomic save appends the field and planned crop cycle while preserving existing records. Unknown dates, stage, area and variety remain unknown. Initial recommendations reuse preparation prompts for missing details, personal reminders and measured soil records; real seed/action/calendar catalogs remain empty pending genuine review. The current disease scanner does not support the three planning crops. Existing fields, editing and backups remain under “Manage existing fields, records and backups”; first-step edit links open that section.
+Crop, intended season, water access, optional area, planted variety, sowing date and planting status are explicit inputs. A revision-checked atomic save appends the field and crop cycle while preserving existing records. Already sown explicitly selects active status; dates alone do not infer planting or stage. Unknown inputs remain unknown. Preparation prompts now appear as compact quick-info buttons. A source-backed educational maturity estimate is calculated for supported soybean varieties; reviewed operational seed/action/calendar catalogs remain empty pending genuine review. The current disease scanner does not support the three planning crops. Existing fields, editing and backups remain under “Manage existing fields, records and backups”; first-step edit links open that section.
 
 ## Original validation evidence — initial map/context case
 

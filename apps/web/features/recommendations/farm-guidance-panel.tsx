@@ -22,6 +22,6 @@ export function FarmGuidancePanel({ snapshot, fieldId, cycleId, weather = null }
       <ul>{action.evidence.map(url => <li key={url}><a href={url} target="_blank" rel="noreferrer">Evidence source</a></li>)}</ul>
     </article>)}
     {!guidance.actions.length && <p>Seed comparisons and crop schedules will appear after applicable content is reviewed. Your personal reminders work locally.</p>}
-    <a href="/farm">Review field and crop-cycle details</a>
+    <a className="button button-secondary" href="/farm">Review field and crop-cycle details</a>
   </section>;
 }

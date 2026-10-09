@@ -38,3 +38,7 @@ Owner reported that the first setup did not ask for device location or auto-plac
 Technical sources checked 2026-10-09: [W3C Geolocation](https://www.w3.org/TR/geolocation/) for one-shot permission/options/error behavior and [Leaflet map setView](https://leafletjs.com/reference.html#map-setview) for centring a returned point. A browser position can use GPS or other device/network sources; accuracy is reported, never guaranteed.
 
 Remaining outside this case: genuine reviewed operational advice, evaluated target-crop model handoff, precise administrative-boundary verification and actual-device rehearsal. No accuracy, agronomy review, training run or yield benefit is claimed by this delivery.
+
+### Unified dashboard update (2026-10-09)
+
+Setup collects the raw sowing date and planted variety without rendering a maturity/calendar preview in the form. Soybean, wheat and gram each have supported published-characteristic options plus an Other input. Saving opens the same `/today` field dashboard used by existing saved-field cards; there is no separate crop dashboard. Existing weather/soil estimates transfer without coordinates; a temporary public mandi town preference enables approximate nearby reporting prices without retaining the field point. See DASHBOARDS.md for sources, context gates, calendar organising dates and limitations.

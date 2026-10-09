@@ -89,7 +89,7 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 .farm-workspace legend { font-weight: 700; margin-bottom: 16px; }
 .farm-workspace label:not(.check-label) { display: flex; flex-direction: column; gap: 8px; font-size: .9rem; font-weight: 700; margin-bottom: 18px; }
 .farm-workspace label span, .location-box h3 span { font-size: .8rem; color: var(--muted); font-weight: 400; }
-.farm-workspace input:not([type=checkbox]):not([type=radio]), .farm-workspace select, .farm-workspace textarea { font: inherit; background: white; color: var(--ink); border: 1px solid #9aaa9e; border-radius: 6px; padding: 11px 12px; width: 100%; min-height: 44px; }
+.farm-workspace input:not([type=checkbox]):not([type=radio]):not(.visually-hidden), .farm-workspace select, .farm-workspace textarea { font: inherit; background: white; color: var(--ink); border: 1px solid #9aaa9e; border-radius: 6px; padding: 11px 12px; width: 100%; min-height: 44px; }
 .farm-workspace input:focus-visible, .farm-workspace select:focus-visible, .farm-workspace textarea:focus-visible, summary:focus-visible, .farm-nav a:focus-visible { outline: 3px solid #d59b15; outline-offset: 3px; }
 .input-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .location-box { background: #edf1e6; border-radius: 12px; padding: 20px; margin: 12px 0; }
@@ -170,6 +170,10 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 .setup-map-heading { display:flex; align-items:start; justify-content:space-between; gap:20px; }
 .field-location-map { height:430px; width:100%; border-radius:16px; z-index:0; background:#e6eade; }
 .map-consent { min-height:260px; padding:36px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; border-radius:16px; background:#e7ecdf; }
+.device-location-choice { padding:24px; margin:18px 0; border:1px solid var(--line); border-radius:16px; background:#edf2e7; }
+.device-location-choice h3 { margin-top:0; }
+.device-location-choice p,.location-storage-note { line-height:1.6; font-size:.95rem; }
+.location-storage-note { color:var(--muted); }
 .map-caption,.selected-point { font-size:.85rem; color:var(--muted); }
 .setup-processing { text-align:center; padding:60px 20px; background:var(--paper); border:1px solid var(--line); border-radius:24px; }
 .setup-processing ul { list-style:none; padding:0; line-height:2.2; }

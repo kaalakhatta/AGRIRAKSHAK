@@ -38,6 +38,6 @@ export function PlanningPanel({ snapshot, fieldId, cycleId }: { snapshot: Snapsh
     </article>)}
     {!!blockers.length && <details><summary>Checks preventing guidance</summary><ul>{blockers.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
     <p>Confirm locally with an agricultural expert before using crop or seed guidance.</p>
-    <a href="/farm">Review crop, season and field inputs</a>
+    <a className="button button-secondary" href="/farm">Review crop, season and field inputs</a>
   </section>;
 }

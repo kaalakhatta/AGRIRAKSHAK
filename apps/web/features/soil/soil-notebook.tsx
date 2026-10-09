@@ -46,7 +46,7 @@ export function SoilNotebook() {
     {error && <p role="alert" className="form-error">{error} If records changed in another tab, reload before retrying.</p>}<div aria-live="polite">{message && <p className="success-note">{message}</p>}</div>
     {!snapshot && !error && <p role="status">Loading soil records…</p>}
     <label>Soil test field<select disabled={busy} value={fieldId} onChange={e=>{setFieldId(e.target.value);reset();setMessage('');setError('');}}><option value="">Choose a field</option>{snapshot?.fields.map(f=><option key={f.id} value={f.id}>{f.name}</option>)}</select></label>
-    {snapshot && !snapshot.fields.length && <p><a href="/farm">Add a field in My Farm</a> before recording a soil test.</p>}
+    {snapshot && !snapshot.fields.length && <p><a className="button button-secondary" href="/farm">Add a field in My Farm</a> before recording a soil test.</p>}
     {field && <><section className="farm-card" ref={formRef} tabIndex={-1} aria-label="Soil test form"><h3>{editing ? 'Edit soil test' : 'Add a soil test'}</h3><form onSubmit={e=>void submit(e)}><fieldset disabled={busy} className="soil-form"><legend>Sample details</legend><div className="farm-grid">
       <label>Sample date<input required type="date" max={todayInZone(zone)} value={draft.date} onChange={e=>setDraft({...draft,date:e.target.value})} /></label>
       <label>Test source<select value={draft.kind} onChange={e=>setDraft({...draft,kind:e.target.value as SoilTest['source_kind']})}><option value="soil_lab">Soil laboratory report</option><option value="manual_test">Manual test / test kit</option></select></label>

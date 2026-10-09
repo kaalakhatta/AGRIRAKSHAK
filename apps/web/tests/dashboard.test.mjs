@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseMarketMonth, marketURL, marketCrop, combineMarketSeries, fetchMarketReport } from '../lib/providers/market-prices.ts';
-import { maturityEstimate, calendarCells, seasonMarks } from '../lib/domain/season-estimates.ts';
+import { maturityEstimate, maturityEntries, planningChecks, calendarCells, seasonMarks } from '../lib/domain/season-estimates.ts';
 import { createFieldSetup } from '../lib/domain/field-setup.ts';
 import { emptyData } from '../lib/domain/farm.ts';
 const now='2026-10-09T05:00:00.000Z';
@@ -53,4 +53,57 @@ test('one-use dashboard transfer preserves source time and strips coordinates; e
  assert.throws(()=>validateDashboardContext(ctx,'other','cycle',at+60000));assert.throws(()=>validateDashboardContext(ctx,'field','cycle',at+1800000));assert.throws(()=>validateDashboardContext({...ctx,weather:{...ctx.weather,current:{...ctx.weather.current,humidity:200}}},'field','cycle',at));
  prepareDashboardContext(storage,'field','cycle',weather,soil,at);prepareDashboardContext(storage,'field','cycle',null,null,at);assert.equal(store.size,0);
  const blocked={getItem:()=>{throw Error('blocked');},setItem:()=>{throw Error('blocked');},removeItem:()=>{throw Error('blocked');}};assert.doesNotThrow(()=>prepareDashboardContext(blocked,'field','cycle',weather,soil,at));assert.equal(consumeDashboardContext(blocked,'field','cycle',at),null);
+});
+
+test('MP Rabi wheat and gram use exact published identities and keep unknown varieties/context unestimated',()=>{
+ const {field,cycle}=createFieldSetup(emptyData(),opts,now);
+ const wheat={...cycle,crop:'Wheat',season:'Rabi',variety:'HI 1544',sowing_date:'2026-11-01'};
+ assert.equal(maturityEstimate(field,wheat).start,'2027-02-19');assert.equal(maturityEstimate(field,wheat).end,'2027-02-24');
+ assert.equal(maturityEstimate(field,{...wheat,variety:'HI 1531'}).start,'2027-03-11');
+ const gram={...wheat,crop:'Gram/chickpea',variety:'Pusa JG 16'};
+ assert.equal(maturityEstimate(field,gram).start,'2027-02-19');
+ assert.equal(maturityEstimate(field,{...gram,variety:'JG 16'}),null);
+ assert.equal(maturityEstimate(field,{...gram,variety:'IPCK 2002-29'}).end,'2027-02-24');
+ for(const patch of [{variety:'Lok 1'},{season:'Kharif'},{season:null},{sowing_date:null}])assert.equal(maturityEstimate(field,{...wheat,...patch}),null);
+ assert.equal(maturityEstimate({...field,region:'Gujarat'},wheat),null);
+ assert.equal(maturityEntries('Wheat').length,4);assert.equal(maturityEntries('Gram/chickpea').length,4);assert.deepEqual(maturityEntries('unknown'),[]);
+});
+test('planning dates cover middle months without guessing stage or scheduling chemical/manure applications',()=>{
+ const {field,cycle}=createFieldSetup(emptyData(),opts,now);
+ const checks=planningChecks(field,cycle);
+ assert.ok(checks.some(c=>c.date.startsWith('2026-08')));assert.ok(checks.some(c=>c.date.startsWith('2026-09')));
+ assert.ok(checks.every(c=>c.date<=maturityEstimate(field,cycle).end));
+ assert.ok(checks.some(c=>c.label==='Crop nutrition & pest review'));
+ assert.ok(checks.every(c=>!/^spray|^apply|^irrigate/i.test(c.label)));
+ assert.deepEqual(planningChecks(field,{...cycle,sowing_date:null}),[]);assert.deepEqual(planningChecks(field,cycle,1000000),[]);
+ const unknown={...cycle,variety:null};assert.equal(planningChecks(field,unknown,12).at(-1).date,'2026-10-02');
+ const wheat={...cycle,crop:'Wheat',season:'Rabi',variety:'HI 1531',sowing_date:'2026-11-01'};
+ assert.ok(planningChecks(field,wheat).some(c=>c.date.startsWith('2027-03')));
+});
+
+test('nearest reporting town is selected locally; absent prices/coordinates never produce a fake nearby result',async()=>{
+ const {initialMarket,marketOrder,marketDistance}=await import('../lib/providers/nearest-market.ts');
+ const series=['Sehore APMC','Ashta APMC','Bhopal APMC'].map(market=>({market,variety:'Yellow',points:[{date:'2026-10-08',minimum:1,maximum:2,modals:[1]}]}));
+ assert.equal(initialMarket(series,'Sehore, Madhya Pradesh',{latitude:23.01,longitude:76.72}).market,'Ashta APMC');
+ assert.equal(initialMarket(series,'Sehore, Madhya Pradesh',{latitude:23.2,longitude:77.08}).market,'Sehore APMC');
+ assert.equal(initialMarket(series.filter(s=>s.market!=='Ashta APMC'),null,{latitude:23.01,longitude:76.72}).market,'Sehore APMC');
+ assert.equal(initialMarket(series,'Sehore, Madhya Pradesh',null).reason,'district');
+ assert.equal(initialMarket(series,'Unknown, Madhya Pradesh',null).reason,'latest');
+ assert.equal(initialMarket([],null,{latitude:23,longitude:77}).reason,'missing');
+ assert.equal(marketDistance({latitude:23,longitude:77},{latitude:23,longitude:77}),0);
+ assert.deepEqual(marketOrder({latitude:NaN,longitude:77}),[]);assert.deepEqual(marketOrder({latitude:40,longitude:77}),[]);
+});
+test('temporary default mandi order stores only public market names and tolerates malformed/blocked storage',async()=>{
+ const {rememberMarketOrder,readMarketOrder,initialMarket}=await import('../lib/providers/nearest-market.ts');
+ const values=new Map(),storage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};
+ rememberMarketOrder(storage,'synthetic-field',{latitude:23.01,longitude:76.72});
+ const text=[...values.values()][0];assert.ok(!text.includes('latitude'));assert.ok(!text.includes('23.01'));assert.ok(!text.includes('longitude'));
+ const order=readMarketOrder(storage,'synthetic-field');assert.equal(order.length,1);assert.deepEqual(readMarketOrder(storage,'other-field'),[]);
+ assert.equal(initialMarket([{market:'Ashta APMC',variety:'Yellow',points:[{date:'2026-10-08',minimum:1,maximum:2,modals:[1]}]}],null,null,order).reason,'nearby');
+ values.set([...values.keys()][0],JSON.stringify(['Ashta APMC','Sehore APMC']));assert.deepEqual(readMarketOrder(storage,'synthetic-field'),['Ashta APMC']);assert.equal([...values.values()][0],JSON.stringify(['Ashta APMC']));
+ rememberMarketOrder(storage,'synthetic-field',{latitude:23.01,longitude:76.72},[{market:'Sehore APMC',variety:'Wheat',points:[{date:'2026-10-08',minimum:1,maximum:2,modals:[1]}]}]);assert.deepEqual(readMarketOrder(storage,'synthetic-field'),['Sehore APMC']);
+ values.set([...values.keys()][0],JSON.stringify(['forged market']));assert.deepEqual(readMarketOrder(storage,'synthetic-field'),[]);
+ rememberMarketOrder(storage,'synthetic-field',null);assert.equal(values.size,0);
+ const blocked={getItem:()=>{throw Error('blocked');},setItem:()=>{throw Error('blocked');},removeItem:()=>{throw Error('blocked');}};
+ assert.doesNotThrow(()=>rememberMarketOrder(blocked,'synthetic-field',{latitude:23,longitude:77}));assert.deepEqual(readMarketOrder(blocked,'synthetic-field'),[]);
 });

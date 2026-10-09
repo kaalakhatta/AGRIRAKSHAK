@@ -463,3 +463,5 @@ h1 { font-size: clamp(3.4rem, 7vw, 6.7rem); letter-spacing: -.065em; line-height
 .hub-shortcuts a.button { padding:10px 16px; }
 .farm-tool > a.button { padding:12px 18px; }
 .learning-resources > a.button { padding:16px 20px; border:1px solid var(--line); background:var(--hub-soft); color:var(--ink); }
+
+.mark-check{background:#368176}.calendar-check-controls{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin:1rem 0}.calendar-check-controls label{min-width:10rem}.calendar-check-controls p{flex:1;min-width:12rem}.calendar-agenda .text-button{font-size:.85rem;text-align:left;white-space:normal}

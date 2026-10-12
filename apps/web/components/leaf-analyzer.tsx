@@ -26,6 +26,7 @@ export function LeafAnalyzer() {
   const [isStartingCamera, setIsStartingCamera] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [progress, setProgress] = useState('');
   const [result, setResult] = useState<ScreeningResult | null>(null);
 
   useEffect(() => {
@@ -133,9 +134,9 @@ export function LeafAnalyzer() {
   async function analyze(demo = false) {
     if (!file || (!demo && (!crop || !consent || !connected))) return;
     controller.current?.abort(); const abort = new AbortController(); controller.current=abort;
-    const token=++request.current; setIsAnalyzing(true); setResult(null); setError(null);
+    const token=++request.current; setIsAnalyzing(true); setProgress(demo ? 'Running labelled interface demo…' : 'Starting the model server…'); setResult(null); setError(null);
     try {
-      const next = demo ? await runMockInference(file) : await runApiInference(file,crop as ScannerCrop,abort.signal);
+      const next = demo ? await runMockInference(file) : await runApiInference(file,crop as ScannerCrop,abort.signal,fetch,message=>{if(token===request.current)setProgress(message);});
       if (token === request.current) { setScreenedAt(new Date().toISOString()); setResult(next); }
     } catch (nextError) {
       if (token === request.current) setError(nextError instanceof Error ? nextError.message : "The image could not be analyzed.");
@@ -199,8 +200,9 @@ export function LeafAnalyzer() {
             <label className="check-label"><input type="checkbox" checked={consent} onChange={e=>{setConsent(e.target.checked);if(!e.target.checked){request.current++;controller.current?.abort();setIsAnalyzing(false);}}} />Send this image to the analysis server for preliminary screening</label>
             {!connected && <p>Browser reports offline. Model analysis needs the configured server; your farm records and the explicit interface demo remain available.</p>}
             <button className="button button-primary button-wide" type="button" onClick={()=>void analyze()} disabled={isAnalyzing || !consent || !crop || !connected}>
-              {isAnalyzing ? "Analyzing leaf…" : "Analyze leaf"}
+              {isAnalyzing ? "Please wait…" : "Analyze leaf"}
             </button>
+            {isAnalyzing&&<><p role="status">{progress}</p><button type="button" className="text-button" onClick={()=>{request.current++;controller.current?.abort();setIsAnalyzing(false);setProgress('');setError('Screening was stopped. No result was saved.');}}>Cancel screening</button></>}
             <button type="button" className="text-button" disabled={isAnalyzing} onClick={()=>void analyze(true)}>Run labelled interface demo (no model)</button>
           </div>
         )}

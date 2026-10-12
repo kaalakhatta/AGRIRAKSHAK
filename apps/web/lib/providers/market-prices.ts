@@ -3,7 +3,43 @@ export const MARKET_CROPS = { soybean: { id: 13, name: 'Soyabean' }, wheat: { id
 export type MarketCrop = keyof typeof MARKET_CROPS;
 export type PricePoint = { date: string; minimum: number; maximum: number; modals: number[] };
 export type PriceSeries = { market: string; variety: string; points: PricePoint[] };
-export type MarketReport = { crop: MarketCrop; unit: 'INR/quintal'; fetched_at: string; source: string; series: PriceSeries[]; partial: boolean };
+export type MarketReport = { crop: MarketCrop; unit: 'INR/quintal'; fetched_at: string; source: string; series: PriceSeries[]; partial: boolean; mirror_updated_at?: string };
+export const MARKET_MIRROR_SOURCE = 'https://mandi-api.vercel.app/docs';
+export function marketMirrorURL(crop: MarketCrop) {
+  if (!Object.hasOwn(MARKET_CROPS, crop)) throw Error('Unsupported market request.');
+  const url = new URL('https://mandi-api.onrender.com/v1/prices');
+  url.search = new URLSearchParams({state:'Madhya Pradesh',commodity:MARKET_CROPS[crop].name}).toString();
+  return url;
+}
+// Keyless community mirror of data.gov.in reports. Never use its state-average
+// history endpoint: retain actual market, variety and grade records instead.
+export function parseMarketMirror(raw: unknown, crop: MarketCrop, now: number): MarketReport {
+  const root = record(raw), meta = record(root.meta);
+  if (root.success !== true || meta.state !== 'Madhya Pradesh' || meta.commodity !== MARKET_CROPS[crop].name || !Array.isArray(root.data) || root.data.length > 200) throw Error('Unsupported market mirror.');
+  const today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now));
+  const cutoff = Date.parse(today) - 29 * 86400000, grouped = new Map<string, PriceSeries>();
+  let updated = 0;
+  for (const value of root.data) {
+    const row = record(value);
+    if (row.state !== 'Madhya Pradesh' || row.commodity !== MARKET_CROPS[crop].name) throw Error('Market mirror coverage does not match.');
+    const date = row.arrival_date, fetched = typeof row.fetched_at === 'string' ? Date.parse(row.fetched_at) : NaN;
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0,10) !== date || !Number.isFinite(fetched) || fetched > now) throw Error('Invalid market mirror timestamp.');
+    updated = Math.max(updated, fetched);
+    if (date > today || Date.parse(date) < cutoff) continue;
+    const market = text(row.market), variety = text(row.variety) + (row.grade == null ? '' : ` (${text(row.grade)})`);
+    const values = [row.min_price,row.max_price,row.modal_price].map(v => typeof v === 'string' && /^\d+(\.\d+)?$/.test(v) ? Number(v) : v);
+    if (!values.every(v=>typeof v === 'number' && Number.isFinite(v) && v > 0 && v <= 10000000)) continue;
+    const [minimum,maximum,modal] = values as number[];
+    if (minimum > modal || modal > maximum) continue;
+    const key = JSON.stringify([market,variety]), series = grouped.get(key) ?? {market,variety,points:[]};
+    let point = series.points.find(p=>p.date === date);
+    if (!point) {point = {date,minimum,maximum,modals:[]};series.points.push(point);}
+    point.minimum = Math.min(point.minimum, minimum);point.maximum = Math.max(point.maximum, maximum);
+    if (!point.modals.includes(modal)) point.modals.push(modal);
+    grouped.set(key,series);
+  }
+  return {crop,unit:'INR/quintal',fetched_at:new Date(now).toISOString(),source:MARKET_MIRROR_SOURCE,series:[...grouped.values()].map(s=>({...s,points:s.points.sort((a,b)=>a.date.localeCompare(b.date)).map(p=>({...p,modals:p.modals.sort((a,b)=>a-b)}))})),partial:true,...(updated ? {mirror_updated_at:new Date(updated).toISOString()} : {})};
+}
 export function marketCrop(crop: string): MarketCrop | null {
   const key = crop.toLowerCase().replace(/[^a-z]/g, '');
   return key === 'soybean' || key === 'soyabean' ? 'soybean' : key === 'wheat' ? 'wheat' : ['chickpea','gramchickpea','gram'].includes(key) ? 'chickpea' : null;
@@ -79,6 +115,13 @@ export async function fetchMarketReport(crop: MarketCrop, http: typeof fetch = f
     return parseMarketMonth(JSON.parse(body),crop,y,m,today);
   }));
   const months = results.flatMap(r=>r.status === 'fulfilled' ? [r.value] : []);
-  if (!months.length) throw Error('Agmarknet could not be reached. No price estimate has been substituted.');
+  if (!months.length) {
+    try {
+      const response = await http(marketMirrorURL(crop), {headers:{Accept:'application/json'},signal:AbortSignal.timeout(35_000),cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',redirect:'error'});
+      if (!response.ok) throw Error('Mirror unavailable.');
+      const body = await response.text();if (body.length > 1_000_000) throw Error('Mirror response too large.');
+      return parseMarketMirror(JSON.parse(body),crop,now);
+    } catch { throw Error('Market reports could not be reached. No price estimate has been substituted.'); }
+  }
   return {crop,unit:'INR/quintal',fetched_at:new Date(now).toISOString(),source:'https://agmarknet.gov.in/',series:combineMarketSeries(months),partial:months.length !== periods.length};
 }

@@ -1,5 +1,16 @@
 import { parsePrediction, type ScannerCrop } from "./contract.ts";
-export async function runApiInference(file: File, crop: ScannerCrop, signal: AbortSignal, http: typeof fetch = fetch) {
+export async function runApiInference(file: File, crop: ScannerCrop, signal: AbortSignal, http: typeof fetch = fetch, progress: (message: string) => void = () => {}) {
+  if (signal.aborted) throw new Error('Screening was stopped. No result was saved.');
+  progress('Starting the model server… Free hosting may take about a minute. Your image has not been sent yet.');
+  try {
+    const ready = await http('/api/model-status', {signal:AbortSignal.any([signal,AbortSignal.timeout(55_000)]),cache:'no-store',credentials:'omit'});
+    const data: unknown = await ready.json();
+    if (!ready.ok || !data || typeof data !== 'object' || !('status' in data) || data.status !== 'ready') throw Error('not ready');
+  } catch {
+    throw new Error(signal.aborted ? 'Screening was stopped. No result was saved.' : 'The model server has not become ready. Wait a moment and try Analyze leaf again. Your image was not sent.');
+  }
+  if (signal.aborted) throw new Error('Screening was stopped. No result was saved.');
+  progress('Analyzing leaf…');
   const body = new FormData(); body.append("image", file, "leaf-image");
   let response: Response;
   try { response = await http("/api/predict", { method: "POST", body, signal, cache: "no-store" }); }

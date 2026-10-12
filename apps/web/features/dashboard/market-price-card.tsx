@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useId, useState } from 'react';
-import { marketCrop, type MarketReport, type PricePoint } from '@/lib/providers/market-prices';
+import { marketCrop, MARKET_MIRROR_SOURCE, type MarketReport, type PricePoint } from '@/lib/providers/market-prices';
 import { initialMarket, readMarketOrder } from '@/lib/providers/nearest-market';
 import { MARKET_TOWNS_SOURCE } from '@/lib/providers/market-towns';
 import { type MapPoint } from '@/lib/providers/field-context';
@@ -16,10 +16,10 @@ export function MarketPriceCard({crop,region,point=null,fieldId}:{crop:string;re
     if(!key)return;
     const abort=new AbortController();let live=true;
     const start=setTimeout(()=>{setLoading(true);setError('');setReport(null);},0);
-    fetch(`/api/market-prices?crop=${key}`,{signal:AbortSignal.any([abort.signal,AbortSignal.timeout(15000)]),cache:'no-store',credentials:'omit'}).then(async response=>{
-      if(!response.ok)throw Error('Agmarknet is unavailable. Try again when connected.');
+    fetch(`/api/market-prices?crop=${key}`,{signal:AbortSignal.any([abort.signal,AbortSignal.timeout(55000)]),cache:'no-store',credentials:'omit'}).then(async response=>{
+      if(!response.ok)throw Error('Market reports are unavailable. Try again later.');
       const data=await response.json() as MarketReport;
-      if(data.crop!==key||data.unit!=='INR/quintal'||!Array.isArray(data.series))throw Error('Unsupported market report.');
+      if(data.crop!==key||data.unit!=='INR/quintal'||!Array.isArray(data.series)||!['https://agmarknet.gov.in/',MARKET_MIRROR_SOURCE].includes(data.source))throw Error('Unsupported market report.');
       if(live){setReport(data);setSelection(previous=>{
         let remembered:string[]=[];try{remembered=readMarketOrder(sessionStorage,fieldId);}catch{/* Tab storage can be blocked. */}
         const defaultMarket=initialMarket(data.series,region,point,remembered);
@@ -47,6 +47,6 @@ export function MarketPriceCard({crop,region,point=null,fieldId}:{crop:string;re
       {latest?<><div className="price-summary"><div><span className="dashboard-caption">Latest reported modal {latest.modals.length>1?'range':'price'}</span><strong>{modalRange(latest)}</strong><span>per quintal (100 kg)</span></div><div><span className={stale?'status-chip status-stale':'status-chip'}>{stale?'Older report':'Recent report'}</span><p>{latest.date} · {market} · {selected?.variety}</p><p>Reported min–max: {rupees(latest.minimum)} – {rupees(latest.maximum)}</p></div></div>
       <figure className="price-chart"><figcaption>Reported modal prices · available dates in the last 30 days</figcaption><svg viewBox="0 0 680 240" role="img" aria-labelledby={`${id}-chart-title ${id}-chart-desc`}><title id={`${id}-chart-title`}>{crop} price history at {market}</title><desc id={`${id}-chart-desc`}>Each dot is a reported modal price in rupees per quintal. Vertical bars join multiple reports for one date. Missing days are not interpolated. Values are available in the table below.</desc>{[0,.5,1].map(f=>{const v=low+(high-low)*f;return <g key={f}><line x1="50" x2="650" y1={y(v)} y2={y(v)} className="chart-grid"/><text x="45" y={y(v)+4} textAnchor="end">{Math.round(v)}</text></g>;})}{points.map(point=><g key={point.date}>{point.modals.length>1&&<line x1={x(point.date)} x2={x(point.date)} y1={y(point.modals[0])} y2={y(point.modals.at(-1)!)} className="chart-range"/>}{point.modals.map(value=><circle key={value} cx={x(point.date)} cy={y(value)} r="4.5" className="chart-point"><title>{point.date}: {rupees(value)} / quintal</title></circle>)}</g>)}<text x="50" y="218">{points[0]?.date}</text><text x="640" y="218" textAnchor="end">{latest.date}</text><text x="350" y="237" textAnchor="middle">₹ per quintal · report date</text></svg></figure>
       <details className="dashboard-details"><summary>View price history table ({points.length} report dates)</summary><div className="dashboard-table-scroll"><table><caption>{market} · {selected?.variety} · INR per quintal</caption><thead><tr><th scope="col">Report date</th><th scope="col">Modal price(s)</th><th scope="col">Min–max</th></tr></thead><tbody>{[...points].reverse().map(p=><tr key={p.date}><td>{p.date}</td><td>{p.modals.map(rupees).join(', ')}</td><td>{rupees(p.minimum)} – {rupees(p.maximum)}</td></tr>)}</tbody></table></div></details><p className="dashboard-caption">Multiple same-day reports remain separate price points; no average is invented. This is a daily mandi report, not a guaranteed offer or a real-time trade feed.</p></>:<p className="empty-state">{markets.length?'Choose a mandi and market variety to see its price and graph.':'No valid reports in this 30-day window.'}</p>}
-      <p className="dashboard-caption">{report.partial?'Some monthly reports are unavailable. ':''}Retrieved {new Date(report.fetched_at).toLocaleString('en-IN')} · <a href={report.source} target="_blank" rel="noreferrer">Official Agmarknet source</a>. Report dates can lag; refresh requires a connection.</p></>}
+      <p className="dashboard-caption">{report.source===MARKET_MIRROR_SOURCE?<><strong>Government reports via a community mirror.</strong> Limited history from the latest 200 records; dates and coverage may be incomplete. {report.mirror_updated_at&&<>Mirror last updated {new Date(report.mirror_updated_at).toLocaleString('en-IN')}. </>}<a href={report.source} target="_blank" rel="noreferrer">Mandi Price API · free, keyless</a> · <a href="https://data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi" target="_blank" rel="noreferrer">Government data source</a>. </>:<>{report.partial?'Some monthly reports are unavailable. ':''}<a href={report.source} target="_blank" rel="noreferrer">Official Agmarknet source</a>. </>}Retrieved {new Date(report.fetched_at).toLocaleString('en-IN')}. Report dates can lag; refresh requires a connection. Verify the rate locally before selling.</p></>}
   </section>;
 }

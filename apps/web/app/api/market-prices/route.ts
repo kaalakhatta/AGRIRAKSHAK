@@ -1,5 +1,6 @@
 import { fetchMarketReport, MARKET_CROPS, type MarketCrop, type MarketReport } from '@/lib/providers/market-prices';
 export const runtime = 'nodejs';
+export const maxDuration = 60;
 const cache = new Map<MarketCrop,{report:MarketReport;expires:number}>();
 const pending = new Map<MarketCrop,Promise<MarketReport>>();
 const retry = new Map<MarketCrop,number>();
@@ -16,6 +17,6 @@ export async function GET(request: Request) {
     const report = await work;
     cache.set(crop,{report,expires:Date.now()+15*60000});
     return Response.json(report,{headers});
-  } catch { retry.set(crop,Date.now()+60000); return Response.json({error:'Agmarknet reports are unavailable. Retry when connected; no replacement prices are shown.'},{status:503,headers}); }
+  } catch { retry.set(crop,Date.now()+60000); return Response.json({error:'Market reports are unavailable. Retry when connected; no estimated prices are shown.'},{status:503,headers}); }
   finally {pending.delete(crop);}
 }

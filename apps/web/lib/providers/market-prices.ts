@@ -3,7 +3,7 @@ export const MARKET_CROPS = { soybean: { id: 13, name: 'Soyabean' }, wheat: { id
 export type MarketCrop = keyof typeof MARKET_CROPS;
 export type PricePoint = { date: string; minimum: number; maximum: number; modals: number[] };
 export type PriceSeries = { market: string; variety: string; points: PricePoint[] };
-export type MarketReport = { crop: MarketCrop; unit: 'INR/quintal'; fetched_at: string; source: string; series: PriceSeries[]; partial: boolean; mirror_updated_at?: string };
+export type MarketReport = { crop: MarketCrop; unit: 'INR/quintal'; fetched_at: string; source: string; series: PriceSeries[]; partial: boolean; mirror_updated_at?: string; report_month?: string };
 export const MARKET_MIRROR_SOURCE = 'https://mandi-api.vercel.app/docs';
 export function marketMirrorURL(crop: MarketCrop) {
   if (!Object.hasOwn(MARKET_CROPS, crop)) throw Error('Unsupported market request.');
